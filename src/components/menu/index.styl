@@ -1,0 +1,41 @@
+@require 'nib'
+@require 'zorium-paper/base'
+
+json('zorium-paper/colors.json')
+
+.z-menu
+  height: 100%
+  // > .overlay
+  //   position: fixed
+  //   top: 0
+  //   left: 0
+  //   height: 100%
+  //   width: 100%
+  //   background: $black
+  //   opacity: 0.5
+  //   z-index: 100000
+
+  > .container
+    // position: fixed
+    // top: 0
+    // left: 0
+    // z-index: 100001
+    height: 100%
+    background: $white
+    border-right: 1px solid $grey300
+
+    > .logo
+      zp-font-display1()
+      padding: 12px 20px
+
+    > .break
+      height: 1px
+      background $grey300
+
+    > .list
+      > .category
+        margin: 20px 20px
+
+        > .link
+          zp-font-body2()
+          margin: 20px

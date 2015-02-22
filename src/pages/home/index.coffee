@@ -1,15 +1,21 @@
 z = require 'zorium'
 _ = require 'lodash'
 
-HelloWorld = require '../../components/hello_world'
+Home = require '../../components/home'
+Menu = require '../../components/menu'
+styles = require './index.styl'
 
 module.exports = class HomePage
   constructor: ->
+    styles.use()
+
     @state = z.state
-      $hello: new HelloWorld()
+      $home: new Home()
+      $menu: new Menu()
 
   render: =>
-    {$hello} = @state()
+    {$home, $menu} = @state()
 
-    z 'div',
-      z $hello
+    z '.p-home',
+      z '.menu', $menu
+      z '.home', $home
