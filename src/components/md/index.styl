@@ -6,9 +6,20 @@
 json('zorium-paper/colors.json')
 
 .z-md
-  > h1
-    zp-font-headline()
-  > pre
+  h1
+    margin-top: 26px
+
+  .anchor
+    // Padding for anchor tag
+    padding-top: 200px
+    margin-top: -200px
+    display: block
+
+  a
+    font-weight: bold
+    color: $blueGrey500
+
+  pre
     zp-shadow-1()
     border-radius: 2px
     background: #23241f

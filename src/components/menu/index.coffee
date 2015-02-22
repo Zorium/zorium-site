@@ -6,21 +6,150 @@ module.exports = class Menu
   constructor: ->
     styles.use()
 
-  render: ->
+    @state = z.state
+      links: [
+        {
+          key: ''
+          text: 'Home'
+          children: []
+        }
+        {
+          key: 'guide'
+          text: 'Guide'
+          children: [
+            {
+              key: 'a-simple-component'
+              text: 'Getting Started'
+            }
+          ]
+        }
+        {
+          key: 'api'
+          text: 'Core API'
+          children: [
+            {
+              key: 'z'
+              text: 'z()'
+            }
+            {
+              key: 'render'
+              text: 'z.render()'
+            }
+            {
+              key: 'redraw'
+              text: 'z.redraw()'
+            }
+            {
+              key: 'state'
+              text: 'z.state()'
+            }
+            {
+              key: 'observe'
+              text: 'z.observe()'
+            }
+            {
+              key: 'ev'
+              text: 'z.ev()'
+            }
+          ]
+        }
+        {
+          key: 'router-api'
+          text: 'Router API'
+          children: [
+            {
+              key: 'set-mode'
+              text: 'z.router.setMode()'
+            }
+            {
+              key: 'set-root'
+              text: 'z.router.setRoot()'
+            }
+            {
+              key: 'add'
+              text: 'z.router.add()'
+            }
+            {
+              key: 'go'
+              text: 'z.router.go()'
+            }
+            {
+              key: 'link'
+              text: 'z.router.link()'
+            }
+            {
+              key: 'current-path'
+              text: 'z.router.currentPath'
+            }
+            {
+              key: 'on'
+              text: 'z.router.on()'
+            }
+          ]
+        }
+        {
+          key: 'paper'
+          text: 'Paper'
+          children: [
+            {
+              key: 'shadows'
+              text: 'Shadows'
+            }
+            {
+              key: 'fonts'
+              text: 'Fonts'
+            }
+            {
+              key: 'colors'
+              text: 'Colors'
+            }
+            {
+              key: 'button'
+              text: 'Button'
+            }
+            {
+              key: 'checkbox'
+              text: 'Checkbox'
+            }
+            {
+              key: 'dialog'
+              text: 'Dialog'
+            }
+            {
+              key: 'floating-action-button'
+              text: 'Floating Action'
+            }
+            {
+              key: 'input'
+              text: 'Input'
+            }
+            {
+              key: 'radio'
+              text: 'Radio'
+            }
+          ]
+        }
+      ]
+
+  getTextByKey: (key) =>
+    {links} = @state()
+
+    return _.find(links, {key})?.text or 'Zorium'
+
+  render: =>
+    {links} = @state()
+
     z '.z-menu',
       z '.overlay'
       z '.container',
         z '.logo', 'Zorium'
         z '.break'
         z '.list',
-          z '.category',
-            'Home'
-          z '.category',
-            'Guide'
-            z '.link', 'Getting Started'
-          z '.category',
-            'API'
-            z '.link', 'z()'
-            z '.link', 'z.state()'
-          z '.category',
-            'Paper'
+          _.map links, (link) ->
+            z '.group',
+              z.router.link \
+                z "a.section[href=/#{link.key}]",
+                  link.text
+              _.map link.children, (child) ->
+                z.router.link \
+                  z "a.link[href=/#{link.key}##{child.key}]", child.text

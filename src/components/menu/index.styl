@@ -33,9 +33,21 @@ json('zorium-paper/colors.json')
       background $grey300
 
     > .list
-      > .category
-        margin: 20px 20px
+      > .group
+        > .section
+          display: block
+          padding: 20px 20px
+
+          &:hover
+            background: $grey100
+
+          &.is-selected
+            font-weight: bold
 
         > .link
           zp-font-body2()
-          margin: 20px
+          display: block
+          padding: 10px 40px
+
+          &:hover
+            background: $grey100

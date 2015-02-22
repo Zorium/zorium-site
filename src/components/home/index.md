@@ -6,7 +6,7 @@ z = require 'zorium'
 class HelloMessage
   render: ({name}) ->
     z 'div',
-      "Hello #\{name}"
+      "Hello #{name}"
 
 $hello = new HelloMessage()
 z.render document.body, z $hello, name: 'Zorium'
@@ -39,7 +39,7 @@ class Timer
   render: =>
     {secondsElapsed} = @state()
     z 'div',
-      "Seconds Elapsed: #\{secondsElapsed}"
+      "Seconds Elapsed: #{secondsElapsed}"
 
 z.render document.body, new Timer()
 ```
@@ -80,7 +80,7 @@ class TodoApp
           value: value
           oninput: z.ev (e, $$el) =>
             @state.set value: $$el.value
-        z 'input[type=submit]', value: "Add ##\{items.length + 1}"
+        z 'input[type=submit]', value: "Add ##{items.length + 1}"
 
 z.render document.body, new TodoApp()
 ```

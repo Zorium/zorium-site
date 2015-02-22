@@ -31,8 +31,12 @@ else
 #################
 
 root = document.getElementById('app')
+
+if window.history and history.pushState
+  z.router.setMode 'pathname'
+
 z.router.setRoot root
-z.router.add '/', HomePage
+z.router.add '/:page?', HomePage
 z.router.go()
 
 log.info 'App Ready'
