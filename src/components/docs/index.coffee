@@ -1,12 +1,11 @@
 z = require 'zorium'
 
 Md = require '../md'
-Header = require '../header'
 
-guide = require './guide.md'
-core = require './core.md'
+api = require './api.md'
 router = require './router.md'
 paper = require './paper.md'
+home = require './home.md'
 
 styles = require './index.styl'
 
@@ -16,20 +15,17 @@ module.exports = class Home
 
     @state = z.state
       $md: new Md()
-      $header: new Header()
 
   render: ({title, page}) =>
-    {$md, $header} = @state()
+    {$md} = @state()
 
     z '.z-docs',
-      z $header, title: title
-      z '.body',
-        z $md, html: switch page
-          when 'guide'
-            guide
-          when 'router-api'
-            router
-          when 'paper'
-            paper
-          else
-            core
+      z $md, html: switch page
+        when 'router-api'
+          router
+        when 'paper'
+          paper
+        when 'api'
+          api
+        else
+          home

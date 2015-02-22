@@ -4,21 +4,18 @@
 json('zorium-paper/colors.json')
 
 .z-home
-  width: 100%
   background: $grey100
 
-  > .body
-    padding: 20px 60px
+  > .title
+    zp-font-headline()
+    padding: 40px 60px
 
-    > .title
-      zp-font-headline()
-      padding: 20px 0 20px
+  > .content
+    padding: 0 60px
+    > .text
+      max-width: 440px
+      > .a
+        color: $blueGrey500
 
-    > .content
-      > .text
-        max-width: 440px
-        > .a
-          color: $blueGrey500
-
-        > .buttons
-          padding-top: 20px
+      > .buttons
+        padding-top: 20px

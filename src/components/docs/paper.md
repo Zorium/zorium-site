@@ -16,6 +16,13 @@ Use these webpack loaders
 }
 ```
 
+And make sure you have the Roboto font
+
+```html
+<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,500' rel='stylesheet' type='text/css'>
+
+```
+
 
 # Shadows <a class="anchor" name="shadows"></a>
 
@@ -29,8 +36,10 @@ zp-shadow-2()
 zp-shadow-3()
 zp-shadow-4()
 zp-shadow-5()
-
 ```
+
+<div id="paper-hack-shadows"></div>
+
 
 # Fonts <a class="anchor" name="fonts"></a>
 
@@ -51,6 +60,8 @@ zp-font-body1()
 zp-font-caption()
 zp-font-button()
 ```
+
+<div id="paper-hack-fonts"></div>
 
 # Colors <a class="anchor" name="colors"></a>
 
@@ -112,6 +123,8 @@ z $button,
   isDark: true
 ```
 
+<div id="paper-hack-buttons"></div>
+
 # Checkbox <a class="anchor" name="checkbox"></a>
 
 ```coffee
@@ -126,6 +139,8 @@ z $checkbox,
   isDisabled: true
   isDark: true
 ```
+
+<div id="paper-hack-checkboxes"></div>
 
 # Dialog <a class="anchor" name="dialog"></a>
 
@@ -160,6 +175,8 @@ z $dialog,
     @toggle()
 ```
 
+<div id="paper-hack-dialogs"></div>
+
 # Floating Action Button <a class="anchor" name="floating-action-button"></a>
 
 ```coffee
@@ -184,6 +201,8 @@ z $fab,
     , 'Z'
 ```
 
+<div id="paper-hack-fabs"></div>
+
 # Input <a class="anchor" name="input"></a>
 
 ```coffee
@@ -200,13 +219,15 @@ z $input,
   isDark: true
 ```
 
+<div id="paper-hack-inputs"></div>
+
 # Radio Button <a class="anchor" name="radio-button"></a>
 
 ```coffee
-Radio = require 'zorium-paper/radio'
+RadioButton = require 'zorium-paper/radio_button'
 paperColors = require 'zorium-paper/colors.json'
 
-$radio = new Radio()
+$radio = new RadioButton()
 
 z $radio,
   colors:
@@ -214,3 +235,5 @@ z $radio,
   isDisabled: true
   isDark: true
 ```
+
+<div id="paper-hack-radios"></div>

@@ -7,10 +7,12 @@ module.exports = class PrimaryButton
     @state = z.state
       $button: new Button()
 
-  render: ({text}) =>
+  render: ({text, onclick}) =>
     {$button} = @state()
+
     z $button,
       text: text
+      onclick: onclick
       isRaised: true
       colors:
         cText: paperColors.$teal500Text

@@ -14,16 +14,6 @@ module.exports = class Menu
           children: []
         }
         {
-          key: 'guide'
-          text: 'Guide'
-          children: [
-            {
-              key: 'a-simple-component'
-              text: 'Getting Started'
-            }
-          ]
-        }
-        {
           key: 'api'
           text: 'Core API'
           children: [
@@ -124,8 +114,8 @@ module.exports = class Menu
               text: 'Input'
             }
             {
-              key: 'radio'
-              text: 'Radio'
+              key: 'radio-button'
+              text: 'Radio Button'
             }
           ]
         }
@@ -136,7 +126,7 @@ module.exports = class Menu
 
     return _.find(links, {key})?.text or 'Zorium'
 
-  render: =>
+  render: ({page}) =>
     {links} = @state()
 
     z '.z-menu',
@@ -150,6 +140,7 @@ module.exports = class Menu
               z.router.link \
                 z "a.section[href=/#{link.key}]",
                   link.text
-              _.map link.children, (child) ->
-                z.router.link \
-                  z "a.link[href=/#{link.key}##{child.key}]", child.text
+              if page is link.key or link.key is 'api'
+                _.map link.children, (child) ->
+                  z.router.link \
+                    z "a.link[href=/#{link.key}##{child.key}]", child.text
