@@ -49,6 +49,10 @@ new WebpackDevServer webpack({
         loader: 'style/useable!css!stylus?' +
                 'paths[]=bower_components&paths[]=node_modules'
       }
+      {
+        test: /\.md$/
+        loader: 'html!markdown-color'
+      }
     ]
   plugins: [
     new webpack.ResolverPlugin(

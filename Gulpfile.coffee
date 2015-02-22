@@ -93,6 +93,10 @@ gulp.task 'scripts:test', ->
           loader: 'style/useable!css!stylus?' +
                   'paths[]=bower_components&paths[]=node_modules'
         }
+        {
+          test: /\.md$/
+          loader: 'html!markdown-color'
+        }
       ]
     plugins: [
       new webpack.ResolverPlugin(
@@ -148,6 +152,10 @@ gulp.task 'scripts:prod', ->
           test: /\.styl$/
           loader: 'style/useable!css!stylus?' +
                   'paths[]=bower_components&paths[]=node_modules'
+        }
+        {
+          test: /\.md$/
+          loader: 'html!markdown-color'
         }
       ]
     plugins: [
