@@ -1,10 +1,10 @@
 {
-  "name": "zorium-seed",
+  "name": "zorium-site",
   "private": true,
   "scripts": {
     "postinstall": "node_modules/bower/bin/bower install",
     "test": "NODE_ENV=test node_modules/gulp/bin/gulp.js test",
-    "start": "NODE_ENV=production npm run build && NODE_ENV=production ./node_modules/pm2/bin/pm2 start ./bin/server.coffee -i 0 --name zorium_seed --no-daemon -o /tmp/zorium_seed.log -e /tmp/zorium_seed.error.log",
+    "start": "NODE_ENV=production npm run build && NODE_ENV=production ./node_modules/pm2/bin/pm2 start ./bin/server.coffee -i 0 --name zorium_site --no-daemon -o /tmp/zorium_site.log -e /tmp/zorium_site.error.log",
     "dev": "NODE_ENV=development node_modules/gulp/bin/gulp.js dev",
     "mock": "NODE_ENV=development MOCK=true node_modules/gulp/bin/gulp.js dev",
     "watch-tests": "NODE_ENV=test node_modules/gulp/bin/gulp.js watch:test",

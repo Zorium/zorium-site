@@ -1,5 +1,5 @@
 {
-  "name": "zorium-seed",
+  "name": "zorium-site",
   "dependencies": {
     "bluebird": {
       "version": "2.9.12",
