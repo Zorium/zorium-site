@@ -63,6 +63,12 @@ else app.use express['static'](__dirname + '/build')
 
 app.use router
 
+router.get '/ping', (req, res) ->
+  res.end 'pong'
+
+router.get '/healthcheck', (req, res) ->
+  res.json {healthy: true}
+
 # Routes
 router.get '*', (req, res) ->
   renderHomePage()
