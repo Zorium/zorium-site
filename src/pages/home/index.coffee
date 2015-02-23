@@ -14,13 +14,13 @@ module.exports = class HomePage
 
     @state = z.state
       $content: switch page
-        when 'api', 'router-api'
+        when 'architecture', 'api', 'router-api'
           new Docs()
         when 'paper'
           new Paper()
         else
           new Home()
-      $menu: new Menu()
+      $menu: new Menu(selected: page)
       $header: new Header()
       page: page
       isMenuVisible: false
@@ -47,7 +47,7 @@ module.exports = class HomePage
       z '.overlay',
         onclick: @toggleMenu
       z '.menu',
-        z $menu, page: page
+        z $menu
       z '.content',
         z $header,
           title: $menu.getTextByKey page

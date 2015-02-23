@@ -6,13 +6,10 @@ api = require './api.md'
 router = require './router.md'
 paper = require './paper.md'
 home = require './home.md'
-
-styles = require './index.styl'
+architecture = require './architecture.md'
 
 module.exports = class Home
   constructor: ->
-    styles.use()
-
     @state = z.state
       $md: new Md()
 
@@ -27,5 +24,7 @@ module.exports = class Home
           paper
         when 'api'
           api
+        when 'architecture'
+          architecture
         else
           home

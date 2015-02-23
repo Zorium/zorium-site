@@ -3,20 +3,46 @@ z = require 'zorium'
 styles = require './index.styl'
 
 module.exports = class Menu
-  constructor: ->
+  constructor: ({selected}) ->
     styles.use()
 
     @state = z.state
+      selected: selected
       links: [
         {
-          key: ''
-          text: 'Home'
-          children: []
+          key: 'architecture'
+          text: 'Architecture'
+          children: [
+            {
+              key: ''
+              text: 'Folder Structure'
+            }
+            {
+              key: 'components'
+              text: 'Components'
+            }
+            {
+              key: 'models'
+              text: 'Models'
+            }
+            {
+              key: 'pages'
+              text: 'Pages'
+            }
+            {
+              key: 'services'
+              text: 'Services'
+            }
+          ]
         }
         {
           key: 'api'
           text: 'Core API'
           children: [
+            {
+              key: ''
+              text: 'Example'
+            }
             {
               key: 'z'
               text: 'z()'
@@ -47,6 +73,10 @@ module.exports = class Menu
           key: 'router-api'
           text: 'Router API'
           children: [
+            {
+              key: ''
+              text: 'Example'
+            }
             {
               key: 'set-mode'
               text: 'z.router.setMode()'
@@ -81,6 +111,10 @@ module.exports = class Menu
           key: 'paper'
           text: 'Paper'
           children: [
+            {
+              key: ''
+              text: 'Install'
+            }
             {
               key: 'shadows'
               text: 'Shadows'
@@ -126,19 +160,22 @@ module.exports = class Menu
 
     return _.find(links, {key})?.text or 'Zorium'
 
-  render: ({page}) =>
-    {links} = @state()
+  render: =>
+    {links, selected} = @state()
 
     z '.z-menu',
       z '.container',
-        z '.logo', 'Zorium'
+        z.router.link \
+          z 'a.logo[href=/]', 'Zorium'
         z '.break'
         z '.list',
-          _.map links, (link) ->
+          _.map links, (link) =>
             z '.group',
-              z.router.link \
-                z "a.section[href=/#{link.key}]",
-                  link.text
-              _.map link.children, (child) ->
-                z.router.link \
-                  z "a.link[href=/#{link.key}##{child.key}]", child.text
+              z '.section',
+                onclick: =>
+                  @state.set selected: link.key
+                link.text
+              if selected is link.key
+                _.map link.children, (child) ->
+                  z.router.link \
+                    z "a.link[href=/#{link.key}##{child.key}]", child.text

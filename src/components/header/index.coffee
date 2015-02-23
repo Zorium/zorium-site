@@ -12,29 +12,43 @@ module.exports = class Header
       $hamburger: new Icon()
 
   onScroll: =>
-    {isMini, isFixed} = @state()
+    offset = window.pageYOffset
     isWide = window.matchMedia('(min-width: 760px)').matches
 
-    console.log window.pageYOffset
+    @setMini(offset, isWide)
+    @setFixed(offset, isWide)
+
+
+  setMini: (offset, isWide) =>
+    {isMini, isFixed} = @state()
+
     if isWide
-      if window.pageYOffset > 116 and not isMini
-        @state.set isMini: true
-      else if window.pageYOffset < 116 and isMini
+      if offset > 116
+        if not isMini
+          @state.set isMini: true
+      else if isMini
+        @state.set isMini: false
+    else
+      if offset > 60
+        if not isMini
+          @state.set isMini: true
+      else if isMini
         @state.set isMini: false
 
-      if window.pageYOffset > 204 and not isFixed
-        @state.set isFixed: true
-      else if window.pageYOffset < 204 and isFixed
+  setFixed: (offset, isWide) =>
+    {isMini, isFixed} = @state()
+
+    if isWide
+      if offset > 204
+        if not isFixed
+          @state.set isFixed: true
+      else if isFixed
         @state.set isFixed: false
     else
-      if window.pageYOffset > 60 and not isMini
-        @state.set isMini: true
-      else if window.pageYOffset < 60 and isMini
-        @state.set isMini: false
-
-      if window.pageYOffset > 70 and not isFixed
-        @state.set isFixed: true
-      else if window.pageYOffset < 70 and isFixed
+      if offset > 70
+        if not isFixed
+          @state.set isFixed: true
+      else if isFixed
         @state.set isFixed: false
 
   onMount: =>
