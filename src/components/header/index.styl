@@ -7,6 +7,7 @@ json('zorium-paper/colors.json')
   > .stub
     height: 260px
     position: absolute
+    background: $grey100
 
   > .header
     display: flex
@@ -14,6 +15,13 @@ json('zorium-paper/colors.json')
     padding-left: 72px
     background: $teal500
     z-index: 1000
+    position: relative
+
+    > .hamburger
+      position: fixed
+      top: 0
+      padding: 15px 10px
+      margin-left: -72px
 
     > .title
       zp-font-display3()
@@ -21,6 +29,12 @@ json('zorium-paper/colors.json')
       line-height: 80px
       padding-bottom: 60px
       color: $white
+      transition: font-size 0.2s
+
+  &.is-hamburger-hidden
+    > .header
+      > .hamburger
+        display: none
 
   &.is-mini
     > .stub

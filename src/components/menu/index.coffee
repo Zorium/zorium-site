@@ -130,7 +130,6 @@ module.exports = class Menu
     {links} = @state()
 
     z '.z-menu',
-      z '.overlay'
       z '.container',
         z '.logo', 'Zorium'
         z '.break'

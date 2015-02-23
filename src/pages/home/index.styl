@@ -1,16 +1,51 @@
 @require 'nib'
 
+json('zorium-paper/colors.json')
+
 .p-home
   position: absolute
   width: 100%
   display: flex
 
+  > .overlay
+    position: fixed
+    top: 0
+    left: 0
+    height: 100%
+    width: 100%
+    background: $black
+    opacity: 0.5
+    z-index: 100000
+    display: none
+
   > .menu
     flex: none
     height: 100%
     width: 240px
+    // border is 1px
+    transform: translate(-241px, 0)
     position: fixed
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)
+    z-index: 100001
 
   > .content
     flex: 1
-    padding-left: 240px
+    transition: padding 0.2s cubic-bezier(0.4, 0, 0.2, 1)
+
+  &.is-menu-visible
+    > .menu
+      transform: translate(0, 0)
+
+    > .overlay
+      display: block
+
+  &.is-wide
+    > .menu
+      transform: translate(0, 0)
+
+    > .content
+      padding-left: 240px
+
+    &.is-menu-visible
+      > .overlay
+        display: none
