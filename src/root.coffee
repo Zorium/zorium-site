@@ -30,6 +30,9 @@ else
 # ROUTING SETUP #
 #################
 
+z.router.on 'route', (path) ->
+  ga? 'send', 'pageview', path
+
 root = document.getElementById('app')
 
 if window.history and history.pushState
