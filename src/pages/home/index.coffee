@@ -53,4 +53,5 @@ module.exports = class HomePage
           title: $menu.getTextByKey page
           isHamburgerHidden: isWide
           onHamburger: @toggleMenu
-        z $content, page: page
+        z '.inner-padding',
+          z $content, page: page

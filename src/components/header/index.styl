@@ -5,14 +5,12 @@ json('zorium-paper/colors.json')
 
 .z-header
   > .stub
-    height: 260px
+    height: 128px
     position: absolute
-    background: $grey100
 
   > .header
     display: flex
-    height: 260px
-    padding-left: 72px
+    height: 128px
     background: $teal500
     z-index: 1000
     position: relative
@@ -20,16 +18,17 @@ json('zorium-paper/colors.json')
     > .hamburger
       position: fixed
       top: 0
-      padding: 15px 10px
-      margin-left: -72px
+      padding: 4px
+      z-index: 1010
 
     > .title
-      zp-font-display3()
+      zp-font-headline()
       align-self: flex-end
-      line-height: 80px
-      padding-bottom: 60px
+      line-height: 56px
       color: $white
+      padding-bottom: 10px
       transition: font-size 0.2s
+      padding-left: 72px
 
   &.is-hamburger-hidden
     > .header
@@ -37,18 +36,42 @@ json('zorium-paper/colors.json')
         display: none
 
   &.is-mini
+    > .header
+      > .title
+        color: $white
+        position: fixed
+        top: 0
+
+  &.is-fixed
     > .stub
       position: relative
-      height: 260px
 
     > .header
       zp-shadow-1()
       width: 100%
       position: fixed
-      height: 80px
+      height: 56px
       top: 0
 
+  @media only screen and (min-width: 760px)
+    > .stub
+      height: 260px
+      position: absolute
+
+    > .header
+      height: 260px
+
       > .title
-        zp-font-display1()
-        padding-bottom: 0
+        zp-font-display3()
         color: $white
+        padding-bottom: 60px
+
+    &.is-mini
+      > .header
+        > .title
+          zp-font-headline()
+          color: $white
+
+    &.is-fixed
+      > .stub
+        position: relative

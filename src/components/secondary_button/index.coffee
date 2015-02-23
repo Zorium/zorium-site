@@ -9,6 +9,7 @@ module.exports = class SecondaryButton
 
   render: ({text}) =>
     {$button} = @state()
+
     z $button,
       text: text
       isRaised: true
