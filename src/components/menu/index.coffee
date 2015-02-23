@@ -139,7 +139,6 @@ module.exports = class Menu
               z.router.link \
                 z "a.section[href=/#{link.key}]",
                   link.text
-              if page is link.key or link.key is 'api'
-                _.map link.children, (child) ->
-                  z.router.link \
-                    z "a.link[href=/#{link.key}##{child.key}]", child.text
+              _.map link.children, (child) ->
+                z.router.link \
+                  z "a.link[href=/#{link.key}##{child.key}]", child.text
