@@ -4,6 +4,14 @@
 json('zorium-paper/colors.json')
 
 .z-header
+  > .bg
+    position: fixed
+    z-index: 1000
+    top: 0
+    width: 100%
+    height: 56px
+    background: $teal500
+
   > .stub
     height: 128px
     position: absolute
@@ -12,7 +20,7 @@ json('zorium-paper/colors.json')
     display: flex
     height: 128px
     background: $teal500
-    z-index: 1000
+    z-index: 1001
     position: relative
 
     > .hamburger

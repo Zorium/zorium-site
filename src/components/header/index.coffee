@@ -9,6 +9,7 @@ module.exports = class Header
 
     @state = z.state
       isMini: false
+      isFixed: false
       $hamburger: new Icon()
 
   onScroll: =>
@@ -51,7 +52,7 @@ module.exports = class Header
       else if isFixed
         @state.set isFixed: false
 
-  onMount: =>
+  onMount: (@$$el) =>
     document.addEventListener 'scroll', @onScroll
     @onScroll()
 
@@ -64,6 +65,7 @@ module.exports = class Header
     z '.z-header',
       className: z.classKebab {isMini, isHamburgerHidden, isFixed}
       z '.stub'
+      z '.bg'
       z '.header',
         z '.hamburger',
           onclick: onHamburger
