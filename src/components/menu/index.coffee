@@ -163,10 +163,7 @@ module.exports = class Menu
     window.removeEventListener 'resize', @onResize
 
   onResize: =>
-    {isHidden} = @state()
-
-    if not isHidden and @isPermanent()
-      @state.set isHidden: true
+    @state.set isHidden: not @isPermanent()
 
   isPermanent: ->
     window.matchMedia('(min-width: 1000px)').matches
@@ -176,7 +173,15 @@ module.exports = class Menu
 
   toggle: =>
     {isHidden} = @state()
-    @state.set isHidden: not isHidden
+    isHidden = not isHidden
+
+    # prevent body scrolling while viewing menu
+    if isHidden
+      document.body.style.overflow = 'auto'
+    else
+      document.body.style.overflow = 'hidden'
+
+    @state.set isHidden: isHidden
 
   getTextByKey: (key) =>
     {links} = @state()
