@@ -157,10 +157,9 @@ module.exports = class Menu
 
   getTextByKey: (key) =>
     {links} = @state()
-
     return _.find(links, {key})?.text or 'Zorium'
 
-  render: =>
+  render: ({onNavigate}) =>
     {links, selected} = @state()
 
     z '.z-menu',
@@ -177,5 +176,9 @@ module.exports = class Menu
                 link.text
               if selected is link.key
                 _.map link.children, (child) ->
-                  z.router.link \
-                    z "a.link[href=/#{link.key}##{child.key}]", child.text
+                  z "a.link[href=/#{link.key}##{child.key}]",
+                    onclick: z.ev (e, $$el) ->
+                      e.preventDefault()
+                      onNavigate?()
+                      z.router.go $$el.pathname + $$el.hash
+                  , child.text

@@ -47,7 +47,9 @@ module.exports = class HomePage
       z '.overlay',
         onclick: @toggleMenu
       z '.menu',
-        z $menu
+        z $menu, {
+          onNavigate: @toggleMenu
+        }
       z '.content',
         z $header,
           title: $menu.getTextByKey page
