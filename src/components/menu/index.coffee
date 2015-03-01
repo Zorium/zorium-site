@@ -8,6 +8,7 @@ module.exports = class Menu
 
     @state = z.state
       selected: selected
+      isHidden: not @isPermanent()
       links: [
         {
           key: 'architecture'
@@ -155,30 +156,63 @@ module.exports = class Menu
         }
       ]
 
+  onMount: =>
+    window.addEventListener 'resize', @onResize
+
+  onBeforeUnmount: =>
+    window.removeEventListener 'resize', @onResize
+
+  onResize: =>
+    {isHidden} = @state()
+
+    if not isHidden and @isPermanent()
+      @state.set isHidden: true
+
+  isPermanent: ->
+    window.matchMedia('(min-width: 1000px)').matches
+
+  isHidden: =>
+    @state().isHidden
+
+  toggle: =>
+    {isHidden} = @state()
+    @state.set isHidden: not isHidden
+
   getTextByKey: (key) =>
     {links} = @state()
     return _.find(links, {key})?.text or 'Zorium'
 
-  render: ({onNavigate}) =>
-    {links, selected} = @state()
+  render: =>
+    {links, selected, isHidden} = @state()
+    isPermanent = @isPermanent()
 
     z '.z-menu',
+      className: z.classKebab {
+        isHidden: isHidden and not isPermanent
+        isPermanent
+      }
+      z '.stub'
+      z '.overlay',
+        onclick: @toggle
       z '.container',
-        z.router.link \
-          z 'a.logo[href=/]', 'Zorium'
-        z '.break'
-        z '.list',
-          _.map links, (link) =>
-            z '.group',
-              z '.section',
-                onclick: =>
-                  @state.set selected: link.key
-                link.text
-              if selected is link.key
-                _.map link.children, (child) ->
-                  z "a.link[href=/#{link.key}##{child.key}]",
-                    onclick: z.ev (e, $$el) ->
-                      e.preventDefault()
-                      onNavigate?()
-                      z.router.go $$el.pathname + $$el.hash
-                  , child.text
+        z '.menu',
+          z.router.link \
+            z 'a.logo[href=/]', 'Zorium'
+          z '.break'
+          z '.list',
+            _.map links, (link) =>
+              z '.group',
+                z '.section',
+                  onclick: =>
+                    @state.set selected: link.key
+                  link.text
+                if selected is link.key
+                  _.map link.children, (child) =>
+                    z "a.link[href=/#{link.key}##{child.key}]",
+                      onclick: z.ev (e, $$el) =>
+                        e.preventDefault()
+                        unless isPermanent
+                          @toggle()
+                        z.router.go $$el.pathname + $$el.hash
+                    , child.text
+        z '.padder'

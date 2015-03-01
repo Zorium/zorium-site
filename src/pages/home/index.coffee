@@ -23,37 +23,18 @@ module.exports = class HomePage
       $menu: new Menu(selected: page)
       $header: new Header()
       page: page
-      isMenuVisible: false
-
-  toggleMenu: =>
-    {isMenuVisible} = @state()
-    @state.set isMenuVisible: not isMenuVisible
-
-  onResize: ->
-    z.redraw()
-
-  onMount: =>
-    window.addEventListener('resize', @onResize)
-
-  onBeforeUnmount: =>
-    window.removeEventListener('resize', @onResize)
 
   render: =>
-    {$content, $menu, $header, page, isMenuVisible} = @state()
-    isWide = window.matchMedia('(min-width: 1000px)').matches
+    {$content, $menu, $header, page} = @state()
+    isMenuHidden = $menu.isHidden()
 
     z '.p-home',
-      className: z.classKebab {isMenuVisible, isWide}
-      z '.overlay',
-        onclick: @toggleMenu
-      z '.menu',
-        z $menu, {
-          onNavigate: @toggleMenu
-        }
+      className: z.classKebab {isMenuHidden}
+      z '.menu', $menu
       z '.content',
         z $header,
           title: $menu.getTextByKey page
-          isHamburgerHidden: isWide
-          onHamburger: @toggleMenu
+          isHamburgerHidden: not isMenuHidden
+          onHamburger: $menu.toggle
         z '.inner-padding',
           z $content, page: page

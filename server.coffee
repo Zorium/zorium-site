@@ -88,7 +88,7 @@ renderHomePage = do ->
     keywords: 'Zorium'
     name: 'Zorium'
     twitterHandle: '@ZoriumJS'
-    themeColor: paperColors.$teal500
+    themeColor: paperColors.$teal700
     favicon: '/images/zorium_icon_32.png'
     icon1024: '/images/zorium_icon_1024.png'
     icon256: '/images/zorium_icon_256.png'

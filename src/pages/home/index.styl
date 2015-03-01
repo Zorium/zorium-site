@@ -8,27 +8,9 @@ json('zorium-paper/colors.json')
   display: flex
   background: $grey100
 
-  > .overlay
-    position: fixed
-    top: 0
-    left: 0
-    height: 100%
-    width: 100%
-    background: $black
-    opacity: 0
-    z-index: 100000
-    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1)
-    pointer-events: none
-
   > .menu
     flex: none
     height: 100%
-    width: 240px
-    // border is 1px
-    transform: translate(-241px, 0)
-    position: fixed
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)
-    z-index: 100001
 
   > .content
     flex: 1
@@ -37,24 +19,7 @@ json('zorium-paper/colors.json')
     > .inner-padding
       padding: 10px 20px
 
-  &.is-menu-visible
-    > .menu
-      transform: translate(0, 0)
-
-    > .overlay
-      opacity: 0.5
-      pointer-events: auto
-
-  &.is-wide
-    > .menu
-      transform: translate(0, 0)
-
+  @media (min-width: 1000px)
     > .content
-      padding-left: 240px
-
       > .inner-padding
         padding: 30px 40px
-
-    &.is-menu-visible
-      > .overlay
-        display: none
