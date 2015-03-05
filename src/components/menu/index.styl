@@ -31,7 +31,7 @@ max-width(n)
     pointer-events: none
 
     > .menu
-      max-width(5)
+      max-width(6)
       flex: 1
       background: $white
       border-right: 1px solid $grey300
@@ -84,11 +84,11 @@ max-width(n)
 
     > .container
       // -1 for the border
-      transform: translate(-56 * 5 - 1 px, 0)
+      transform: translate(-56 * 6 - 1 px, 0)
 
   &.is-permanent
     > .stub
-      width: 56 * 5 px
+      width: 56 * 6 px
 
     > .overlay
       display: none
@@ -99,9 +99,9 @@ max-width(n)
   @media (min-width: 1000px)
     &.is-permanent
       > .stub
-        width: 64 * 5 px
+        width: 64 * 6 px
 
     &.is-hidden
       > .container
         // -1 for the border
-        transform: translate(-64 * 5 - 1 px, 0)
+        transform: translate(-64 * 6 - 1 px, 0)
