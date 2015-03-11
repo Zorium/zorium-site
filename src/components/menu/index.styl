@@ -87,6 +87,10 @@ max-width(n)
       transform: translate(-56 * 6 - 1 px, 0)
 
   &.is-permanent
+    > .container
+      > .menu
+        max-width(5)
+
     > .stub
       width: 56 * 6 px
 
@@ -99,9 +103,9 @@ max-width(n)
   @media (min-width: 1000px)
     &.is-permanent
       > .stub
-        width: 64 * 6 px
+        width: 64 * 5 px
 
     &.is-hidden
       > .container
         // -1 for the border
-        transform: translate(-64 * 6 - 1 px, 0)
+        transform: translate(-64 * 5 - 1 px, 0)
