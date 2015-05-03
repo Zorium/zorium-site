@@ -8,7 +8,7 @@ module.exports = class SecondaryButton
       $button: new Button()
 
   render: ({text}) =>
-    {$button} = @state()
+    {$button} = @state.getValue()
 
     z $button,
       text: text

@@ -1,4 +1,6 @@
-# Install
+# Paper - Material Design
+
+## Install
 
 ```bash
 npm install -S zorium-paper
@@ -24,7 +26,7 @@ And make sure you have the Roboto font
 ```
 
 
-# Shadows <a class="anchor" name="shadows"></a>
+## Shadows <a class="anchor" name="shadows"></a>
 
 Shadow methods are found in `base.styl`
 
@@ -38,10 +40,10 @@ zp-shadow-4()
 zp-shadow-5()
 ```
 
-<div id="paper-hack-shadows"></div>
+<div id="z-docs_paper-hack-shadows"></div>
 
 
-# Fonts <a class="anchor" name="fonts"></a>
+## Fonts <a class="anchor" name="fonts"></a>
 
 Font methods are found in `base.styl`
 
@@ -61,9 +63,9 @@ zp-font-caption()
 zp-font-button()
 ```
 
-<div id="paper-hack-fonts"></div>
+<div id="z-docs_paper-hack-fonts"></div>
 
-# Colors <a class="anchor" name="colors"></a>
+## Colors <a class="anchor" name="colors"></a>
 
 Colors are found in `colors.json` and can be used in both Stylus and CoffeeScript.  
 See [Google Material Design Colors](http://www.google.com/design/spec/style/color.html)
@@ -101,7 +103,7 @@ $lightBlue100Text // rgba(0, 0, 0, 0.87)
 ...
 ```
 
-# Button <a class="anchor" name="button"></a>
+## Button <a class="anchor" name="button"></a>
 
 ```coffee
 Button = require 'zorium-paper/button'
@@ -123,9 +125,9 @@ z $button,
   isDark: true
 ```
 
-<div id="paper-hack-buttons"></div>
+<div id="z-docs_paper-hack-buttons"></div>
 
-# Checkbox <a class="anchor" name="checkbox"></a>
+## Checkbox <a class="anchor" name="checkbox"></a>
 
 ```coffee
 Checkbox = require 'zorium-paper/checkbox'
@@ -140,9 +142,9 @@ z $checkbox,
   isDark: true
 ```
 
-<div id="paper-hack-checkboxes"></div>
+<div id="z-docs_paper-hack-checkboxes"></div>
 
-# Dialog <a class="anchor" name="dialog"></a>
+## Dialog <a class="anchor" name="dialog"></a>
 
 ```coffee
 Dialog = require 'zorium-paper/dialog'
@@ -175,9 +177,9 @@ z $dialog,
     @toggle()
 ```
 
-<div id="paper-hack-dialogs"></div>
+<div id="z-docs_paper-hack-dialogs"></div>
 
-# Floating Action Button <a class="anchor" name="floating-action-button"></a>
+## Floating Action Button <a class="anchor" name="floating-action-button"></a>
 
 ```coffee
 FloatingActionButton = require 'zorium-paper/floating_action_button'
@@ -201,9 +203,9 @@ z $fab,
     , 'Z'
 ```
 
-<div id="paper-hack-fabs"></div>
+<div id="z-docs_paper-hack-fabs"></div>
 
-# Input <a class="anchor" name="input"></a>
+## Input <a class="anchor" name="input"></a>
 
 ```coffee
 Input = require 'zorium-paper/input'
@@ -219,9 +221,9 @@ z $input,
   isDark: true
 ```
 
-<div id="paper-hack-inputs"></div>
+<div id="z-docs_paper-hack-inputs"></div>
 
-# Radio Button <a class="anchor" name="radio-button"></a>
+## Radio Button <a class="anchor" name="radio-button"></a>
 
 ```coffee
 RadioButton = require 'zorium-paper/radio_button'
@@ -236,4 +238,4 @@ z $radio,
   isDark: true
 ```
 
-<div id="paper-hack-radios"></div>
+<div id="z-docs_paper-hack-radios"></div>

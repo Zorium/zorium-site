@@ -1,12 +1,11 @@
 z = require 'zorium'
 Icon = require 'zorium-paper/icon'
 
-styles = require './index.styl'
+if window?
+  require './index.styl'
 
 module.exports = class Header
   constructor: ->
-    styles.use()
-
     @state = z.state
       isMini: false
       isFixed: false
@@ -21,7 +20,7 @@ module.exports = class Header
 
 
   setMini: (offset, isWide) =>
-    {isMini, isFixed} = @state()
+    {isMini, isFixed} = @state.getValue()
 
     if isWide
       if offset > 116
@@ -37,7 +36,7 @@ module.exports = class Header
         @state.set isMini: false
 
   setFixed: (offset, isWide) =>
-    {isMini, isFixed} = @state()
+    {isMini, isFixed} = @state.getValue()
 
     if isWide
       if offset > 204
@@ -60,7 +59,7 @@ module.exports = class Header
     document.removeEventListener 'scroll', @onScroll
 
   render: ({title, onHamburger, isHamburgerHidden}) =>
-    {isMini, isFixed, $hamburger} = @state()
+    {isMini, isFixed, $hamburger} = @state.getValue()
 
     z '.z-header',
       className: z.classKebab {isMini, isHamburgerHidden, isFixed}

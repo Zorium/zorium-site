@@ -8,7 +8,7 @@ module.exports = class PrimaryButton
       $button: new Button()
 
   render: ({text, onclick}) =>
-    {$button} = @state()
+    {$button} = @state.getValue()
 
     z $button,
       text: text

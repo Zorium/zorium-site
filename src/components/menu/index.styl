@@ -1,4 +1,3 @@
-@require 'nib'
 @require 'zorium-paper/base'
 
 json('zorium-paper/colors.json')
@@ -65,14 +64,19 @@ max-width(n)
 
           > .link
             zp-font-body2()
-            display: block
+            display: none
             padding: 10px 40px
+            text-decoration: none
 
             &:hover
               background: $grey100
 
             &:active
               background: $grey200
+
+          &.is-selected
+            > .link
+              display: block
 
     > .padder
       width: 56px

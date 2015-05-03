@@ -1,31 +1,31 @@
 z = require 'zorium'
-_ = require 'lodash'
+Rx = require 'rx-lite'
 
-Home = require '../../components/home'
-Paper = require '../../components/paper'
-Docs = require '../../components/docs'
+Head = require '../../components/head'
 Menu = require '../../components/menu'
 Header = require '../../components/header'
-styles = require './index.styl'
+Docs = require '../../components/docs'
+
+if window?
+  require './index.styl'
 
 module.exports = class HomePage
-  constructor: ({page}) ->
-    styles.use()
-
+  constructor: ->
     @state = z.state
-      $content: switch page
-        when 'architecture', 'api', 'router-api'
-          new Docs()
-        when 'paper'
-          new Paper()
-        else
-          new Home()
-      $menu: new Menu(selected: page)
+      $head: new Head()
+      $menu: new Menu()
       $header: new Header()
-      page: page
+      $docs: new Docs()
+
+  renderHead: ({styles}) =>
+    {$head} = @state.getValue()
+
+    z $head, {styles}
 
   render: =>
-    {$content, $menu, $header, page} = @state()
+    {$menu, $header, $docs} = @state.getValue()
+
+    # FIXME: this logic should exist higher, or be managed by obseravables
     isMenuHidden = $menu.isHidden()
 
     z '.p-home',
@@ -33,8 +33,8 @@ module.exports = class HomePage
       z '.menu', $menu
       z '.content',
         z $header,
-          title: $menu.getTextByKey page
+          title: 'Zorium'
           isHamburgerHidden: not isMenuHidden
           onHamburger: $menu.toggle
         z '.inner-padding',
-          z $content, page: page
+          $docs

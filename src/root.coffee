@@ -4,13 +4,10 @@ _ = require 'lodash'
 z = require 'zorium'
 log = require 'clay-loglevel'
 
+require './root.styl'
 config = require './config'
-HomePage = require './pages/home'
 ErrorReportService = require './services/error_report'
-
-style = require './root.styl'
-
-style.use()
+rootFactory = require './root_factory'
 
 ###########
 # LOGGING #
@@ -30,16 +27,16 @@ else
 # ROUTING SETUP #
 #################
 
-z.router.on 'route', (path) ->
-  ga? 'send', 'pageview', path
-
-root = document.getElementById('app')
-
-if window.history and history.pushState
-  z.router.setMode 'pathname'
-
-z.router.setRoot root
-z.router.add '/:page?', HomePage
-z.router.go()
+z.server.set
+  $$root: document
+  factory: rootFactory
+z.server.go()
 
 log.info 'App Ready'
+
+#############################
+# ENABLE WEBPACK HOT RELOAD #
+#############################
+
+if module.hot
+  module.hot.accept()

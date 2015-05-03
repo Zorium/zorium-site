@@ -3,15 +3,18 @@ del = require 'del'
 path = require 'path'
 gulp = require 'gulp'
 karma = require('karma').server
+webpack = require 'webpack'
 mocha = require 'gulp-mocha'
 rename = require 'gulp-rename'
 nodemon = require 'gulp-nodemon'
 gulpWebpack = require 'gulp-webpack'
 coffeelint = require 'gulp-coffeelint'
-runSequence = require 'run-sequence'
 RewirePlugin = require 'rewire-webpack'
-webpack = require 'webpack'
+istanbul = require 'gulp-coffee-istanbul'
 clayLintConfig = require 'clay-coffeescript-style-guide'
+ExtractTextPlugin = require 'extract-text-webpack-plugin'
+
+FUNCTIONAL_TEST_TIMEOUT_MS = 10 * 1000 # 10sec
 
 karmaConf =
   frameworks: ['mocha']
@@ -27,61 +30,116 @@ karmaConf =
 
 paths =
   static: './src/static/**/*'
-  coffee: ['./src/**/*.coffee', './*.coffee', './test/*/**/*.coffee']
+  coffee: [
+    './*.coffee'
+    './src/**/*.coffee'
+    './test/**/*.coffee'
+  ]
+  cover: [
+    './*.coffee'
+    './src/**/*.coffee'
+  ]
+  tests: './test/unit/**/*.coffee'
+  serverTests: './test/server/index.coffee'
+  functionalTests: './test/functional/**/*.coffee'
   root: './src/root.coffee'
   rootTests: './test/index.coffee'
-  rootServerTests: './test/server.coffee'
   dist: './dist/'
   build: './build/'
 
+mochaKiller = do ->
+  pendingCnt = 0
+
+  check = ->
+    setTimeout ->
+      if pendingCnt is 0
+        process.exit() # mocha hangs
+    , 100
+
+  ->
+    pendingCnt += 1
+
+    hasBeenCalled = false
+    ->
+      unless hasBeenCalled
+        hasBeenCalled = true
+        pendingCnt -= 1
+        check()
+
+gulp.task 'build', ['scripts:prod', 'static:prod']
+
 # start the dev server, and auto-update
-gulp.task 'dev', ['assets:dev'], ->
-  gulp.start 'server:dev'
+gulp.task 'dev', ['server:webpack', 'server:dev:watch']
 
-# compile sources: src/* -> build/*
-gulp.task 'assets:dev', [
-  'static:dev'
-]
+gulp.task 'test', ['test:karma', 'test:node:coverage', 'lint']
 
-# compile sources: src/* -> dist/*
-gulp.task 'assets:prod', [
-  'scripts:prod'
-  'static:prod'
-]
+gulp.task 'watch', ->
+  gulp.watch paths.coffee, ['test:server:watch', 'test:unit:phantom']
 
-# build for production
-gulp.task 'build', (cb) ->
-  runSequence 'clean:dist', 'assets:prod', cb
+gulp.task 'lint', ->
+  gulp.src paths.coffee
+    .pipe coffeelint(null, clayLintConfig)
+    .pipe coffeelint.reporter()
 
-# tests
-# process.exit is added due to gulp-mocha (test:server) hanging
-gulp.task 'test', [
-    'scripts:test'
-    'test:server'
-    'lint'
-  ], (cb) ->
-  karma.start _.defaults(singleRun: true, karmaConf), process.exit
+gulp.task 'test:karma', ['scripts:test'], ->
+  karma.start _.defaults(singleRun: true, karmaConf), mochaKiller()
 
-# start the dev server
-gulp.task 'server:dev', ->
-  # Don't actually watch for changes, just run the server
-  nodemon {script: 'bin/dev_server.coffee', ext: 'null', ignore: ['**/*.*']}
+gulp.task 'server:webpack', ->
+  require('./bin/webpack_server.coffee')
 
-# gulp-mocha will never exit on its own.
-gulp.task 'test:server', ['scripts:test'], ->
-  gulp.src paths.rootServerTests
+gulp.task 'server:dev:watch', ['static:dev'], ->
+  nodemon {script: 'bin/dev_server.coffee', ext: 'js json coffee'}
+
+gulp.task 'server:dev', ['static:dev'], ->
+  require('./bin/dev_server.coffee')
+
+gulp.task 'test:server:watch', ->
+  gulp.src paths.serverTests
     .pipe mocha()
 
-gulp.task 'test:phantom', ['scripts:test'], (cb) ->
+gulp.task 'test:functional', ->
+  end = mochaKiller()
+  gulp.src paths.functionalTests
+    .pipe mocha(timeout: FUNCTIONAL_TEST_TIMEOUT_MS)
+    .on 'error', end
+    .once 'end', end
+
+gulp.task 'test:node:coverage', ->
+  end = mochaKiller()
+  gulp.src paths.cover
+    .pipe istanbul includeUntested: false
+    .pipe istanbul.hookRequire()
+    .on 'finish', ->
+      gulp.src [paths.serverTests, paths.tests]
+        .pipe mocha()
+        .pipe istanbul.writeReports()
+        .on 'error', end
+        .once 'end', end
+
+gulp.task 'watch:functional', ->
+  gulp.watch paths.coffee, ['test:functional:watch']
+
+gulp.task 'test:functional:watch', ->
+  gulp.src paths.functionalTests
+    .pipe mocha(timeout: FUNCTIONAL_TEST_TIMEOUT_MS)
+
+gulp.task 'test:unit:phantom', ['scripts:test'], (cb) ->
   karma.start _.defaults({
     singleRun: true,
     browsers: ['PhantomJS']
   }, karmaConf), cb
 
+gulp.task 'static:dev', ->
+  gulp.src paths.static
+    .pipe gulp.dest paths.build
+
 gulp.task 'scripts:test', ->
   gulp.src paths.rootTests
   .pipe gulpWebpack
+    devtool: 'inline-source-map'
     module:
+      exprContextRegExp: /$^/
+      exprContextCritical: false
       postLoaders: [
         { test: /\.coffee$/, loader: 'transform/cacheable?envify' }
       ]
@@ -90,7 +148,7 @@ gulp.task 'scripts:test', ->
         { test: /\.json$/, loader: 'json' }
         {
           test: /\.styl$/
-          loader: 'style/useable!css!stylus?' +
+          loader: 'style!css!autoprefixer!stylus?' +
                   'paths[]=bower_components&paths[]=node_modules'
         }
         {
@@ -116,19 +174,6 @@ gulp.task 'scripts:test', ->
   .pipe gulp.dest paths.build + '/test/'
 
 
-# run coffee-lint
-gulp.task 'lint', ->
-  gulp.src paths.coffee
-    .pipe coffeelint(null, clayLintConfig)
-    .pipe coffeelint.reporter()
-
-gulp.task 'watch:test', ->
-  gulp.watch paths.coffee, ['test:phantom']
-
-gulp.task 'static:dev', ->
-  gulp.src paths.static
-    .pipe gulp.dest paths.build
-
 #
 # Production compilation
 #
@@ -137,11 +182,18 @@ gulp.task 'static:dev', ->
 gulp.task 'clean:dist', (cb) ->
   del paths.dist, cb
 
-# init.coffee --> dist/js/bundle.min.js
-gulp.task 'scripts:prod', ->
+gulp.task 'static:prod', ['clean:dist'], ->
+  gulp.src paths.static
+    .pipe gulp.dest paths.dist
+
+# root.coffee --> dist/
+gulp.task 'scripts:prod', ['clean:dist'], ->
   gulp.src paths.root
   .pipe gulpWebpack
+    devtool: 'source-map'
     module:
+      exprContextRegExp: /$^/
+      exprContextCritical: false
       postLoaders: [
         { test: /\.coffee$/, loader: 'transform/cacheable?envify' }
       ]
@@ -150,8 +202,9 @@ gulp.task 'scripts:prod', ->
         { test: /\.json$/, loader: 'json' }
         {
           test: /\.styl$/
-          loader: 'style/useable!css!stylus?' +
-                  'paths[]=bower_components&paths[]=node_modules'
+          loader: ExtractTextPlugin.extract 'style-loader',
+            'css!autoprefixer!' +
+            'stylus?paths[]=bower_components&paths[]=node_modules'
         }
         {
           test: /\.md$/
@@ -165,13 +218,11 @@ gulp.task 'scripts:prod', ->
         )
       )
       new webpack.optimize.UglifyJsPlugin()
+      new ExtractTextPlugin 'bundle.css'
     ]
     resolve:
       root: [path.join(__dirname, 'bower_components')]
       extensions: ['.coffee', '.js', '.json', '']
-  .pipe rename 'bundle.js'
-  .pipe gulp.dest paths.dist + '/js/'
-
-gulp.task 'static:prod', ->
-  gulp.src paths.static
-    .pipe gulp.dest paths.dist
+    output:
+      filename: 'bundle.js'
+  .pipe gulp.dest paths.dist

@@ -1,4 +1,6 @@
-# A Simple Component
+# Intro
+
+## A Simple Component
 
 ```coffee
 z = require 'zorium'
@@ -12,7 +14,7 @@ $hello = new HelloMessage()
 z.render document.body, z $hello, name: 'Zorium'
 ```
 
-# A Stateful Component
+## A Stateful Component
 
 ```coffee
 z = require 'zorium'
@@ -44,7 +46,7 @@ class Timer
 z.render document.body, new Timer()
 ```
 
-# An Application
+## An Application
 
 ```coffee
 z = require 'zorium'

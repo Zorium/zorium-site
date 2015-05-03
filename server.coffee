@@ -1,39 +1,28 @@
 express = require 'express'
-dust = require 'dustjs-linkedin'
-fs = require 'fs'
 _ = require 'lodash'
-Promise = require 'bluebird'
 compress = require 'compression'
 log = require 'clay-loglevel'
 helmet = require 'helmet'
-paperColors = require 'zorium-paper/colors.json'
+z = require 'zorium'
+Promise = require 'bluebird'
+request = require 'request-promise'
 
 config = require './src/config'
+rootFactory = require './src/root_factory'
 
 MIN_TIME_REQUIRED_FOR_HSTS_GOOGLE_PRELOAD_MS = 10886400000 # 18 weeks
+HEALTHCHECK_TIMEOUT = 200
 
 app = express()
 router = express.Router()
 
 log.enableAll()
 
-# Dust templates
-# Don't compact whitespace, because it breaks the javascript partial
-dust.optimizers.format = (ctx, node) -> node
-
-indexTpl = dust.compile fs.readFileSync('src/index.dust', 'utf-8'), 'index'
-
-distJs = if config.ENV is config.ENVS.PROD \
-          then fs.readFileSync('dist/js/bundle.js', 'utf-8')
-          else null
-
-dust.loadSource indexTpl
-
 app.use compress()
 
 webpackDevHost = config.WEBPACK_DEV_HOSTNAME + ':' + config.WEBPACK_DEV_PORT
 scriptSrc = [
-  '\'unsafe-eval\''
+  '\'self\''
   '\'unsafe-inline\''
   'www.google-analytics.com'
   if config.ENV is config.ENVS.DEV then webpackDevHost
@@ -57,46 +46,33 @@ app.use helmet.noSniff()
 app.use helmet.crossdomain()
 app.disable 'x-powered-by'
 
+app.use '/healthcheck', (req, res, next) ->
+  Promise.settle [
+    Promise.cast(request.get(config.API_URL + '/ping'))
+      .timeout HEALTHCHECK_TIMEOUT
+  ]
+  .spread (api) ->
+    result =
+      api: api.isFulfilled()
+
+    isHealthy = _.every _.values result
+    if isHealthy
+      res.json {healthy: isHealthy}
+    else
+      res.status(500).json _.defaults {healthy: isHealthy}, result
+  .catch next
+
+app.use '/ping', (req, res) ->
+  res.send 'pong'
+
+app.use '/demo', (req, res) ->
+  res.json {name: 'Zorium'}
+
 if config.ENV is config.ENVS.PROD
 then app.use express['static'](__dirname + '/dist')
 else app.use express['static'](__dirname + '/build')
 
 app.use router
-
-router.get '/ping', (req, res) ->
-  res.end 'pong'
-
-router.get '/healthcheck', (req, res) ->
-  res.json {healthy: true}
-
-# Routes
-router.get '*', (req, res) ->
-  renderHomePage()
-  .then (html) ->
-    res.send html
-  .catch (err) ->
-    log.trace err
-    res.status(500).send()
-
-# Cache rendering
-renderHomePage = do ->
-  page =
-    inlineSource: config.ENV is config.ENVS.PROD
-    webpackDevHostname: config.WEBPACK_DEV_HOSTNAME
-    title: 'Zorium'
-    description: 'Zorium - (╯°□°）╯︵ ┻━┻)'
-    keywords: 'Zorium'
-    name: 'Zorium'
-    twitterHandle: '@ZoriumJS'
-    themeColor: paperColors.$teal700
-    favicon: '/images/zorium_icon_32.png'
-    icon1024: '/images/zorium_icon_1024.png'
-    icon256: '/images/zorium_icon_256.png'
-    url: 'http://zorium.org'
-    distjs: distJs
-
-  rendered = Promise.promisify(dust.render, dust) 'index', page
-
-  -> rendered
+app.use z.server.factoryToMiddleware rootFactory
 
 module.exports = app

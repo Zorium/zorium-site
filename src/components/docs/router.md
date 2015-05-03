@@ -1,4 +1,6 @@
-# Example
+# Router
+
+## Example
 
 ```coffee
 class App
@@ -22,7 +24,7 @@ z.router.go '/test'
 ```
 
 
-# z.router.setMode() <a class="anchor" name="set-mode"></a>
+## z.router.setMode() <a class="anchor" name="set-mode"></a>
 
 ```coffee
 z.router.setMode 'hash' # (default) clay.io/#/path
@@ -30,7 +32,7 @@ z.router.setMode 'pathname' # clay.io/pathname
 ```
 
 
-# z.router.setRoot() <a class="anchor" name="set-root"></a>
+## z.router.setRoot() <a class="anchor" name="set-root"></a>
 
 Accepts a DOM node to append to
 
@@ -41,7 +43,7 @@ Accepts a DOM node to append to
 z.router.setRoot(document.body)
 ```
 
-# z.router.add() <a class="anchor" name="add"></a>
+## z.router.add() <a class="anchor" name="add"></a>
 
 Variables will be passed into the component constructor.  
 pathTransform will be called if provided, and may return a promise.
@@ -68,7 +70,7 @@ pathTransform = (path) ->
     return path
 ```
 
-# z.router.go() <a class="anchor" name="go"></a>
+## z.router.go() <a class="anchor" name="go"></a>
 
 Navigate to a route
 
@@ -76,7 +78,7 @@ Navigate to a route
 z.router.go '/test/one'
 ```
 
-# z.router.link() <a class="anchor" name="link"></a>
+## z.router.link() <a class="anchor" name="link"></a>
 
 automatically route anchor `<a>` tag elements
 It is a mistake to use `onclick` on the element
@@ -87,11 +89,11 @@ z 'div',
 ```
 
 
-# z.router.currentPath <a class="anchor" name="current-path"></a>
+## z.router.currentPath <a class="anchor" name="current-path"></a>
 
 This value will be set to the currently routed path that the router has routed to.
 
-# z.router.on() <a class="anchor" name="on"></a>
+## z.router.on() <a class="anchor" name="on"></a>
 
 Listen for events. Currently the only event is `route`, which emits the path.
 

@@ -1,4 +1,6 @@
-# Example
+# API
+
+## Example
 
 ```coffee
 z = require 'zorium'
@@ -39,7 +41,7 @@ class TodoApp
 z.render document.body, new TodoApp()
 ```
 
-# z() <a class="anchor" name="z"></a>
+## z() <a class="anchor" name="z"></a>
 
 ```coffee
 z '.container' # <div class='container'></div>
@@ -68,7 +70,7 @@ z 'ul',
 ###
 ```
 
-## Zorium Components
+### Zorium Components
 
 Zorium components can be used in place of a dom tag.  
 Zorium components must have a `render()` method
@@ -104,7 +106,7 @@ root = document.createElement 'div'
 z.render root, $b # <div><div>hello world</div></div>
 ```
 
-## Lifecycle Hooks
+### Lifecycle Hooks
 
 If a component has a hook method defined, it will be called
 
@@ -124,7 +126,7 @@ class BindComponent
 ```
 
 
-# z.render() <a class="anchor" name="render"></a>
+## z.render() <a class="anchor" name="render"></a>
 
 ```coffee
 ###
@@ -134,7 +136,7 @@ class BindComponent
 z.render document.body, App
 ```
 
-# z.redraw() <a class="anchor" name="redraw"></a>
+## z.redraw() <a class="anchor" name="redraw"></a>
 
 Redraw all previously rendered elements  
 This is called whenever a component's `state` is changed  
@@ -145,7 +147,7 @@ z.render document.body, z 'div'
 z.redraw()
 ```
 
-# z.state() <a class="anchor" name="state"></a>
+## z.state() <a class="anchor" name="state"></a>
 
 Partial updating state object  
 When set as a property of a Zorium Component, `z.redraw()` will automatically be called  
@@ -188,7 +190,7 @@ state() is {
 }
 ```
 
-# z.observe() <a class="anchor" name="observe"></a>
+## z.observe() <a class="anchor" name="observe"></a>
 
 Create an observable  
 Promises observe to `null` until resolved (but still have promise methods)
@@ -213,7 +215,7 @@ p.then ->
 
 ```
 
-# z.ev() <a class="anchor" name="ev"></a>
+## z.ev() <a class="anchor" name="ev"></a>
 
 pass event context to callback fn
 
