@@ -24,6 +24,24 @@ module.exports = class Menu
             { key: 'class-kebab', text: 'z.classKebab'}
           ]
         }
+        {
+          select: 'server'
+          text: 'Server API'
+          children: [
+            { key: 'link', text: 'z.server.link()' }
+            { key: 'set', text: 'z.server.set()' }
+            { key: 'go', text: 'z.server.go()' }
+            { key: 'on', text: 'z.server.on()' }
+            { key: 'off', text: 'z.server.off()' }
+            { key: 'redirect', text: 'z.server.Redirect' }
+            { key: 'set-status', text: 'z.server.setStatus()' }
+            { key: 'full-page-rendering', text: 'Full Page Rendering' }
+            {
+              key: 'factory-to-middleware',
+              text: 'z.server.factoryToMiddleware()'
+            }
+          ]
+        }
       ]
 
   onMount: =>
