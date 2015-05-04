@@ -37,11 +37,7 @@ module.exports = class HomePage
     @scrollTargetDisposable = @scrollTargetSubject.subscribe (target) ->
       if target
         $$scrollTarget = $("a[name=#{target}]")
-
-        if $$scrollTarget
-          window.scrollTo 0, $$scrollTarget.offsetTop
-        else
-          console.log 'could not find scoll target', target
+        window.scrollTo 0, $$scrollTarget.offsetTop
 
   onBeforeUnmount: =>
     @scrollTargetDisposable?.dispose()

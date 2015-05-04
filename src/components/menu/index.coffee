@@ -54,6 +54,21 @@ module.exports = class Menu
             { key: 'naming', text: 'Naming' }
           ]
         }
+        {
+          select: 'paper'
+          text: 'Zorium Paper'
+          children: [
+            { key: 'shadows', text: 'Shadows' }
+            { key: 'fonts', text: 'Fonts' }
+            { key: 'colors', text: 'Colors' }
+            { key: 'button', text: 'Button' }
+            { key: 'checkbox', text: 'Checkbox' }
+            { key: 'dialog', text: 'Dialog' }
+            { key: 'floating-action-button', text: 'Floating Action Button' }
+            { key: 'input', text: 'Input' }
+            { key: 'radio-button', text: 'Radio Button' }
+          ]
+        }
       ]
 
   onMount: =>

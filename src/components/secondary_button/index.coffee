@@ -7,11 +7,11 @@ module.exports = class SecondaryButton
     @state = z.state
       $button: new Button()
 
-  render: ({text}) =>
+  render: ({$content}) =>
     {$button} = @state.getValue()
 
     z $button,
-      text: text
+      $content: $content
       isRaised: true
       colors:
         cText: paperColors.$blueGrey500Text

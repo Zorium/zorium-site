@@ -7,11 +7,11 @@ module.exports = class PrimaryButton
     @state = z.state
       $button: new Button()
 
-  render: ({text, onclick}) =>
+  render: ({$content, onclick}) =>
     {$button} = @state.getValue()
 
     z $button,
-      text: text
+      $content: $content
       onclick: onclick
       isRaised: true
       colors:

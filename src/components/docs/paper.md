@@ -2,18 +2,24 @@
 
 ## Install
 
+[Source](https://github.com/Zorium/zorium-paper)
+
 ```bash
 npm install -S zorium-paper
 ```
 
 Use these webpack loaders
 
+```bash
+npm install -S style-loader css-loader autoprefixer-loader stylus-loader coffee-loader json-loader
+```
+
 ```coffee
 { test: /\.coffee$/, loader: 'coffee' }
 { test: /\.json$/, loader: 'json' }
 {
   test: /\.styl$/
-  loader: 'style/useable!css!stylus?' +
+  loader: 'style!css!autoprefixer!stylus?' +
           'paths[]=bower_components&paths[]=node_modules'
 }
 ```
@@ -22,7 +28,6 @@ And make sure you have the Roboto font
 
 ```html
 <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,500' rel='stylesheet' type='text/css'>
-
 ```
 
 
@@ -106,13 +111,31 @@ $lightBlue100Text // rgba(0, 0, 0, 0.87)
 ## Button <a class="anchor" name="paper_button"></a>
 
 ```coffee
+###
+@param {ZoriumComponent} $content
+@param {Function} onclick
+@param {Boolean} [isDisabled=false]
+@param {Boolean} [isRaised=false]
+@param {Boolean} [isFullWidth=false]
+@param {Boolean} [isShort=false]
+@param {Boolean} [isDark=false]  
+@param {String} type - e.g. `submit` for forms
+@param {Object} colors
+@param {String} [colors.cText=colors.ink]
+@param {String} [colors.c200=$grey500/$grey800]
+@param {String} colors.c500
+@param {String} colors.c600
+@param {String} colors.c700
+@param {String} colors.ink
+###
+
 Button = require 'zorium-paper/button'
 paperColors = require 'zorium-paper/colors.json'
 
 $button = new Button()
 
 z $button,
-  text: 'click me'
+  $content: 'click me'
   isRaised: true
   colors:
     cText: paperColors.$red500
@@ -130,10 +153,22 @@ z $button,
 ## Checkbox <a class="anchor" name="paper_checkbox"></a>
 
 ```coffee
+###
+@constructor
+@param {Rx.Subject} [isChecked=Rx.BehaviorSubject(false)]
+
+@param {Object} colors
+@param {String} [colors.c500=$black]
+@param {Boolean} [isDisabled=false]
+@param {Boolean} [isDark=false]
+###
+
+Rx = require 'rx-lite'
 Checkbox = require 'zorium-paper/checkbox'
 paperColors = require 'zorium-paper/colors.json'
 
-$checkbox = new Checkbox()
+isChecked = new Rx.BehaviorSubject(false)
+$checkbox = new Checkbox({isChecked})
 
 z $checkbox,
   colors:
@@ -147,6 +182,16 @@ z $checkbox,
 ## Dialog <a class="anchor" name="paper_dialog"></a>
 
 ```coffee
+###
+@param {String} title
+@param {ZoriumComponent} [$content='']
+@param {Array<Action>} [actions=[]]
+@param {Function} [onleave=_.noop]
+
+@define {Object} Action
+@property {ZoriumComponent} $el
+###
+
 Dialog = require 'zorium-paper/dialog'
 Button = require 'zorium-paper/button'
 paperColors = require 'zorium-paper/colors.json'
@@ -182,6 +227,13 @@ z $dialog,
 ## Floating Action Button <a class="anchor" name="paper_floating-action-button"></a>
 
 ```coffee
+###
+@param {ZoriumComponent} $icon
+@param {Function} onclick
+@param {Object} colors
+@param {String} [colors.c500=$black]
+@param {Boolean} isMini
+###
 FloatingActionButton = require 'zorium-paper/floating_action_button'
 paperColors = require 'zorium-paper/colors.json'
 
@@ -208,10 +260,27 @@ z $fab,
 ## Input <a class="anchor" name="paper_input"></a>
 
 ```coffee
+###
+@constructor
+@param {Rx.Subject} [value=Rx.BehaviorSubject('')]
+@param {Rx.Subject} [error=Rx.BehaviorSubject(null)]
+
+@param {Object} colors
+@param {String} [colors.c500=$black]
+@param {String} hintText
+@param {String} type
+@param {Boolean} isFloating
+@param {Boolean} isDisabled
+@param {Boolean} isDark
+###
+
+Rx = require 'rx-lite'
 Input = require 'zorium-paper/input'
 paperColors = require 'zorium-paper/colors.json'
 
-$input = new Input()
+value = new Rx.BehaviorSubject('')
+error = new Rx.BehaviorSubject(null)
+$input = new Input({value, error})
 
 z $input,
   hintText: 'hint text'
@@ -226,10 +295,22 @@ z $input,
 ## Radio Button <a class="anchor" name="paper_radio-button"></a>
 
 ```coffee
+###
+@constructor
+@param {Rx.Subject} [isChecked=Rx.BehaviorSubject(false)]
+
+@param {Object} colors
+@param {String} [colors.c500=$black]
+@param {Boolean} [isDisabled=false]
+@param {Boolean} [isDark=false]
+###
+
+Rx = require 'rx-lite'
 RadioButton = require 'zorium-paper/radio_button'
 paperColors = require 'zorium-paper/colors.json'
 
-$radio = new RadioButton()
+isChecked = new Rx.BehaviorSubject(false)
+$radio = new RadioButton({isChecked})
 
 z $radio,
   colors:

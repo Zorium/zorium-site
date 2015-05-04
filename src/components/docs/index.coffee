@@ -14,24 +14,18 @@ PrimaryButton = require '../primary_button'
 SecondaryButton = require '../secondary_button'
 
 if window?
-  home = require './home.md'
   api = require './api.md'
   server = require './server.md'
   bestPractices = require './best_practices.md'
-  router = require './router.md'
   paper = require './paper.md'
-  architecture = require './architecture.md'
 else
   # Avoid webpack include
   _fs = 'fs'
   fs = require _fs
-  home = fs.readFileSync __dirname + '/home.md', 'utf-8'
   api = fs.readFileSync __dirname + '/api.md', 'utf-8'
   server = fs.readFileSync __dirname + '/server.md', 'utf-8'
   bestPractices = fs.readFileSync __dirname + '/best_practices.md', 'utf-8'
-  router = fs.readFileSync __dirname + '/router.md', 'utf-8'
   paper = fs.readFileSync __dirname + '/paper.md', 'utf-8'
-  architecture = fs.readFileSync __dirname + '/architecture.md', 'utf-8'
 
 if window?
   require './index.styl'
@@ -66,8 +60,8 @@ module.exports = class Docs
       ]
       checkboxes:
         $checked: [
-          new Checkbox(isChecked: true)
-          new Checkbox(isChecked: true)
+          new Checkbox(isChecked: new Rx.BehaviorSubject(true))
+          new Checkbox(isChecked: new Rx.BehaviorSubject(true))
         ]
         $unchecked: [
           new Checkbox()
@@ -89,8 +83,8 @@ module.exports = class Docs
       ]
       radios:
         $checked: [
-          new Radio(isChecked: true)
-          new Radio(isChecked: true)
+          new Radio(isChecked: new Rx.BehaviorSubject(true))
+          new Radio(isChecked: new Rx.BehaviorSubject(true))
         ]
         $unchecked: [
           new Radio()
@@ -124,19 +118,19 @@ module.exports = class Docs
       z '.z-docs_paper-hack',
         z '.buttons',
           z $buttons[0],
-            text: 'button'
+            $content: 'button'
           z $buttons[1],
-            text: 'colored'
+            $content: 'colored'
             colors:
               ink: paperColors.$red500
           z $buttons[2],
-            text: 'disabled'
+            $content: 'disabled'
             isDisabled: true
           z $buttons[3],
-            text: 'button'
+            $content: 'button'
             isRaised: true
           z $buttons[4],
-            text: 'colored'
+            $content: 'colored'
             isRaised: true
             colors:
               cText: paperColors.$blue500Text
@@ -145,7 +139,7 @@ module.exports = class Docs
               c600: paperColors.$blue600
               c700: paperColors.$blue700
           z $buttons[5],
-            text: 'disabled'
+            $content: 'disabled'
             isRaised: true
             isDisabled: true
 
@@ -174,7 +168,7 @@ module.exports = class Docs
       z.render $('#z-docs_paper-hack-dialogs'),
         z '.z-docs_paper-hack',
           z $dialogTrigger,
-            text: 'open dialog'
+            $content: 'open dialog'
             onclick: ->
               isDialogVisible = true
               renderDialogs()
@@ -186,14 +180,14 @@ module.exports = class Docs
                 actions: [
                   {
                     $el: z $actions[0],
-                      text: 'disagree'
+                      $content: 'disagree'
                       isShort: true
                       colors:
                         ink: paperColors.$blue500
                   }
                   {
                     $el: z $actions[1],
-                      text: 'agree'
+                      $content: 'agree'
                       isShort: true
                       colors:
                         ink: paperColors.$blue500
@@ -281,16 +275,13 @@ module.exports = class Docs
       z '.buttons',
         z 'a',
           href: 'https://github.com/Zorium/zorium',
-          z $downloadBtn, text: 'github'
+          z $downloadBtn, $content: 'github'
         z 'a',
           href: 'https://github.com/Zorium/zorium-seed',
-          z $downloadSeedBtn, text: 'seed'
+          z $downloadSeedBtn, $content: 'seed'
       z $md, html: [
-        # home
         api
         server
         bestPractices
-        # router
-        # paper
-        # architecture
+        paper
       ].join ''
