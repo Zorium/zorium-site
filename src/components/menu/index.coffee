@@ -11,66 +11,17 @@ module.exports = class Menu
       isHidden: not @isPermanent()
       links: [
         {
-          select: 'intro'
-          text: 'Intro'
-          children: [
-            { key: 'simple', text: 'A Simple Component' }
-            { key: 'stateful', text: 'A Stateful Component' }
-            { key: 'application', text: 'An Application' }
-          ]
-        }
-        {
-          select: 'architecture'
-          text: 'Architecture'
-          children: [
-            { key: '', text: 'Folder Structure' }
-            { key: 'components', text: 'Components' }
-            { key: 'models', text: 'Models' }
-            { key: 'pages', text: 'Pages' }
-            { key: 'services', text: 'Services' }
-          ]
-        }
-        {
           select: 'api'
           text: 'Core API'
           children: [
-            { key: '', text: 'Example' }
             { key: 'z', text: 'z()' }
-            { key: 'render', text: 'z.render()' }
-            { key: 'redraw', text: 'z.redraw()' }
-            { key: 'state', text: 'z.state()' }
-            { key: 'observe', text: 'z.observe()' }
-            { key: 'ev', text: 'z.ev()' }
-          ]
-        }
-        {
-          select: 'router'
-          text: 'Router API'
-          children: [
-            { key: '', text: 'Example' }
-            { key: 'set-mode', text: 'z.router.setMode()' }
-            { key: 'set-root', text: 'z.router.setRoot()' }
-            { key: 'add', text: 'z.router.add()' }
-            { key: 'go', text: 'z.router.go()' }
-            { key: 'link', text: 'z.router.link()' }
-            { key: 'current-path', text: 'z.router.currentPath' }
-            { key: 'on', text: 'z.router.on()' }
-          ]
-        }
-        {
-          select: 'paper'
-          text: 'Paper'
-          children: [
-            { key: '', text: 'Install' }
-            { key: 'shadows', text: 'Shadows' }
-            { key: 'fonts', text: 'Fonts' }
-            { key: 'colors', text: 'Colors' }
-            { key: 'button', text: 'Button' }
-            { key: 'checkbox', text: 'Checkbox' }
-            { key: 'dialog', text: 'Dialog' }
-            { key: 'floating-action-button', text: 'Floating Action' }
-            { key: 'input', text: 'Input' }
-            { key: 'radio-button', text: 'Radio Button' }
+            { key: 'components', text: 'Components'}
+            { key: 'render', text: 'z.render()'}
+            { key: 'state', text: 'z.state()'}
+            { key: 'cookies-set', text: 'z.cookies.set()'}
+            { key: 'cookies-get', text: 'z.cookies.get()'}
+            { key: 'ev', text: 'z.ev()'}
+            { key: 'class-kebab', text: 'z.classKebab'}
           ]
         }
       ]

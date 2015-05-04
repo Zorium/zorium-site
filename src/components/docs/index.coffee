@@ -282,9 +282,9 @@ module.exports = class Docs
           href: 'https://github.com/Zorium/zorium-seed',
           z $downloadSeedBtn, text: 'seed'
       z $md, html: [
-        home
+        # home
         api
-        router
-        paper
-        architecture
+        # router
+        # paper
+        # architecture
       ].join ''

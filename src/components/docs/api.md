@@ -1,79 +1,56 @@
-# API <a class="anchor" name="api"></a>
-
-## Example
-
-```coffee
-z = require 'zorium'
-_ = require 'lodash'
-
-class TodoList
-  render: ({items}) ->
-    z 'ul',
-      _.map items, (itemText) ->
-        z 'li', itemText
-
-class TodoApp
-  constructor: ->
-    @state = z.state
-      items: []
-      text: ''
-      $todoList: new TodoList()
-
-  render: =>
-    {items, text} = @state()
-
-    z 'div',
-      z 'h3', 'TODO'
-      z $todoList, items: items
-      z 'form',
-        onsubmit: (e) ->
-          e.preventDefault()
-          @state.set
-            items: items.concat [text]
-            text: ''efault()
-
-        z 'input',
-          value: value
-          oninput: z.ev (e, $$el) =>
-            @state.set value: $$el.value
-        z 'input[type=submit]', value: "Add ##{items.length + 1}"
-
-z.render document.body, new TodoApp()
-```
+# Core API <a class="anchor" name="api"></a>
 
 ## z() <a class="anchor" name="api_z"></a>
 
+#### Basic DOM construction
+
 ```coffee
+###
+@returns virtual-dom tree
+###
+
 z '.container' # <div class='container'></div>
-
 z '#layout' # <div id='layout'></div>
-
-z 'a[name=top]' # <a name='top'></a>
-
-z '[contenteditable]' # <div contenteditable='true'></div>
-
-z 'a#google.external[href=http://google.com]', 'Google' # <a id='google' class='external' href='http://google.com'>Google</a>
-
-z 'div', {style: {border: '1px solid red'}}  # <div style='border:1px solid red;'></div>
+z 'span' # <span></span
+z 'a', {
+  href: 'http://google.com' # <a href='http://google.com' style='border:1px solid red;'></a>
+  style:
+      border: '1px solid red'
+}
+z 'span', 'text!'  # <span>text!</span
 ```
 
 ```coffee
-z 'ul',
-  z 'li', 'item 1'
-  z 'li', 'item 2'
+z 'ul',           # <ul>
+  z 'li', 'item 1'    # <li>item 1</li>
+  z 'li', 'item 2'    # <li>item 2</li>
+                  # </ul>
 
-###
-<ul>
-    <li>item 1</li>
-    <li>item 2</li>
-</ul>
-###
+z 'div',    # <div>
+  z 'div',     # <div>
+    z 'span'      # <span></span>
+    z 'img'       # <img></img>
+               # </div>
+            # </div>
 ```
 
-### Zorium Components
+#### Events
 
-Zorium components can be used in place of a dom tag.  
-Zorium components must have a `render()` method
+```coffee
+# <button>click me</button>
+z 'button', {
+  onclick: (e) -> alert(1)
+  ontouchstart: (e) -> alert(2)
+  # ...
+}, 'click me'
+```
+
+## Zorium Components <a class="anchor" name="api_components"></a>
+
+#### Basic
+
+  - must have a `render()` method
+  - can be used the same as a DOM tag
 
 ```coffee
 class HelloWorldComponent
@@ -86,29 +63,25 @@ z 'div',
   z $hello # <div><span>Hello World</span></div>
 ```
 
+#### Parameters
+
 Parameters can also be passed to the render method
 
 ```coffee
 class A
-  render: ({world}) ->
-    z 'div', 'hello ' + world
+  render: ({name}) ->
+    z 'div', "Hello #{name}!"
 
-class B
-  constructor: ->
-    @state = z.state
-      $a: new A()
-  render: =>
-    {$a} = @state()
-    z $a, {world: 'world'}
+$a = new A()
 
-$b = new B()
-root = document.createElement 'div'
-z.render root, $b # <div><div>hello world</div></div>
+z 'div',
+  z $a, {name: 'Zorium'} # <div><div>Hello Zorium!</div></div>
 ```
 
-### Lifecycle Hooks
+#### Lifecycle Hooks
 
-If a component has a hook method defined, it will be called
+  - `onMount()` called with element when inserted into the DOM
+  - `onBeforeUnmount()` called before the element is removed from the DOM
 
 ```coffee
 class BindComponent
@@ -128,41 +101,50 @@ class BindComponent
 
 ## z.render() <a class="anchor" name="api_render"></a>
 
-```coffee
-###
-@param {HtmlElement} root
-@param {ZoriumComponent} App
-###
-z.render document.body, App
-```
-
-## z.redraw() <a class="anchor" name="api_redraw"></a>
-
-Redraw all previously rendered elements  
-This is called whenever a component's `state` is changed  
-Call this whenever something changes the DOM state
+Render a virtual-dom tree to a DOM node
 
 ```coffee
-z.render document.body, z 'div'
-z.redraw()
+###
+@param {HtmlElement} $$root
+@param {ZoriumComponent} $app
+###
+
+$$domNode = document.createElement 'div'
+$component = z 'div', 'test'
+
+z.render $$domNode, $component
 ```
 
 ## z.state() <a class="anchor" name="api_state"></a>
 
-Partial updating state object  
-When set as a property of a Zorium Component, `z.redraw()` will automatically be called  
-If passed a `z.observe`, an update is triggered on child updates
+  - z.state() creates an [Rx.BehaviorSubject](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/subjects/behaviorsubject.md)
+with a `set()` method for partial updates
+    - To get current value, call `state.getValue()`
+  - Properties may be a [Rx.Observable](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/libraries/rx.lite.md)
+, whose updates propagate to state
+  - Changes that occur in a components state cause a re-render
+  - Observables on state are lazy.  
+    - i.e. They are subscribed-to when creating the virtual-dom tree  
+    - This is important because it allows for efficient lazy resource binding.  
+    - See [State Management](/best-practices/state-management) for more info.
 
 ```coffee
+###
+@param {Object} initialValue
+@returns {Rx.BehaviorSubject} (with set() method)
+###
+
+Rx = require 'rx-lite'
 promise = new Promise()
 
-state = z.state
+state = z.state {
   a: 'abc'
   b: 123
   c: [1, 2, 3]
-  d: z.observe promise
+  d: Rx.Observable.fromPromise promise
+}
 
-state() is {
+state.getValue() is {
   a: 'abc'
   b: 123
   c: [1, 2, 3]
@@ -172,17 +154,13 @@ state() is {
 promise.resolve(123)
 
 # promise resolved
-state().d is 123
-
-# watch for changes
-state (state) ->
-  state.b is 321
+state.getValue().d is 123
 
 # partial update
 state.set
   b: 321
 
-state() is {
+state.getValue() is {
   a: 'abc'
   b: 123
   c: [1, 2, 3]
@@ -190,38 +168,74 @@ state() is {
 }
 ```
 
-## z.observe() <a class="anchor" name="api_observe"></a>
+## z.cookies.set() <a class="anchor" name="api_cookies-set"></a>
 
-Create an observable  
-Promises observe to `null` until resolved (but still have promise methods)
+  - Using this is important when using [server-side rendering](/server/factory-to-middleware)
 
 ```coffee
-a = z.observe 'a'
-a() is 'a'
+###
+@param {String}  key
+@param {String}  value
+@param {Object}  options
+@param {String}  options.path
+@param {Date}    options.expires
+@param {Number}  options.maxAge (seconds)
+@param {String}  options.domain
+@param {Boolean} options.secure
+@param {Boolean} options.httpOnly
+###
 
-a (change) ->
-  change is 'b'
+z.cookies.set 'foo', 'bar'
+z.cookies.set 'expired', 'secret', {expires: new Date()}
+```
 
-a.set('b')
+## z.cookies.get() <a class="anchor" name="api_cookies-get"></a>
 
-resolve = null
-promise = new Promise (_resolve) -> resolve = _resolve
-p = z.observe(promise)
-p() is null
-resolve(1)
+  - Returns a [Rx.BehaviorSubject](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/subjects/behaviorsubject.md)
+for that cookie
 
-p.then ->
-  p() is 1
+```coffee
+###
+@param {String} key
+@returns {Rx.BehaviorSubject}
+###
 
+z.cookies.set 'foo', 'bar'
+z.cookies.get('foo').getValue() is 'bar'
+z.cookies.get('foo').subscribe (newValue) -> null
 ```
 
 ## z.ev() <a class="anchor" name="api_ev"></a>
 
-pass event context to callback fn
+  - helper method for accessing event DOM nodes
 
 ```coffee
+###
+@params {Function} callback
+@returns {Function}
+###
+
 z 'div',
   onclick: z.ev (e, $$el) ->
     # `e` is the original event
     # $$el is the event source element which triggered the event
+```
+
+## z.classKebab() <a class="anchor" name="api_class-kebab"></a>
+
+  - helper method for defining css state using [kebab-case](https://lodash.com/docs#kebabCase)
+
+```coffee
+###
+@params {Object} - truthy keys converted to kebab-case
+@returns {String}
+###
+
+z 'div',
+  className: z.classKebab {
+    isActive: true
+    isGreen: false
+    isRed: true
+  }
+# <div class='is-active is-red'></div>
 ```
