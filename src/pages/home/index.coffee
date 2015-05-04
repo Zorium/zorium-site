@@ -11,6 +11,9 @@ if window?
 
 module.exports = class HomePage
   constructor: ->
+    @scrollTargetSubject = new Rx.BehaviorSubject(null)
+    @scrollTargetDisposable = null
+
     @state = z.state
       $head: new Head()
       $menu: new Menu()
@@ -22,8 +25,33 @@ module.exports = class HomePage
 
     z $head, {styles}
 
-  render: =>
+  paramsToAnchorName: ({section, key}) ->
+    if key
+      "#{section}_#{key}"
+    else
+      section
+
+  onMount: =>
+    $ = _.bind document.querySelector, document
+
+    @scrollTargetDisposable = @scrollTargetSubject.subscribe (target) ->
+      if target
+        $$scrollTarget = $("a[name=#{target}]")
+
+        if $$scrollTarget
+          window.scrollTo 0, $$scrollTarget.offsetTop
+        else
+          console.log 'could not find scoll target', target
+
+  onBeforeUnmount: =>
+    @scrollTargetDisposable?.dispose()
+
+  render: ({params}) =>
     {$menu, $header, $docs} = @state.getValue()
+
+    scrollTarget = @paramsToAnchorName params
+    if @scrollTargetSubject.getValue() isnt scrollTarget
+      @scrollTargetSubject.onNext scrollTarget
 
     # FIXME: this logic should exist higher, or be managed by obseravables
     isMenuHidden = $menu.isHidden()

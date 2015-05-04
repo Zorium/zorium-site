@@ -1,4 +1,4 @@
-# Architecture
+# Architecture <a class="anchor" name="architecture"></a>
 
 ## Folder structure
 
@@ -20,7 +20,7 @@
 This file serves as the initialization point for the application.  
 Currently, routing goes here, along with other miscellaneous things.
 
-## Components <a class="anchor" name="components"></a>
+## Components <a class="anchor" name="architecture_components"></a>
 
 Components should set `@state` as a `z.state` when using local state
 Components are classes of the form:
@@ -31,7 +31,7 @@ module.exports = class MyAbc
     # define view
 ```
 
-## Models <a class="anchor" name="models"></a>
+## Models <a class="anchor" name="architecture_models"></a>
 
 Models are used for storing application state, as well as making resource API requests
 Models are singletons of the form  
@@ -43,7 +43,7 @@ class AbcModel
 module.exports = new AbcModel()
 ```
 
-## Pages <a class="anchor" name="pages"></a>
+## Pages <a class="anchor" name="architecture_pages"></a>
 
 Pages are components which are routed to via the router.  
 They should contain as little logic as possible, and are responsible for laying out
@@ -96,7 +96,7 @@ class APage extends RootPage
 ```
 
 
-## Services <a class="anchor" name="services"></a>
+## Services <a class="anchor" name="architecture_services"></a>
 
 Services are singletons of the form
 

@@ -110,7 +110,7 @@ class RootComponent
             z '.previous',
               $previousTree
             z '.current',
-              $currentPage
+              renderPage $currentPage
 
 module.exports = ->
   StateService.clear()

@@ -1,6 +1,6 @@
-# Intro
+# Intro <a class="anchor" name="intro"></a>
 
-## A Simple Component
+## A Simple Component <a class="anchor" name="intro_simple"></a>
 
 ```coffee
 z = require 'zorium'
@@ -14,7 +14,7 @@ $hello = new HelloMessage()
 z.render document.body, z $hello, name: 'Zorium'
 ```
 
-## A Stateful Component
+## A Stateful Component <a class="anchor" name="intro_stateful"></a>
 
 ```coffee
 z = require 'zorium'
@@ -46,7 +46,7 @@ class Timer
 z.render document.body, new Timer()
 ```
 
-## An Application
+## An Application <a class="anchor" name="intro_application"></a>
 
 ```coffee
 z = require 'zorium'

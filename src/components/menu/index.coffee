@@ -11,10 +11,19 @@ module.exports = class Menu
       isHidden: not @isPermanent()
       links: [
         {
+          select: 'intro'
+          text: 'Intro'
+          children: [
+            { key: 'simple', text: 'A Simple Component' }
+            { key: 'stateful', text: 'A Stateful Component' }
+            { key: 'application', text: 'An Application' }
+          ]
+        }
+        {
           select: 'architecture'
           text: 'Architecture'
           children: [
-            { key: 'architecture', text: 'Folder Structure' }
+            { key: '', text: 'Folder Structure' }
             { key: 'components', text: 'Components' }
             { key: 'models', text: 'Models' }
             { key: 'pages', text: 'Pages' }
@@ -25,7 +34,7 @@ module.exports = class Menu
           select: 'api'
           text: 'Core API'
           children: [
-            { key: 'api', text: 'Example' }
+            { key: '', text: 'Example' }
             { key: 'z', text: 'z()' }
             { key: 'render', text: 'z.render()' }
             { key: 'redraw', text: 'z.redraw()' }
@@ -35,10 +44,10 @@ module.exports = class Menu
           ]
         }
         {
-          select: 'router-api'
+          select: 'router'
           text: 'Router API'
           children: [
-            { key: 'router-api', text: 'Example' }
+            { key: '', text: 'Example' }
             { key: 'set-mode', text: 'z.router.setMode()' }
             { key: 'set-root', text: 'z.router.setRoot()' }
             { key: 'add', text: 'z.router.add()' }
@@ -52,7 +61,7 @@ module.exports = class Menu
           select: 'paper'
           text: 'Paper'
           children: [
-            { key: 'paper', text: 'Install' }
+            { key: '', text: 'Install' }
             { key: 'shadows', text: 'Shadows' }
             { key: 'fonts', text: 'Fonts' }
             { key: 'colors', text: 'Colors' }
