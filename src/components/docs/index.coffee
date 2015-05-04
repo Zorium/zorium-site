@@ -22,10 +22,29 @@ else
   # Avoid webpack include
   _fs = 'fs'
   fs = require _fs
-  api = fs.readFileSync __dirname + '/api.md', 'utf-8'
-  server = fs.readFileSync __dirname + '/server.md', 'utf-8'
-  bestPractices = fs.readFileSync __dirname + '/best_practices.md', 'utf-8'
-  paper = fs.readFileSync __dirname + '/paper.md', 'utf-8'
+  _marked = 'marked'
+  _hljs = 'highlight.js'
+  marked = require _marked
+  hljs = require _hljs
+
+  marked.setOptions
+    renderer: new marked.Renderer()
+    gfm: true
+    tables: true
+    breaks: false
+    pedantic: false
+    sanitize: false
+    smartLists: true
+    smartypants: false
+    highlight: (code, lang) ->
+      hljs.highlight(lang, code).value
+
+
+  api = marked fs.readFileSync __dirname + '/api.md', 'utf-8'
+  server = marked fs.readFileSync __dirname + '/server.md', 'utf-8'
+  bestPractices = marked \
+    fs.readFileSync __dirname + '/best_practices.md', 'utf-8'
+  paper = marked fs.readFileSync __dirname + '/paper.md', 'utf-8'
 
 if window?
   require './index.styl'

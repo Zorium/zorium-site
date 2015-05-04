@@ -57,6 +57,7 @@
     "karma": "^0.12.31",
     "lodash": "^3.6.0",
     "markdown-color-loader": "^0.3.0",
+    "marked": "^0.3.3",
     "pm2": "^0.12.10",
     "promiz": "^1.0.3",
     "qs": "^2.4.1",
