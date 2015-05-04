@@ -1,4 +1,4 @@
-# Server API
+# Server API <a class="anchor" name="server"></a>
 
 ## z.server.link() <a class="anchor" name="server_link"></a>
 

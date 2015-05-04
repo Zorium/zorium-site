@@ -42,6 +42,18 @@ module.exports = class Menu
             }
           ]
         }
+        {
+          select: 'best-practices'
+          text: 'Best Practices'
+          children: [
+            { key: 'zorium-seed', text: 'Zorium Seed' }
+            { key: 'stylus', text: 'Stylus' }
+            { key: 'coffee-script', text: 'CoffeeScript' }
+            { key: 'state-management', text: 'State Management' }
+            { key: 'animation', text: 'Animation' }
+            { key: 'naming', text: 'Naming' }
+          ]
+        }
       ]
 
   onMount: =>

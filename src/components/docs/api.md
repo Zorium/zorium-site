@@ -168,6 +168,24 @@ state.getValue() is {
 }
 ```
 
+#### In components
+
+```coffee
+class Stateful
+  constructor: ->
+    @meSubject = new Rx.BehaviorSubject 'me'
+    @state = z.state
+      me: @meSubject
+
+  render: =>
+    {me} = @state.getValue()
+
+    z 'button',
+      onclick: =>
+        @meSubject.onNext 'you'
+      me
+```
+
 ## z.cookies.set() <a class="anchor" name="api_cookies-set"></a>
 
   - Using this is important when using [server-side rendering](/server/factory-to-middleware)

@@ -17,6 +17,7 @@ if window?
   home = require './home.md'
   api = require './api.md'
   server = require './server.md'
+  bestPractices = require './best_practices.md'
   router = require './router.md'
   paper = require './paper.md'
   architecture = require './architecture.md'
@@ -27,6 +28,7 @@ else
   home = fs.readFileSync __dirname + '/home.md', 'utf-8'
   api = fs.readFileSync __dirname + '/api.md', 'utf-8'
   server = fs.readFileSync __dirname + '/server.md', 'utf-8'
+  bestPractices = fs.readFileSync __dirname + '/best_practices.md', 'utf-8'
   router = fs.readFileSync __dirname + '/router.md', 'utf-8'
   paper = fs.readFileSync __dirname + '/paper.md', 'utf-8'
   architecture = fs.readFileSync __dirname + '/architecture.md', 'utf-8'
@@ -287,6 +289,7 @@ module.exports = class Docs
         # home
         api
         server
+        bestPractices
         # router
         # paper
         # architecture
