@@ -121,8 +121,16 @@ module.exports = class Menu
         onclick: @toggle
       z '.container',
         z '.menu',
-          z.server.link \
-            z 'a.logo', href: '/', 'Zorium'
+          z 'a.logo',
+            href: '/'
+            onclick: z.ev (e, $$el) ->
+              if util.isRegularClickEvent e
+                e.preventDefault()
+                # Manually scroll because we don't want people to lose
+                # their scoll position on page refresh
+                window.scrollTo(0, 0)
+                z.server.go $$el.href
+            'Zorium'
           z '.break'
           z '.list',
             _.map links, (link) =>
