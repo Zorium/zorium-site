@@ -16,9 +16,10 @@ Special takeaways from the project:
   - [Stylus](https://learnboost.github.io/stylus/) (css pre-processor)
   - [WebdriverIO](http://webdriver.io/) (functional testing)
 
-### /component/my_component/index.coffee
+### Components
 
 ```coffee
+# /component/my_component/index.coffee
 z = require 'zorium'
 
 if window?
@@ -29,9 +30,10 @@ module.exports = class MyComponent
     z '.z-my-component', 'hi'
 ```
 
-### /pages/my_page/index.coffee
+### Pages
 
 ```coffee
+# /pages/my_page/index.coffee
 z = require 'zorium'
 
 module.exports = class MyPage
@@ -42,22 +44,24 @@ module.exports = class MyPage
     z 'div', 'hi'
 ```
 
-### /services/my_service.coffee
+### Services
 
   - Note that it must be stateless, or use StateService as described [here](/server/factory-to-middleware)
 
 ```coffee
+# /services/my_service.coffee
 class MyService
   transformPath: -> '/test'
 
 module.exports = new MyService()
 ```
 
-### /models/my_model.coffee
+### Models
 
   - Note that it must be stateless, or use StateService as described [here](/server/factory-to-middleware)
 
 ```coffee
+# /models/my_model.coffee
 RequestService = require '../services/request'
 
 class MyModel
