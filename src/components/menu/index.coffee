@@ -124,11 +124,20 @@ module.exports = class Menu
           z '.break'
           z '.list',
             _.map links, (link) =>
+              isSelected = selected is link.select
               z '.group',
-                className: z.classKebab {isSelected: selected is link.select}
-                z '.section',
-                  onclick: =>
-                    @state.set selected: link.select
+                className: z.classKebab {isSelected}
+                z 'a.section',
+                  href: "/#{link.select}"
+                  onclick: z.ev (e, $$el) =>
+                    e.preventDefault()
+                    if e.which is 2 # middle click
+                      window.open $$el.href
+                    else
+                      if isSelected
+                        z.server.go $$el.href
+                      else
+                        @state.set selected: link.select
                   link.text
                 _.map link.children, (child) =>
                   z 'a.link',
@@ -137,6 +146,9 @@ module.exports = class Menu
                       e.preventDefault()
                       unless isPermanent
                         @toggle()
-                      z.server.go $$el.href
+                      if e.which is 2 # middle click
+                        window.open $$el.href
+                      else
+                        z.server.go $$el.href
                   , child.text
         z '.padder'
