@@ -1,6 +1,8 @@
 z = require 'zorium'
 _ = require 'lodash'
 
+util = require '../../lib/util'
+
 if window?
   require './index.styl'
 
@@ -120,7 +122,7 @@ module.exports = class Menu
       z '.container',
         z '.menu',
           z.server.link \
-            z 'a.logo[href=/]', 'Zorium'
+            z 'a.logo', href: '/', 'Zorium'
           z '.break'
           z '.list',
             _.map links, (link) =>
@@ -130,25 +132,22 @@ module.exports = class Menu
                 z 'a.section',
                   href: "/#{link.select}"
                   onclick: z.ev (e, $$el) =>
-                    e.preventDefault()
-                    if e.which is 2 # middle click
-                      window.open $$el.href
-                    else
+                    if util.isRegularClickEvent e
+                      e.preventDefault()
                       if isSelected
                         z.server.go $$el.href
                       else
                         @state.set selected: link.select
+
                   link.text
                 _.map link.children, (child) =>
                   z 'a.link',
                     href: "/#{link.select}/#{child.key}"
                     onclick: z.ev (e, $$el) =>
-                      e.preventDefault()
-                      unless isPermanent
-                        @toggle()
-                      if e.which is 2 # middle click
-                        window.open $$el.href
-                      else
+                      if util.isRegularClickEvent e
+                        e.preventDefault()
+                        unless isPermanent
+                          @toggle()
                         z.server.go $$el.href
                   , child.text
         z '.padder'

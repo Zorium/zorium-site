@@ -1,5 +1,7 @@
 z = require 'zorium'
 
+util = require '../../lib/util'
+
 if window?
   require './index.styl'
 
@@ -9,8 +11,9 @@ module.exports = class Md
       isLocal = anchor.host is window.location.host
       if isLocal
         anchor.onclick = (e) ->
-          e.preventDefault()
-          z.server.go anchor.href
+          if util.isRegularClickEvent e
+            e.preventDefault()
+            z.server.go anchor.href
 
   render: ({html}) ->
     z '.z-md',
