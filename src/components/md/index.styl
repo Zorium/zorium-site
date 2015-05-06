@@ -5,6 +5,8 @@
 json('zorium-paper/colors.json')
 
 .z-md
+  zp-font-body2()
+
   h1
     zp-font-headline()
     margin-top: 26px
@@ -12,6 +14,9 @@ json('zorium-paper/colors.json')
   h2
     zp-font-title()
     margin-top: 26px
+
+  h3
+    zp-font-subhead()
 
   .anchor
     // Padding for anchor tag
@@ -27,6 +32,9 @@ json('zorium-paper/colors.json')
     zp-shadow-1()
     border-radius: 2px
     background: #23241f
-    padding: 24px
+    padding: 12px
     line-height: 20px
     color: $white
+
+    @media (min-width: 1000px)
+      padding: 24px

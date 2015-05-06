@@ -16,7 +16,7 @@ Special takeaways from the project:
   - [Stylus](https://learnboost.github.io/stylus/) (css pre-processor)
   - [WebdriverIO](http://webdriver.io/) (functional testing)
 
-#### /component/my_component/index.coffee
+### /component/my_component/index.coffee
 
 ```coffee
 z = require 'zorium'
@@ -29,7 +29,7 @@ module.exports = class MyComponent
     z '.z-my-component', 'hi'
 ```
 
-#### /pages/my_page/index.coffee
+### /pages/my_page/index.coffee
 
 ```coffee
 z = require 'zorium'
@@ -42,7 +42,7 @@ module.exports = class MyPage
     z 'div', 'hi'
 ```
 
-#### /services/my_service.coffee
+### /services/my_service.coffee
 
   - Note that it must be stateless, or use StateService as described [here](/server/factory-to-middleware)
 
@@ -53,7 +53,7 @@ class MyService
 module.exports = new MyService()
 ```
 
-#### /models/my_model.coffee
+### /models/my_model.coffee
 
   - Note that it must be stateless, or use StateService as described [here](/server/factory-to-middleware)
 

@@ -2,7 +2,7 @@
 
 ## z() <a class="anchor" name="api_z"></a>
 
-#### Basic DOM construction
+### Basic DOM construction
 
 ```coffee
 ###
@@ -34,7 +34,7 @@ z 'div',    # <div>
             # </div>
 ```
 
-#### Events
+### Events
 
 ```coffee
 # <button>click me</button>
@@ -47,7 +47,7 @@ z 'button', {
 
 ## Zorium Components <a class="anchor" name="api_components"></a>
 
-#### Basic
+### Basic
 
   - must have a `render()` method
   - can be used the same as a DOM tag
@@ -63,7 +63,7 @@ z 'div',
   z $hello # <div><span>Hello World</span></div>
 ```
 
-#### Parameters
+### Parameters
 
 Parameters can also be passed to the render method
 
@@ -78,7 +78,7 @@ z 'div',
   z $a, {name: 'Zorium'} # <div><div>Hello Zorium!</div></div>
 ```
 
-#### Lifecycle Hooks
+### Lifecycle Hooks
 
   - `onMount()` called with element when inserted into the DOM
   - `onBeforeUnmount()` called before the element is removed from the DOM
@@ -168,7 +168,7 @@ state.getValue() is {
 }
 ```
 
-#### In components
+### In components
 
 ```coffee
 class Stateful
