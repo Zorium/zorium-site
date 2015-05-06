@@ -10,10 +10,12 @@ Input = require 'zorium-paper/input'
 Radio = require 'zorium-paper/radio_button'
 
 Md = require '../md'
+Tutorial = require '../tutorial'
 PrimaryButton = require '../primary_button'
 SecondaryButton = require '../secondary_button'
 
 if window?
+  intro = require './intro.md'
   api = require './api.md'
   server = require './server.md'
   bestPractices = require './best_practices.md'
@@ -40,6 +42,7 @@ else
       hljs.highlight(lang, code).value
 
 
+  intro = marked fs.readFileSync __dirname + '/intro.md', 'utf-8'
   api = marked fs.readFileSync __dirname + '/api.md', 'utf-8'
   server = marked fs.readFileSync __dirname + '/server.md', 'utf-8'
   bestPractices = marked \
@@ -67,6 +70,7 @@ module.exports = class Docs
   constructor: ->
     @state = z.state
       $md: new Md()
+      $tutorial: new Tutorial()
       $downloadBtn: new PrimaryButton()
       $downloadSeedBtn: new SecondaryButton()
       $buttons: [
@@ -288,7 +292,7 @@ module.exports = class Docs
     renderRadios()
 
   render: ({title, page}) =>
-    {$md, $downloadBtn, $downloadSeedBtn} = @state.getValue()
+    {$md, $tutorial, $downloadBtn, $downloadSeedBtn} = @state.getValue()
 
     z '.z-docs',
       z '.buttons',
@@ -298,6 +302,8 @@ module.exports = class Docs
         z 'a',
           href: 'https://github.com/Zorium/zorium-seed',
           z $downloadSeedBtn, $content: 'seed'
+      z $md, html: intro
+      z $tutorial
       z $md, html: [
         api
         server

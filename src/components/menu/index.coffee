@@ -13,6 +13,16 @@ module.exports = class Menu
       isHidden: not @isPermanent()
       links: [
         {
+          select: 'intro'
+          text: 'Intro'
+          children: [
+            { key: 'features', text: 'Features' }
+            { key: 'example', text: 'Example' }
+            { key: 'installation', text: 'Installation' }
+            { key: 'contribute', text: 'Contribute' }
+          ]
+        }
+        {
           select: 'api'
           text: 'Core API'
           children: [

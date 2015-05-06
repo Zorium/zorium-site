@@ -146,6 +146,7 @@ gulp.task 'scripts:test', ->
       loaders: [
         { test: /\.coffee$/, loader: 'coffee' }
         { test: /\.json$/, loader: 'json' }
+        { test: /\.css$/, loader: 'style!css' }
         {
           test: /\.styl$/
           loader: 'style!css!autoprefixer!stylus?' +
@@ -200,6 +201,7 @@ gulp.task 'scripts:prod', ['clean:dist'], ->
       loaders: [
         { test: /\.coffee$/, loader: 'coffee' }
         { test: /\.json$/, loader: 'json' }
+        { test: /\.css$/, loader: 'style!css' }
         {
           test: /\.styl$/
           loader: ExtractTextPlugin.extract 'style-loader',

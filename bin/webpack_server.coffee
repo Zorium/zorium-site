@@ -35,6 +35,7 @@ new WebpackDevServer webpack({
     loaders: [
       { test: /\.coffee$/, loader: 'coffee' }
       { test: /\.json$/, loader: 'json' }
+      { test: /\.css$/, loader: 'style!css' }
       {
         test: /\.styl$/
         loader: 'style!css!autoprefixer!stylus?' +
