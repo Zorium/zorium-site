@@ -23,6 +23,13 @@ module.exports = class Menu
           ]
         }
         {
+          select: 'tutorial'
+          text: 'Tutorial'
+          children: [
+            { key: 'first-component', text: 'First Component' }
+          ]
+        }
+        {
           select: 'api'
           text: 'Core API'
           children: [

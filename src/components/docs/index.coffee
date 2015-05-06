@@ -9,6 +9,7 @@ FloatingActionButton = require 'zorium-paper/floating_action_button'
 Input = require 'zorium-paper/input'
 Radio = require 'zorium-paper/radio_button'
 
+util = require '../../lib/util'
 Md = require '../md'
 Tutorial = require '../tutorial'
 PrimaryButton = require '../primary_button'
@@ -24,30 +25,13 @@ else
   # Avoid webpack include
   _fs = 'fs'
   fs = require _fs
-  _marked = 'marked'
-  _hljs = 'highlight.js'
-  marked = require _marked
-  hljs = require _hljs
 
-  marked.setOptions
-    renderer: new marked.Renderer()
-    gfm: true
-    tables: true
-    breaks: false
-    pedantic: false
-    sanitize: false
-    smartLists: true
-    smartypants: false
-    highlight: (code, lang) ->
-      hljs.highlight(lang, code).value
-
-
-  intro = marked fs.readFileSync __dirname + '/intro.md', 'utf-8'
-  api = marked fs.readFileSync __dirname + '/api.md', 'utf-8'
-  server = marked fs.readFileSync __dirname + '/server.md', 'utf-8'
-  bestPractices = marked \
+  intro = util.marked fs.readFileSync __dirname + '/intro.md', 'utf-8'
+  api = util.marked fs.readFileSync __dirname + '/api.md', 'utf-8'
+  server = util.marked fs.readFileSync __dirname + '/server.md', 'utf-8'
+  bestPractices = util.marked \
     fs.readFileSync __dirname + '/best_practices.md', 'utf-8'
-  paper = marked fs.readFileSync __dirname + '/paper.md', 'utf-8'
+  paper = util.marked fs.readFileSync __dirname + '/paper.md', 'utf-8'
 
 if window?
   require './index.styl'
@@ -303,7 +287,7 @@ module.exports = class Docs
           href: 'https://github.com/Zorium/zorium-seed',
           z $downloadSeedBtn, $content: 'seed'
       z $md, html: intro
-      z $tutorial
+      $tutorial
       z $md, html: [
         api
         server
