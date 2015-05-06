@@ -31,13 +31,16 @@ module.exports = class HomePage
     else
       section
 
-  onMount: =>
-    $ = _.bind document.querySelector, document
-
+  onMount: ($$el) =>
     @scrollTargetDisposable = @scrollTargetSubject.subscribe (target) ->
       if target
-        $$scrollTarget = $("a[name=#{target}]")
-        window.scrollTo 0, $$scrollTarget.offsetTop
+        $$scrollTarget = $$el.querySelector("a[name=#{target}]")
+        if document.readyState isnt 'complete'
+          window.addEventListener 'load', ->
+            setTimeout ->
+              window.scrollTo 0, $$scrollTarget.offsetTop
+        else
+          window.scrollTo 0, $$scrollTarget.offsetTop
 
   onBeforeUnmount: =>
     @scrollTargetDisposable?.dispose()
