@@ -1,8 +1,6 @@
 z = require 'zorium'
 _ = require 'lodash'
 
-util = require '../../lib/util'
-
 if window?
   require './index.styl'
 
@@ -44,7 +42,8 @@ module.exports = class Menu
             { key: 'cookies-set', text: 'z.cookies.set()'}
             { key: 'cookies-get', text: 'z.cookies.get()'}
             { key: 'ev', text: 'z.ev()'}
-            { key: 'class-kebab', text: 'z.classKebab'}
+            { key: 'class-kebab', text: 'z.classKebab()'}
+            { key: 'is-simple-click', text: 'z.isSimpleClick()'}
           ]
         }
         {
@@ -58,6 +57,7 @@ module.exports = class Menu
             { key: 'off', text: 'z.server.off()' }
             { key: 'redirect', text: 'z.server.Redirect' }
             { key: 'set-status', text: 'z.server.setStatus()' }
+            { key: 'get-req', text: 'z.server.getReq()' }
             { key: 'full-page-rendering', text: 'Full Page Rendering' }
             {
               key: 'factory-to-middleware',
@@ -103,11 +103,32 @@ module.exports = class Menu
   onResize: =>
     @state.set isHidden: not @isPermanent()
 
-  isPermanent: ->
+  isMobile: (userAgent) ->
+    ///
+      Mobile
+    | iP(hone|od|ad)
+    | Android
+    | BlackBerry
+    | IEMobile
+    | Kindle
+    | NetFront
+    | Silk-Accelerated
+    | (hpw|web)OS
+    | Fennec
+    | Minimo
+    | Opera\ M(obi|ini)
+    | Blazer
+    | Dolfin
+    | Dolphin
+    | Skyfire
+    | Zune
+    ///.test userAgent
+
+  isPermanent: =>
     if window?
       window.matchMedia('(min-width: 1000px)').matches
     else
-      false
+      not @isMobile z.server.getReq().headers?['user-agent']
 
   isHidden: =>
     @state.getValue().isHidden
@@ -145,7 +166,7 @@ module.exports = class Menu
           z 'a.logo',
             href: '/'
             onclick: z.ev (e, $$el) ->
-              if util.isRegularClickEvent e
+              if z.isSimpleClick e
                 e.preventDefault()
                 # Manually scroll because we don't want people to lose
                 # their scoll position on page refresh
@@ -161,7 +182,7 @@ module.exports = class Menu
                 z 'a.section',
                   href: "/#{link.select}"
                   onclick: z.ev (e, $$el) =>
-                    if util.isRegularClickEvent e
+                    if z.isSimpleClick e
                       e.preventDefault()
                       if isSelected
                         z.server.go $$el.href
@@ -173,7 +194,7 @@ module.exports = class Menu
                   z 'a.link',
                     href: "/#{link.select}/#{child.key}"
                     onclick: z.ev (e, $$el) =>
-                      if util.isRegularClickEvent e
+                      if z.isSimpleClick e
                         e.preventDefault()
                         unless isPermanent
                           @toggle()

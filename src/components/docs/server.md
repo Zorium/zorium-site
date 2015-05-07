@@ -138,6 +138,15 @@ class App
       z.setStatus 404
 ```
 
+## z.server.getReq() <a class="anchor" name="server_get-req"></a>
+
+  - get the request object passed from express
+  - may only be called server-side
+
+```coffee
+z.getReq() # {body:{}, headers: {}, ...}
+```
+
 ## Full Page Rendering <a class="anchor" name="server_full-page-rendering"></a>
 
   - When rendering the full page, a special structure must be used

@@ -257,3 +257,22 @@ z 'div',
   }
 # <div class='is-active is-red'></div>
 ```
+
+## z.isSimpleClick() <a class="anchor" name="api_is-simple-click"></a>
+
+  - helper method for checking if left click is not using modifier keys
+    - see [this post](http://www.jacklmoore.com/notes/click-events/) for more information
+
+```coffee
+###
+@params {Event} e - click event
+@returns {Boolean}
+###
+
+z 'a',
+  href: 'http://google.com'
+  onclick: (e) ->
+    if z.isSimpleClick e
+      e.preventDefault()
+      console.log 'do something'
+```

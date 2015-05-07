@@ -227,4 +227,5 @@ gulp.task 'scripts:prod', ['clean:dist'], ->
       extensions: ['.coffee', '.js', '.json', '']
     output:
       filename: 'bundle.js'
+      publicPath: '/'
   .pipe gulp.dest paths.dist
