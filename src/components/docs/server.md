@@ -125,6 +125,7 @@ class NotHere
 
   - sets the server-side response status code
     - e.g. `404`
+  - may only be called server-side
 
 ```coffee
 ###
