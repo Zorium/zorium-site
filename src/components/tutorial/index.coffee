@@ -6,13 +6,13 @@ Md = require '../md'
 util = require '../../lib/util'
 
 if window?
-  first = require './first.md'
+  tutorial = require './tutorial.md'
 else
   # Avoid webpack include
   _fs = 'fs'
   fs = require _fs
 
-  first = util.marked fs.readFileSync __dirname + '/first.md', 'utf-8'
+  tutorial = util.marked fs.readFileSync __dirname + '/tutorial.md', 'utf-8'
 
 if window?
   require './index.styl'
@@ -63,4 +63,4 @@ module.exports = class Tutorial
     {$md} = @state.getValue()
 
     z '.z-tutorial',
-        z $md, html: first
+        z $md, html: tutorial

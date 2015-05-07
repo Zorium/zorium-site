@@ -132,7 +132,8 @@ class App
             when '/'
               z 'div', 'Welcome'
             else
-              z.server.setStatus 404
+              unless window?
+                z.server.setStatus 404
               z 'div', 'Oh No! 404'
 
 factory = ->
