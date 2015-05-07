@@ -12,7 +12,7 @@ z = require 'zorium'
 
 module.exports = class HelloWorld
   render: ->
-    z 'div.z-hello-world',
+    z 'h1.z-hello-world',
       'hello world' # Change me
 ```
 <div id="z-tutorial_hack-first-component"></div>
@@ -34,8 +34,9 @@ module.exports = class Counter
     {count} = @state.getValue()
 
     z '.z-counter',
-      z '.count', "#{count}"
+      z 'h1', "#{count}"
       z 'button',
+        style: fontSize: '16px'
         onclick: => @state.set count: count + 1
         'increment'
 

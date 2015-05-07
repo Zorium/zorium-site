@@ -39,9 +39,9 @@ module.exports = class Tutorial
     ], (selector) ->
 
       $$editor = $$el.querySelector(selector)
-      $$source = $$editor
-        .previousSibling # text node
-        .previousSibling # <pre>
+      $$source = $$editor.previousSibling
+      if $$source.tagName isnt 'PRE'
+        $$source = $$source.previousSibling
       $editor = new Editor({$$source})
 
       renderEditor = ->
