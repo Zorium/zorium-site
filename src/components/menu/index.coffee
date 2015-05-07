@@ -27,6 +27,10 @@ module.exports = class Menu
           text: 'Tutorial'
           children: [
             { key: 'first-component', text: 'First Component' }
+            { key: 'stateful-components', text: 'Stateful Components' }
+            { key: 'composing-components', text: 'Composing Components' }
+            { key: 'streams', text: 'Streams' }
+            { key: 'server-side-rendering', text: 'Server Side Rendering' }
           ]
         }
         {

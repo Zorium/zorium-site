@@ -37,6 +37,11 @@ module.exports = class Editor
     @state = z.state
       initialValue: @$$source.textContent
       $component: @evalSubject
+      refresh: @evalSubject.flatMapLatest ($component) ->
+        if $component?.state
+          $component.state
+        else
+          Rx.Observable.return null
 
   onMount: ($$el) =>
     Promise.all [
@@ -68,6 +73,10 @@ module.exports = class Editor
           switch source
             when 'zorium'
               require 'zorium'
+            when 'zorium-paper/button'
+              require 'zorium-paper/button'
+            when 'rx-lite'
+              require 'rx-lite'
             else
               throw new Error "Module not found #{source}"
         source = """

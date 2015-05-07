@@ -67,7 +67,24 @@ app.use '/ping', (req, res) ->
   res.send 'pong'
 
 app.use '/demo', (req, res) ->
-  res.json {name: 'Zorium'}
+  res.json {
+    id: 26881260,
+    name: 'zorium',
+    full_name: 'Zorium/zorium',
+    private: false,
+    html_url: 'https://github.com/Zorium/zorium',
+    description: '(╯°□°)╯︵ ┻━┻',
+    url: 'https://api.github.com/repos/Zorium/zorium',
+    created_at: '2014-11-19T20:57:37Z',
+    pushed_at: '2015-05-03T06:29:27Z',
+    git_url: 'git://github.com/Zorium/zorium.git',
+    ssh_url: 'git@github.com:Zorium/zorium.git',
+    clone_url: 'https://github.com/Zorium/zorium.git',
+    svn_url: 'https://github.com/Zorium/zorium',
+    homepage: 'https://zorium.org/',
+    language: 'CoffeeScript',
+    default_branch: 'master',
+  }
 
 if config.ENV is config.ENVS.PROD
 then app.use express['static'](__dirname + '/dist')

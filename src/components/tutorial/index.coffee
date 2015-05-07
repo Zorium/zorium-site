@@ -19,28 +19,45 @@ if window?
 
 module.exports = class Tutorial
   constructor: ->
-    @editorDisposable = null
-    @$editor = null
-    @$$editor = null
+    @editors = []
 
     @state = z.state
       $md: new Md()
 
+  shouldShowEditor: ->
+    window.matchMedia('(min-width: 800px)').matches
+
   onMount: ($$el) =>
-    @$$editor = $$el.querySelector('#z-tutorial_hack-editor')
-    $$source = @$$editor
-      .previousSibling # text node
-      .previousSibling # <pre>
-    @$editor = new Editor({$$source})
+    unless @shouldShowEditor()
+      return
 
-    renderEditor = =>
-      z.render @$$editor, @$editor
+    @editors = _.map [
+      '#z-tutorial_hack-first-component'
+      '#z-tutorial_hack-stateful-components'
+      '#z-tutorial_hack-composing-components'
+      '#z-tutorial_hack-streams'
+    ], (selector) ->
 
-    @editorDisposable = @$editor.state?.subscribe renderEditor
+      $$editor = $$el.querySelector(selector)
+      $$source = $$editor
+        .previousSibling # text node
+        .previousSibling # <pre>
+      $editor = new Editor({$$source})
+
+      renderEditor = ->
+        z.render $$editor, $editor
+
+      editorDisposable = $editor.state?.subscribe renderEditor
+
+      {$$editor, editorDisposable}
 
   onBeforeUnmount: =>
-    z.render @$$editor, z()
-    @editorDisposable?.dispose()
+    if _.isEmpty @editors
+      return
+
+    _.map @editors, ({$$editor, editorDisposable}) ->
+      z.render $$editor, z()
+      editorDisposable.dispose()
 
   render: =>
     {$md} = @state.getValue()
