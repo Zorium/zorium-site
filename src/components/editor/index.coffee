@@ -2,31 +2,6 @@ z = require 'zorium'
 Rx = require 'rx-lite'
 
 if window?
-  coffeeResolve = -> null
-  coffeePromise = new Promise (resolve) ->
-    coffeeResolve = resolve
-
-  CodeMirrorPromiseResolve = -> null
-  CodeMirrorPromise = new Promise (resolve) ->
-    CodeMirrorPromiseResolve = resolve
-
-  require.ensure [
-    'coffee-script/extras/coffee-script.js'
-    'codemirror'
-    'codemirror/mode/coffeescript/coffeescript.js'
-    'codemirror/keymap/sublime.js'
-    'codemirror/lib/codemirror.css'
-    'codemirror/theme/monokai.css'
-  ], (require) ->
-    coffeeResolve \
-      require 'coffee-script/extras/coffee-script.js'
-    CodeMirrorPromiseResolve require 'codemirror'
-    require 'codemirror/mode/coffeescript/coffeescript.js'
-    require 'codemirror/keymap/sublime.js'
-    require 'codemirror/lib/codemirror.css'
-    require 'codemirror/theme/monokai.css'
-
-if window?
   require './index.styl'
 
 module.exports = class Editor
@@ -44,6 +19,30 @@ module.exports = class Editor
           Rx.Observable.return null
 
   onMount: ($$el) =>
+    coffeeResolve = -> null
+    coffeePromise = new Promise (resolve) ->
+      coffeeResolve = resolve
+
+    CodeMirrorPromiseResolve = -> null
+    CodeMirrorPromise = new Promise (resolve) ->
+      CodeMirrorPromiseResolve = resolve
+
+    require.ensure [
+      'coffee-script/extras/coffee-script.js'
+      'codemirror'
+      'codemirror/mode/coffeescript/coffeescript.js'
+      'codemirror/keymap/sublime.js'
+      'codemirror/lib/codemirror.css'
+      'codemirror/theme/monokai.css'
+    ], (require) ->
+      coffeeResolve \
+        require 'coffee-script/extras/coffee-script.js'
+      CodeMirrorPromiseResolve require 'codemirror'
+      require 'codemirror/mode/coffeescript/coffeescript.js'
+      require 'codemirror/keymap/sublime.js'
+      require 'codemirror/lib/codemirror.css'
+      require 'codemirror/theme/monokai.css'
+
     Promise.all [
       coffeePromise
       CodeMirrorPromise
