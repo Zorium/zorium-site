@@ -102,9 +102,12 @@ module.exports = class Docs
     {$buttons, checkboxes, $dialog, $actions,
      $dialogTrigger, $fab, $errorInput, $inputs, radios} = @state.getValue()
 
-    $ = _.bind document.querySelector, document
+    _.map $el.querySelectorAll('a'), ($$el) ->
+      isLocal = $$el.hostname is window.location.hostname
+      unless isLocal
+        $$el.target = '_blank'
 
-    z.render $('#z-docs_paper-hack-shadows'),
+    z.render $el.querySelector('#z-docs_paper-hack-shadows'),
       z '#z-docs_paper-hack-shadows.z-docs_paper-hack',
         z '.shadows',
           z '.box .height-1'
@@ -113,7 +116,7 @@ module.exports = class Docs
           z '.box .height-4'
           z '.box .height-5'
 
-    z.render $('#z-docs_paper-hack-fonts'),
+    z.render $el.querySelector('#z-docs_paper-hack-fonts'),
       z '#z-docs_paper-hack-fonts.z-docs_paper-hack',
         z '.fonts',
           _.map fonts, (font) ->
@@ -121,7 +124,7 @@ module.exports = class Docs
               z 'span.var', font
               z "span.text.#{font}", 'Hello World'
 
-    z.render $('#z-docs_paper-hack-buttons'),
+    z.render $el.querySelector('#z-docs_paper-hack-buttons'),
       z '#z-docs_paper-hack-buttons.z-docs_paper-hack',
         z '.buttons',
           z $buttons[0],
@@ -151,7 +154,7 @@ module.exports = class Docs
             isDisabled: true
 
     renderCheckboxes = ->
-      z.render $('#z-docs_paper-hack-checkboxes'),
+      z.render $el.querySelector('#z-docs_paper-hack-checkboxes'),
         z '#z-docs_paper-hack-checkboxes.z-docs_paper-hack',
           z '.checkboxes',
             z checkboxes.$unchecked[0],
@@ -172,7 +175,7 @@ module.exports = class Docs
 
     isDialogVisible = false
     renderDialogs = ->
-      z.render $('#z-docs_paper-hack-dialogs'),
+      z.render $el.querySelector('#z-docs_paper-hack-dialogs'),
         z '#z-docs_paper-hack-dialogs.z-docs_paper-hack',
           z $dialogTrigger,
             $content: 'open dialog'
@@ -207,7 +210,7 @@ module.exports = class Docs
     renderDialogs()
 
 
-    z.render $('#z-docs_paper-hack-fabs'),
+    z.render $el.querySelector('#z-docs_paper-hack-fabs'),
       z '#z-docs_paper-hack-fabs.z-docs_paper-hack',
         z '.fabs',
           z $fab,
@@ -225,7 +228,7 @@ module.exports = class Docs
               , 'Z'
 
     renderInputs = ->
-      z.render $('#z-docs_paper-hack-inputs'),
+      z.render $el.querySelector('#z-docs_paper-hack-inputs'),
         z '#z-docs_paper-hack-inputs.z-docs_paper-hack',
           z '.inputs',
             z $inputs[0],
@@ -257,7 +260,7 @@ module.exports = class Docs
 
 
     renderRadios = ->
-      z.render $('#z-docs_paper-hack-radios'),
+      z.render $el.querySelector('#z-docs_paper-hack-radios'),
         z '#z-docs_paper-hack-radios.z-docs_paper-hack',
           z '.radios',
             z radios.$unchecked[0],
@@ -283,9 +286,11 @@ module.exports = class Docs
       z '.buttons',
         z 'a',
           href: 'https://github.com/Zorium/zorium',
+          target: '_blank',
           z $downloadBtn, $content: 'github'
         z 'a',
           href: 'https://github.com/Zorium/zorium-seed',
+          target: '_blank',
           z $downloadSeedBtn, $content: 'seed'
       z $md, html: intro
       $tutorial

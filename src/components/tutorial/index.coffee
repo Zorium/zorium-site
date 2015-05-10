@@ -31,6 +31,11 @@ module.exports = class Tutorial
     unless @shouldShowEditor()
       return
 
+    _.map $el.querySelectorAll('a'), ($$el) ->
+      isLocal = $$el.hostname is window.location.hostname
+      unless isLocal
+        $$el.target = '_blank'
+
     @editors = _.map [
       '#z-tutorial_hack-first-component'
       '#z-tutorial_hack-stateful-components'
