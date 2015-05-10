@@ -7,7 +7,6 @@ Qs = require 'qs'
 config = require './config'
 HomePage = require './pages/home'
 FourOhFourPage = require './pages/404'
-StateService = require './services/state'
 
 ANIMATION_TIME_MS = 500
 
@@ -19,31 +18,7 @@ styles = if not window?
 else
   null
 
-parseUrl = (url) ->
-  if window?
-    a = document.createElement 'a'
-    a.href = url
-
-    {
-      pathname: a.pathname
-      hash: a.hash
-      search: a.search
-      path: a.pathname + a.search
-    }
-  else
-    # Avoid webpack include
-    _url = 'url'
-    URL = require(_url)
-    parsed = URL.parse url
-
-    {
-      pathname: parsed.pathname
-      hash: parsed.hash
-      search: parsed.search
-      path: parsed.path
-    }
-
-class RootComponent
+module.exports = class RootComponent
   constructor: ->
     router = new Routes()
 
@@ -62,13 +37,12 @@ class RootComponent
       $fourOhFourPage
     }
 
-  render: ({path}) =>
+  render: ({req, res}) =>
     {router, $fourOhFourPage, $currentPage, $previousTree, isEntering,
      isActive} = @state.getValue()
+    {path, query} = req
 
-    url = parseUrl path
-    query = Qs.parse(url.search?.slice(1))
-    route = router.match url.pathname
+    route = router.match path
 
     $nextPage = route.fn()
 
@@ -97,7 +71,7 @@ class RootComponent
         , ANIMATION_TIME_MS
 
     if $currentPage is $fourOhFourPage and not window?
-      z.server.setStatus 404
+      res.status 404
 
     $head = $currentPage.renderHead {styles}
 
@@ -105,13 +79,8 @@ class RootComponent
       $head
       z 'body',
         z '#zorium-root',
-          z '.z-root',
-            className: z.classKebab {isEntering, isActive}
-            z '.previous',
-              $previousTree
-            z '.current',
-              renderPage $currentPage
-
-module.exports = ->
-  StateService.clear()
-  new RootComponent()
+          className: z.classKebab {isEntering, isActive}
+          z '.previous',
+            $previousTree
+          z '.current',
+            renderPage $currentPage

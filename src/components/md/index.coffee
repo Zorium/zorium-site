@@ -11,7 +11,7 @@ module.exports = class Md
         anchor.onclick = (e) ->
           if z.isSimpleClick e
             e.preventDefault()
-            z.server.go anchor.href
+            z.router.go anchor.href
 
   render: ({html}) ->
     z '.z-md',

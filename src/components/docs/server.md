@@ -1,8 +1,8 @@
 # Server API <a class="anchor" name="server"></a>
 
-## z.server.link() <a class="anchor" name="server_link"></a>
+## z.router.link() <a class="anchor" name="server_link"></a>
 
-  - Route `<a>` tags via [z.server.go()](/server/go)
+  - Route `<a>` tags via [z.router.go()](/server/go)
 
 ```coffee
 ###
@@ -10,11 +10,11 @@
 ###
 
 z 'div',
-  z.server.link \
+  z.router.link \
     z 'a', href: '/path', 'click me'
 ```
 
-## z.server.set() <a class="anchor" name="server_set"></a>
+## z.router.set() <a class="anchor" name="server_set"></a>
 
   - `mode` defaults to `pathname` if the [history api](https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history) is available
     - possible values: `pathname`, `hash`
@@ -39,14 +39,14 @@ factory = ->
 
 $$root = document.createElement 'div'
 
-z.server.set {
+z.router.set {
   mode: 'hash'
   $$root: $$root
   factory: factory
 }
 ```
 
-## z.server.go() <a class="anchor" name="server_go"></a>
+## z.router.go() <a class="anchor" name="server_go"></a>
 
   - route to the given path
     - this changes the page URL
@@ -57,7 +57,7 @@ z.server.set {
 @param {String} path
 ###
 
-z.server.go '/path'
+z.router.go '/path'
 
 # In-depth
 
@@ -65,16 +65,16 @@ class App
   render: ({path}) ->
     z 'div', "this is path #{path}"
 
-z.server.set {
+z.router.set {
   $$root: document.createElement 'div'
   factory: -> new App()
 }
-z.server.go '/hi'
+z.router.go '/hi'
 
 # $$root now is <div><div>this is path /hi</div></div>
 ```
 
-## z.server.on() <a class="anchor" name="server_on"></a>
+## z.router.on() <a class="anchor" name="server_on"></a>
 
   - listen for events
     - currently only `route`
@@ -85,11 +85,11 @@ z.server.go '/hi'
 @param {Function} callback
 ###
 
-z.server.on 'route', (path) -> path is '/hi'
-z.server.go '/hi'
+z.router.on 'route', (path) -> path is '/hi'
+z.router.go '/hi'
 ```
 
-## z.server.off() <a class="anchor" name="server_off"></a>
+## z.router.off() <a class="anchor" name="server_off"></a>
 
 ```coffee
 ###
@@ -98,19 +98,19 @@ z.server.go '/hi'
 ###
 
 listener = (path) -> path is '/hi'
-z.server.on 'route', listener
-z.server.go '/hi'
-z.server.off 'route', listener
+z.router.on 'route', listener
+z.router.go '/hi'
+z.router.off 'route', listener
 ```
 
-## z.server.Redirect <a class="anchor" name="server_redirect"></a>
+## z.router.Redirect <a class="anchor" name="server_redirect"></a>
 
   - `Redirect` is a class, which when throw from `render()` routes to the path
     - Server-side this returns a `302` redirect
 
 ```coffee
 ###
-@class z.server.Redirect
+@class z.router.Redirect
 
 @constructor
 @param {Object} options
@@ -118,10 +118,10 @@ z.server.off 'route', listener
 ###
 class NotHere
   render: ->
-    throw new z.server.Redirect path: '/404'
+    throw new z.router.Redirect path: '/404'
 ```
 
-## z.server.setStatus() <a class="anchor" name="server_set-status"></a>
+## z.router.setStatus() <a class="anchor" name="server_set-status"></a>
 
   - sets the server-side response status code
     - e.g. `404`
@@ -138,7 +138,7 @@ class App
       z.setStatus 404
 ```
 
-## z.server.getReq() <a class="anchor" name="server_get-req"></a>
+## z.router.getReq() <a class="anchor" name="server_get-req"></a>
 
   - get the request object passed from express
   - may only be called server-side
@@ -165,13 +165,13 @@ class App
         z '#zorium-root',  # required (must be first node)
           $myComponent     # required (must be a single component)
 
-z.server.set {
+z.router.set {
   $$root: document
   factory: -> new App()
 }
 ```
 
-## z.server.factoryToMiddleware <a class="anchor" name="server_factory-to-middleware"></a>
+## z.router.factoryToMiddleware <a class="anchor" name="server_factory-to-middleware"></a>
 
   - Creates an [Express Middleware](http://expressjs.com/guide/using-middleware.html) for server-side rendering
     - Note that the application **must be stateless**
@@ -190,7 +190,7 @@ factory = ->
 
 express = require 'express'
 app = express()
-app.use z.server.factoryToMiddleware factory
+app.use z.router.factoryToMiddleware factory
 app.listen 3000
 ```
 

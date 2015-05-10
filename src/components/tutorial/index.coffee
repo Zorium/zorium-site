@@ -47,6 +47,7 @@ module.exports = class Tutorial
       renderEditor = ->
         z.render $$editor, $editor
 
+      renderEditor()
       editorDisposable = $editor.state?.subscribe renderEditor
 
       {$$editor, editorDisposable}

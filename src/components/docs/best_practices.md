@@ -125,7 +125,7 @@ class BigDrawer
 
 ## State Management <a class="anchor" name="best-practices_state-management"></a>
 
-The way [z.server.factoryToMiddleware()](/server/factory-to-middleware) works is by creating a new
+The way [z.router.factoryToMiddleware()](/server/factory-to-middleware) works is by creating a new
 instance of the component returned by `factory()` for every request.  
 This means that local state created in the app will propagate between requests if not properly cleared.
 

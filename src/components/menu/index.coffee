@@ -50,18 +50,18 @@ module.exports = class Menu
           select: 'server'
           text: 'Server API'
           children: [
-            { key: 'link', text: 'z.server.link()' }
-            { key: 'set', text: 'z.server.set()' }
-            { key: 'go', text: 'z.server.go()' }
-            { key: 'on', text: 'z.server.on()' }
-            { key: 'off', text: 'z.server.off()' }
-            { key: 'redirect', text: 'z.server.Redirect' }
-            { key: 'set-status', text: 'z.server.setStatus()' }
-            { key: 'get-req', text: 'z.server.getReq()' }
+            { key: 'link', text: 'z.router.link()' }
+            { key: 'set', text: 'z.router.set()' }
+            { key: 'go', text: 'z.router.go()' }
+            { key: 'on', text: 'z.router.on()' }
+            { key: 'off', text: 'z.router.off()' }
+            { key: 'redirect', text: 'z.router.Redirect' }
+            { key: 'set-status', text: 'z.router.setStatus()' }
+            { key: 'get-req', text: 'z.router.getReq()' }
             { key: 'full-page-rendering', text: 'Full Page Rendering' }
             {
               key: 'factory-to-middleware',
-              text: 'z.server.factoryToMiddleware()'
+              text: 'z.router.factoryToMiddleware()'
             }
           ]
         }
@@ -124,11 +124,13 @@ module.exports = class Menu
     | Zune
     ///.test userAgent
 
-  isPermanent: =>
+  isPermanent: ->
     if window?
       window.matchMedia('(min-width: 1000px)').matches
     else
-      not @isMobile z.server.getReq().headers?['user-agent']
+      false
+      # FIXME
+      #not @isMobile z.router.getReq().headers?['user-agent']
 
   isHidden: =>
     @state.getValue().isHidden
@@ -171,7 +173,7 @@ module.exports = class Menu
                 # Manually scroll because we don't want people to lose
                 # their scoll position on page refresh
                 window.scrollTo(0, 0)
-                z.server.go $$el.href
+                z.router.go $$el.href
             'Zorium'
           z '.break'
           z '.list',
@@ -185,7 +187,7 @@ module.exports = class Menu
                     if z.isSimpleClick e
                       e.preventDefault()
                       if isSelected
-                        z.server.go $$el.href
+                        z.router.go $$el.href
                       else
                         @state.set selected: link.select
 
@@ -198,6 +200,6 @@ module.exports = class Menu
                         e.preventDefault()
                         unless isPermanent
                           @toggle()
-                        z.server.go $$el.href
+                        z.router.go $$el.href
                   , child.text
         z '.padder'

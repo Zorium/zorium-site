@@ -105,7 +105,7 @@ module.exports = class Docs
     $ = _.bind document.querySelector, document
 
     z.render $('#z-docs_paper-hack-shadows'),
-      z '.z-docs_paper-hack',
+      z '#z-docs_paper-hack-shadows.z-docs_paper-hack',
         z '.shadows',
           z '.box .height-1'
           z '.box .height-2'
@@ -114,7 +114,7 @@ module.exports = class Docs
           z '.box .height-5'
 
     z.render $('#z-docs_paper-hack-fonts'),
-      z '.z-docs_paper-hack',
+      z '#z-docs_paper-hack-fonts.z-docs_paper-hack',
         z '.fonts',
           _.map fonts, (font) ->
             z '.font',
@@ -122,7 +122,7 @@ module.exports = class Docs
               z "span.text.#{font}", 'Hello World'
 
     z.render $('#z-docs_paper-hack-buttons'),
-      z '.z-docs_paper-hack',
+      z '#z-docs_paper-hack-buttons.z-docs_paper-hack',
         z '.buttons',
           z $buttons[0],
             $content: 'button'
@@ -152,7 +152,7 @@ module.exports = class Docs
 
     renderCheckboxes = ->
       z.render $('#z-docs_paper-hack-checkboxes'),
-        z '.z-docs_paper-hack',
+        z '#z-docs_paper-hack-checkboxes.z-docs_paper-hack',
           z '.checkboxes',
             z checkboxes.$unchecked[0],
               colors:
@@ -165,15 +165,15 @@ module.exports = class Docs
             z checkboxes.$checked[1],
               isDisabled: true
 
+    renderCheckboxes()
     _.map checkboxes.$unchecked.concat(checkboxes.$checked), (checkbox) ->
       checkbox.state.subscribe ->
         renderCheckboxes()
-    renderCheckboxes()
 
     isDialogVisible = false
     renderDialogs = ->
       z.render $('#z-docs_paper-hack-dialogs'),
-        z '.z-docs_paper-hack',
+        z '#z-docs_paper-hack-dialogs.z-docs_paper-hack',
           z $dialogTrigger,
             $content: 'open dialog'
             onclick: ->
@@ -206,8 +206,9 @@ module.exports = class Docs
 
     renderDialogs()
 
+
     z.render $('#z-docs_paper-hack-fabs'),
-      z '.z-docs_paper-hack',
+      z '#z-docs_paper-hack-fabs.z-docs_paper-hack',
         z '.fabs',
           z $fab,
             colors:
@@ -225,7 +226,7 @@ module.exports = class Docs
 
     renderInputs = ->
       z.render $('#z-docs_paper-hack-inputs'),
-        z '.z-docs_paper-hack',
+        z '#z-docs_paper-hack-inputs.z-docs_paper-hack',
           z '.inputs',
             z $inputs[0],
               hintText: 'Regular'
@@ -249,15 +250,15 @@ module.exports = class Docs
               isDisabled: true
 
 
+    renderInputs()
     _.map $inputs.concat([$errorInput]), (input) ->
       input.state.subscribe ->
         renderInputs()
 
-    renderInputs()
 
     renderRadios = ->
       z.render $('#z-docs_paper-hack-radios'),
-        z '.z-docs_paper-hack',
+        z '#z-docs_paper-hack-radios.z-docs_paper-hack',
           z '.radios',
             z radios.$unchecked[0],
               colors:
@@ -270,10 +271,10 @@ module.exports = class Docs
             z radios.$checked[1],
               isDisabled: true
 
+    renderRadios()
     _.map radios.$unchecked.concat(radios.$checked), (radios) ->
       radios.state.subscribe ->
         renderRadios()
-    renderRadios()
 
   render: ({title, page}) =>
     {$md, $tutorial, $downloadBtn, $downloadSeedBtn} = @state.getValue()

@@ -134,7 +134,7 @@ class App
               z 'div', 'Welcome'
             else
               unless window?
-                z.server.setStatus 404
+                z.router.setStatus 404
               z 'div', 'Oh No! 404'
 
 factory = ->
@@ -142,6 +142,6 @@ factory = ->
 
 express = require 'express'
 app = express()
-app.use z.server.factoryToMiddleware factory
+app.use z.router.factoryToMiddleware factory
 app.listen 3000
 ```

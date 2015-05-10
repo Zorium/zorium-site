@@ -2,15 +2,9 @@ z = require 'zorium'
 Button = require 'zorium-paper/button'
 paperColors = require 'zorium-paper/colors.json'
 
-module.exports = class SecondaryButton
-  constructor: ->
-    @state = z.state
-      $button: new Button()
-
+module.exports = class SecondaryButton extends Button
   render: ({$content}) =>
-    {$button} = @state.getValue()
-
-    z $button,
+    super {
       $content: $content
       isRaised: true
       colors:
@@ -19,3 +13,4 @@ module.exports = class SecondaryButton
         c500: paperColors.$blueGrey500
         c600: paperColors.$blueGrey600
         c700: paperColors.$blueGrey700
+    }
