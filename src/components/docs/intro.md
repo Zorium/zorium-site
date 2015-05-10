@@ -3,14 +3,15 @@
 (╯°□°)╯︵ ┻━┻  
 v1.0.0-rc17
 
+<br>
 ## Features <a class="anchor" name="intro_features"></a>
 
-  - First Class [RxJS Observables](https://github.com/Reactive-Extensions/RxJS)
-  - Built for Isomorphism (server-side rendering)
-  - Fast! - [virtual-dom](http://vdom-benchmark.github.io/vdom-benchmark/)
-  - Standardized [Best Practices](/best-practices)
-  - [Material Design Components](/paper)
-  - Production-ready [Seed Project](https://github.com/Zorium/zorium-seed)
+  - First Class [RxJS Observables](https://github.com/Reactive-Extensions/RxJS)<br><br>
+  - Built for Isomorphism (server-side rendering)<br><br>
+  - Fast! - [virtual-dom](http://vdom-benchmark.github.io/vdom-benchmark/)<br><br>
+  - Standardized [Best Practices](/best-practices)<br><br>
+  - [Material Design Components](/paper)<br><br>
+  - Production-ready [Seed Project](https://github.com/Zorium/zorium-seed)<br><br>
   - It's just CoffeeScript, no magic
 
 ## Example <a class="anchor" name="intro_example"></a>
