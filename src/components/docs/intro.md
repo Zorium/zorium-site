@@ -39,6 +39,27 @@ z.render document.body, new AppComponent()
 npm install --save zorium
 ```
 
+## Webpack configuration
+
+Use the following module configuration to allow for server-side specific modules
+
+```coffee
+module:
+  exprContextRegExp: /$^/
+  exprContextCritical: false
+```
+
+And in your application
+
+```coffee
+Promise = if window?
+  window.Promise
+else
+  # Avoid webpack include
+  _Promise = 'bluebird'
+  require _Promise
+```
+
 ## Contribute <a class="anchor" name="intro_contribute"></a>
 
 ```bash
