@@ -1,7 +1,7 @@
 # The Functional Reactive CoffeeScript Web <a class="anchor" name="intro"></a>
 
 (╯°□°)╯︵ ┻━┻  
-v1.0.0-rc15
+v1.0.0-rc17
 
 ## Features <a class="anchor" name="intro_features"></a>
 

@@ -123,7 +123,7 @@ For a more in-depth example, check out the [Zorium Seed](https://github.com/Zori
 
 ```coffee
 class App
-  render: ({path}) ->
+  render: ({req, res}) ->
     z 'html',
       z 'head',
         z 'title', 'Simply Zorium'
@@ -134,14 +134,20 @@ class App
               z 'div', 'Welcome'
             else
               unless window?
-                z.router.setStatus 404
+                res.status 404
               z 'div', 'Oh No! 404'
-
-factory = ->
-  new App()
 
 express = require 'express'
 app = express()
-app.use z.router.factoryToMiddleware factory
+app.use (req, res) ->
+  z.renderToString z new App(), {req, res}
+  .then (html) ->
+    res.send '<!DOCTYPE html>' + html
+  .catch (err) ->
+    if err.html
+      log.trace err
+      res.send '<!DOCTYPE html>' + err.html
+    else
+      next err
 app.listen 3000
 ```

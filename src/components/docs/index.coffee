@@ -18,7 +18,7 @@ SecondaryButton = require '../secondary_button'
 if window?
   intro = require './intro.md'
   api = require './api.md'
-  server = require './server.md'
+  router = require './router.md'
   bestPractices = require './best_practices.md'
   paper = require './paper.md'
 else
@@ -28,7 +28,7 @@ else
 
   intro = util.marked fs.readFileSync __dirname + '/intro.md', 'utf-8'
   api = util.marked fs.readFileSync __dirname + '/api.md', 'utf-8'
-  server = util.marked fs.readFileSync __dirname + '/server.md', 'utf-8'
+  router = util.marked fs.readFileSync __dirname + '/router.md', 'utf-8'
   bestPractices = util.marked \
     fs.readFileSync __dirname + '/best_practices.md', 'utf-8'
   paper = util.marked fs.readFileSync __dirname + '/paper.md', 'utf-8'
@@ -291,7 +291,7 @@ module.exports = class Docs
       $tutorial
       z $md, html: [
         api
-        server
+        router
         bestPractices
         paper
       ].join ''

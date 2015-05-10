@@ -115,6 +115,39 @@ $component = z 'div', 'test'
 z.render $$domNode, $component
 ```
 
+## z.renderToString() <a class="anchor" name="api_render-to-string"></a>
+
+Render a virtual-dom tree to a string  
+Completes after all states have settled to a value, or the request times out.  
+The default timeout is 250ms.  
+Errors may contain the last successful rendering (in case of timeout or error) on `error.html`
+
+```coffee
+###
+@param {ZoriumComponent} $app
+@param {Object} config
+@param {Number} config.timeout - ms
+
+@returns {Promise}
+###
+
+z.renderToString z 'div', 'hi'
+.then (html) ->
+  # <div>hi</div>
+
+class Timeout
+  constructor: ->
+    @state = z.state
+      never: Rx.Observable.empty()
+  render: ({abc}) ->
+    z 'div', 'never ' + abc
+
+$instance = z new Timeout(), {abc: 'abc'}
+z.renderToString $instance, {timeout: 100}
+.catch (err) ->
+  err.html # <div>never abc</div>
+```
+
 ## z.state() <a class="anchor" name="api_state"></a>
 
   - z.state() creates an [Rx.BehaviorSubject](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/subjects/behaviorsubject.md)
@@ -184,43 +217,6 @@ class Stateful
       onclick: =>
         @meSubject.onNext 'you'
       me
-```
-
-## z.cookies.set() <a class="anchor" name="api_cookies-set"></a>
-
-  - Using this is important when using [server-side rendering](/server/factory-to-middleware)
-
-```coffee
-###
-@param {String}  key
-@param {String}  value
-@param {Object}  options
-@param {String}  options.path
-@param {Date}    options.expires
-@param {Number}  options.maxAge (seconds)
-@param {String}  options.domain
-@param {Boolean} options.secure
-@param {Boolean} options.httpOnly
-###
-
-z.cookies.set 'foo', 'bar'
-z.cookies.set 'expired', 'secret', {expires: new Date()}
-```
-
-## z.cookies.get() <a class="anchor" name="api_cookies-get"></a>
-
-  - Returns a [Rx.BehaviorSubject](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/subjects/behaviorsubject.md)
-for that cookie
-
-```coffee
-###
-@param {String} key
-@returns {Rx.BehaviorSubject}
-###
-
-z.cookies.set 'foo', 'bar'
-z.cookies.get('foo').getValue() is 'bar'
-z.cookies.get('foo').subscribe (newValue) -> null
 ```
 
 ## z.ev() <a class="anchor" name="api_ev"></a>

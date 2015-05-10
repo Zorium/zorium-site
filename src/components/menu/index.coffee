@@ -38,31 +38,22 @@ module.exports = class Menu
             { key: 'z', text: 'z()' }
             { key: 'components', text: 'Components'}
             { key: 'render', text: 'z.render()'}
+            { key: 'render-to-string', text: 'z.renderToString()'}
             { key: 'state', text: 'z.state()'}
-            { key: 'cookies-set', text: 'z.cookies.set()'}
-            { key: 'cookies-get', text: 'z.cookies.get()'}
             { key: 'ev', text: 'z.ev()'}
             { key: 'class-kebab', text: 'z.classKebab()'}
             { key: 'is-simple-click', text: 'z.isSimpleClick()'}
           ]
         }
         {
-          select: 'server'
-          text: 'Server API'
+          select: 'router'
+          text: 'Router API'
           children: [
             { key: 'link', text: 'z.router.link()' }
-            { key: 'set', text: 'z.router.set()' }
+            { key: 'init', text: 'z.router.init()' }
             { key: 'go', text: 'z.router.go()' }
-            { key: 'on', text: 'z.router.on()' }
-            { key: 'off', text: 'z.router.off()' }
-            { key: 'redirect', text: 'z.router.Redirect' }
-            { key: 'set-status', text: 'z.router.setStatus()' }
-            { key: 'get-req', text: 'z.router.getReq()' }
             { key: 'full-page-rendering', text: 'Full Page Rendering' }
-            {
-              key: 'factory-to-middleware',
-              text: 'z.router.factoryToMiddleware()'
-            }
+            { key: 'use', text: 'z.router.use()' }
           ]
         }
         {
