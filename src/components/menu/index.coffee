@@ -158,12 +158,14 @@ module.exports = class Menu
         z '.menu',
           z 'a.logo',
             href: '/'
-            onclick: z.ev (e, $$el) ->
+            onclick: z.ev (e, $$el) =>
               if z.isSimpleClick e
                 e.preventDefault()
                 # Manually scroll because we don't want people to lose
                 # their scoll position on page refresh
                 window.scrollTo(0, 0)
+                unless isPermanent
+                  @toggle()
                 z.router.go $$el.href
             'Zorium'
           z '.break'
@@ -178,6 +180,8 @@ module.exports = class Menu
                     if z.isSimpleClick e
                       e.preventDefault()
                       if isSelected
+                        unless isPermanent
+                          @toggle()
                         z.router.go $$el.href
                       else
                         @state.set selected: link.select
