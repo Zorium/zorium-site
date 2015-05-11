@@ -98,56 +98,6 @@ class BindComponent
       z 'span', 'Goodbye'
 ```
 
-
-## z.render() <a class="anchor" name="api_render"></a>
-
-Render a virtual-dom tree to a DOM node
-
-```coffee
-###
-@param {HtmlElement} $$root
-@param {ZoriumComponent} $app
-###
-
-$$domNode = document.createElement 'div'
-$component = z 'div', 'test'
-
-z.render $$domNode, $component
-```
-
-## z.renderToString() <a class="anchor" name="api_render-to-string"></a>
-
-Render a virtual-dom tree to a string  
-Completes after all states have settled to a value, or the request times out.  
-The default timeout is 250ms.  
-Errors may contain the last successful rendering (in case of timeout or error) on `error.html`
-
-```coffee
-###
-@param {ZoriumComponent} $app
-@param {Object} config
-@param {Number} config.timeout - ms
-
-@returns {Promise}
-###
-
-z.renderToString z 'div', 'hi'
-.then (html) ->
-  # <div>hi</div>
-
-class Timeout
-  constructor: ->
-    @state = z.state
-      never: Rx.Observable.empty()
-  render: ({abc}) ->
-    z 'div', 'never ' + abc
-
-$instance = z new Timeout(), {abc: 'abc'}
-z.renderToString $instance, {timeout: 100}
-.catch (err) ->
-  err.html # <div>never abc</div>
-```
-
 ## z.state() <a class="anchor" name="api_state"></a>
 
   - z.state() creates an [Rx.BehaviorSubject](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/subjects/behaviorsubject.md)
@@ -218,6 +168,56 @@ class Stateful
         @meSubject.onNext 'you'
       me
 ```
+
+## z.render() <a class="anchor" name="api_render"></a>
+
+Render a virtual-dom tree to a DOM node
+
+```coffee
+###
+@param {HtmlElement} $$root
+@param {ZoriumComponent} $app
+###
+
+$$domNode = document.createElement 'div'
+$component = z 'div', 'test'
+
+z.render $$domNode, $component
+```
+
+## z.renderToString() <a class="anchor" name="api_render-to-string"></a>
+
+Render a virtual-dom tree to a string  
+Completes after all states have settled to a value, or the request times out.  
+The default timeout is 250ms.  
+Errors may contain the last successful rendering (in case of timeout or error) on `error.html`
+
+```coffee
+###
+@param {ZoriumComponent} $app
+@param {Object} config
+@param {Number} config.timeout - ms
+
+@returns {Promise}
+###
+
+z.renderToString z 'div', 'hi'
+.then (html) ->
+  # <div>hi</div>
+
+class Timeout
+  constructor: ->
+    @state = z.state
+      never: Rx.Observable.empty()
+  render: ({abc}) ->
+    z 'div', 'never ' + abc
+
+$instance = z new Timeout(), {abc: 'abc'}
+z.renderToString $instance, {timeout: 100}
+.catch (err) ->
+  err.html # <div>never abc</div>
+```
+
 
 ## z.ev() <a class="anchor" name="api_ev"></a>
 

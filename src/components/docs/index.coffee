@@ -55,7 +55,8 @@ module.exports = class Docs
     @state = z.state
       $md: new Md()
       $tutorial: new Tutorial()
-      $downloadBtn: new PrimaryButton()
+      $getStartedBtn: new PrimaryButton()
+      $downloadBtn: new SecondaryButton()
       $downloadSeedBtn: new SecondaryButton()
       $buttons: [
         new Button()
@@ -280,10 +281,15 @@ module.exports = class Docs
         renderRadios()
 
   render: ({title, page}) =>
-    {$md, $tutorial, $downloadBtn, $downloadSeedBtn} = @state.getValue()
+    {$md, $tutorial, $downloadBtn, $downloadSeedBtn, $getStartedBtn} =
+      @state.getValue()
 
     z '.z-docs',
       z '.buttons',
+        z.router.link \
+          z 'a',
+            href: '/tutorial',
+            z $getStartedBtn, $content: 'get started'
         z 'a',
           href: 'https://github.com/Zorium/zorium',
           target: '_blank',

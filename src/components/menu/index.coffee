@@ -14,8 +14,8 @@ module.exports = class Menu
           select: 'intro'
           text: 'Intro'
           children: [
-            { key: 'features', text: 'Features' }
             { key: 'example', text: 'Example' }
+            { key: 'features', text: 'Features' }
             { key: 'installation', text: 'Installation' }
             { key: 'contribute', text: 'Contribute' }
           ]
@@ -37,9 +37,9 @@ module.exports = class Menu
           children: [
             { key: 'z', text: 'z()' }
             { key: 'components', text: 'Components'}
+            { key: 'state', text: 'z.state()'}
             { key: 'render', text: 'z.render()'}
             { key: 'render-to-string', text: 'z.renderToString()'}
-            { key: 'state', text: 'z.state()'}
             { key: 'ev', text: 'z.ev()'}
             { key: 'class-kebab', text: 'z.classKebab()'}
             { key: 'is-simple-click', text: 'z.isSimpleClick()'}
@@ -49,11 +49,11 @@ module.exports = class Menu
           select: 'router'
           text: 'Router API'
           children: [
-            { key: 'link', text: 'z.router.link()' }
             { key: 'init', text: 'z.router.init()' }
-            { key: 'go', text: 'z.router.go()' }
-            { key: 'full-page-rendering', text: 'Full Page Rendering' }
             { key: 'use', text: 'z.router.use()' }
+            { key: 'go', text: 'z.router.go()' }
+            { key: 'link', text: 'z.router.link()' }
+            { key: 'full-page-rendering', text: 'Full Page Rendering' }
           ]
         }
         {
@@ -61,11 +61,11 @@ module.exports = class Menu
           text: 'Best Practices'
           children: [
             { key: 'zorium-seed', text: 'Zorium Seed' }
-            { key: 'stylus', text: 'Stylus' }
             { key: 'coffee-script', text: 'CoffeeScript' }
+            { key: 'naming', text: 'Naming' }
+            { key: 'stylus', text: 'Stylus' }
             { key: 'state-management', text: 'State Management' }
             { key: 'animation', text: 'Animation' }
-            { key: 'naming', text: 'Naming' }
           ]
         }
         {

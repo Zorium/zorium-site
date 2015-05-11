@@ -8,12 +8,12 @@ and is the recommended starting point for any new Zorium project.
 
 Special takeaways from the project:
 
-  - [Webpack](http://webpack.github.io/) (packaging tool)
-  - [RxJS](https://github.com/Reactive-Extensions/RxJS) (functional reactive programming)
-  - [Gulp](http://gulpjs.com/) (build tool)
-  - [Karma](http://karma-runner.github.io/0.12/index.html) (unit testing)
-  - [Stylus](https://learnboost.github.io/stylus/) (css pre-processor)
-  - [Istanbul](https://github.com/gotwarlost/istanbul) (code coverage)
+  - [Webpack](http://webpack.github.io/) (packaging tool)<br><br>
+  - [RxJS](https://github.com/Reactive-Extensions/RxJS) (functional reactive programming)<br><br>
+  - [Gulp](http://gulpjs.com/) (build tool)<br><br>
+  - [Karma](http://karma-runner.github.io/0.12/index.html) (unit testing)<br><br>
+  - [Stylus](https://learnboost.github.io/stylus/) (css pre-processor)<br><br>
+  - [Istanbul](https://github.com/gotwarlost/istanbul) (code coverage)<br><br>
   - [WebdriverIO](http://webdriver.io/) (functional testing)
 
 ### Components
@@ -43,6 +43,21 @@ module.exports = class MyPage
   render: ->
     z 'div', 'hi'
 ```
+
+## CoffeeScript <a class="anchor" name="best-practices_coffee-script"></a>
+
+  - Follow the Clay [CoffeeScript Style Guide](https://github.com/claydotio/coffeescript-style-guide)  
+    - Use the `coffeelint.json` within the repo as well
+    - Alternatively, install the Clay [Atom plugin](https://github.com/claydotio/linter-clay-coffeelint)
+  - Always deconstruct `@state` and `params` before using (e.g. `{val} = @state.getValue()`)
+
+## Naming <a class="anchor" name="best-practices_naming"></a>
+
+  - prefix component instances with `$`, e.g. `$head = new Head()`
+  - prefix DOM nodes with `$$`, e.g. `$$el = document.body`
+  - postfix pages with `Page` e.g. `MePage = require 'pages/me'`
+  - Components don't need a postfix
+  - folders and files use [snake_case](http://en.wikipedia.org/wiki/Snake_case)
 
 ## Stylus <a class="anchor" name="best-practices_stylus"></a>
 
@@ -91,13 +106,6 @@ class BigDrawer
     background: red
 ```
 
-## CoffeeScript <a class="anchor" name="best-practices_coffee-script"></a>
-
-  - Follow the Clay [CoffeeScript Style Guide](https://github.com/claydotio/coffeescript-style-guide)  
-    - Use the `coffeelint.json` within the repo as well
-    - Alternatively, install the Clay [Atom plugin](https://github.com/claydotio/linter-clay-coffeelint)
-  - Always deconstruct `@state` and `params` before using (e.g. `{val} = @state.getValue()`)
-
 ## State Management <a class="anchor" name="best-practices_state-management"></a>
 
 If your app instantiates all components at run-time (it may not render them),  
@@ -145,11 +153,3 @@ class Animate
   &.is-animating
     width: 100px
 ```
-
-## Naming <a class="anchor" name="best-practices_naming"></a>
-
-  - prefix component instances with `$`, e.g. `$head = new Head()`
-  - prefix DOM nodes with `$$`, e.g. `$$el = document.body`
-  - postfix pages with `Page` e.g. `MePage = require 'pages/me'`
-  - Components don't need a postfix
-  - folders and files use [snake_case](http://en.wikipedia.org/wiki/Snake_case)
