@@ -47,7 +47,7 @@ module.exports = class RootComponent
     $nextPage = route.fn()
 
     renderPage = ($page) ->
-      z $page, {query, params: route.params}
+      z $page, {query, params: route.params, headers: req.headers}
 
     if $nextPage isnt $currentPage
       $previousTree = if $currentPage then renderPage $currentPage else null

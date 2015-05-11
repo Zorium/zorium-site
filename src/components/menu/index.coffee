@@ -115,13 +115,13 @@ module.exports = class Menu
     | Zune
     ///.test userAgent
 
-  isPermanent: ->
+  isPermanent: (headers) ->
     if window?
       window.matchMedia('(min-width: 1000px)').matches
+    else if headers
+      not @isMobile headers['user-agent']
     else
       false
-      # FIXME
-      #not @isMobile z.router.getReq().headers?['user-agent']
 
   isHidden: =>
     @state.getValue().isHidden
@@ -142,9 +142,9 @@ module.exports = class Menu
     {links} = @state.getValue()
     return _.find(links, {key})?.text or 'Zorium'
 
-  render: =>
+  render: ({headers}) =>
     {links, selected, isHidden} = @state.getValue()
-    isPermanent = @isPermanent()
+    isPermanent = @isPermanent(headers)
 
     z '.z-menu',
       className: z.classKebab {

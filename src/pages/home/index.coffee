@@ -45,7 +45,7 @@ module.exports = class HomePage
   onBeforeUnmount: =>
     @scrollTargetDisposable?.dispose()
 
-  render: ({params}) =>
+  render: ({params, headers}) =>
     {$menu, $header, $docs} = @state.getValue()
 
     scrollTarget = @paramsToAnchorName params
@@ -57,7 +57,7 @@ module.exports = class HomePage
 
     z '.p-home',
       className: z.classKebab {isMenuHidden}
-      z '.menu', $menu
+      z '.menu', z $menu, {headers}
       z '.content',
         z $header,
           title: 'Zorium'
