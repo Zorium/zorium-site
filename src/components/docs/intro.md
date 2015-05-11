@@ -1,4 +1,4 @@
-# The Functional Reactive CoffeeScript Web <a class="anchor" name="intro"></a>
+# The CoffeeScript Web Framework <a class="anchor" name="intro"></a>
 
 (╯°□°)╯︵ ┻━┻  
 v1.0.0-rc17
