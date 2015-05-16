@@ -59,6 +59,7 @@ module.exports = class Head
       # misc
       z 'meta', {name: 'theme-color', content: "#{themeColor}"}
       z 'link', {rel: 'shortcut icon', href: "#{favicon}"}
+      z 'link', {rel: 'canonical', href: 'https://zorium.org'}
 
       # fonts
       z 'style',
