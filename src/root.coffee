@@ -32,14 +32,15 @@ $$root = document.getElementById 'zorium-root'
 
 init = ->
   z.router.init
-    $$root: $$root
+    $$root: document.getElementById 'zorium-root'
 
   $app = new App()
   z.router.use (req, res) ->
     res.send z $app, {req, res}
   z.router.go()
 
-if document.readyState isnt 'complete' and not $$root
+if document.readyState isnt 'complete' and
+    not document.getElementById 'zorium-root'
   window.addEventListener 'load', init
 else
   init()
