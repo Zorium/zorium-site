@@ -13,7 +13,8 @@ App = require './app'
 # LOGGING #
 ###########
 
-window.addEventListener 'error', ErrorReportService.report
+# Configure ErrorReportService before usage
+# window.addEventListener 'error', ErrorReportService.report
 
 if config.ENV isnt config.ENVS.PROD
   log.enableAll()
@@ -26,13 +27,22 @@ else
 #################
 # ROUTING SETUP #
 #################
-z.router.init
-  $$root: document.getElementById 'zorium-root'
 
-$app = new App()
-z.router.use (req, res) ->
-  res.send z $app, {req, res}
-z.router.go()
+$$root = document.getElementById 'zorium-root'
+
+init = ->
+  z.router.init
+    $$root: $$root
+
+  $app = new App()
+  z.router.use (req, res) ->
+    res.send z $app, {req, res}
+  z.router.go()
+
+if document.readyState isnt 'complete' and not $$root
+  window.addEventListener 'load', init
+else
+  init()
 
 #############################
 # ENABLE WEBPACK HOT RELOAD #
