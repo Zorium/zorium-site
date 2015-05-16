@@ -41,7 +41,7 @@ module.exports = class MyPage
     z 'head',
       z 'title', 'title'
   render: ->
-    z 'div', 'hi'
+    z '.p-my-page', 'hi'
 ```
 
 ## CoffeeScript <a class="anchor" name="best-practices_coffee-script"></a>
@@ -55,8 +55,10 @@ module.exports = class MyPage
 
   - prefix component instances with `$`, e.g. `$head = new Head()`
   - prefix DOM nodes with `$$`, e.g. `$$el = document.body`
+  - prefix component styles with `z-*`
+  - prefix page styles with `p-*`
   - postfix pages with `Page` e.g. `MePage = require 'pages/me'`
-  - Components don't need a postfix
+    - Components don't need a postfix
   - folders and files use [snake_case](http://en.wikipedia.org/wiki/Snake_case)
 
 ## Stylus <a class="anchor" name="best-practices_stylus"></a>
