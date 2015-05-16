@@ -13,12 +13,14 @@ module.exports = class HomePage
   constructor: ->
     @scrollTargetSubject = new Rx.BehaviorSubject(null)
     @scrollTargetDisposable = null
+    @shouldSkipScroll = new Rx.BehaviorSubject(false)
+    @scrollToSubject = new Rx.BehaviorSubject({})
 
     @state = z.state
       $head: new Head()
-      $menu: new Menu()
+      $menu: new Menu({@scrollToSubject})
       $header: new Header()
-      $docs: new Docs()
+      $docs: new Docs({@scrollToSubject})
 
   renderHead: ({styles}) =>
     {$head} = @state.getValue()
@@ -32,8 +34,8 @@ module.exports = class HomePage
       section
 
   onMount: ($$el) =>
-    @scrollTargetDisposable = @scrollTargetSubject.subscribe (target) ->
-      if target
+    @scrollTargetDisposable = @scrollTargetSubject.subscribe (target) =>
+      if target and not @shouldSkipScroll.getValue()
         $$scrollTarget = $$el.querySelector("a[name=#{target}]")
         if document.readyState isnt 'complete'
           window.addEventListener 'load', ->
@@ -45,11 +47,12 @@ module.exports = class HomePage
   onBeforeUnmount: =>
     @scrollTargetDisposable?.dispose()
 
-  render: ({params, headers}) =>
+  render: ({params, headers, reqState}) =>
     {$menu, $header, $docs} = @state.getValue()
 
     scrollTarget = @paramsToAnchorName params
     if @scrollTargetSubject.getValue() isnt scrollTarget
+      @shouldSkipScroll.onNext reqState?.shouldSkipScroll or false
       @scrollTargetSubject.onNext scrollTarget
 
     # FIXME: this logic should exist higher, or be managed by obseravables

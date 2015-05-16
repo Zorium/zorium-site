@@ -40,14 +40,19 @@ module.exports = class RootComponent
   render: ({req, res}) =>
     {router, $fourOhFourPage, $currentPage, $previousTree, isEntering,
      isActive} = @state.getValue()
-    {path, query} = req
+    {path, query, state} = req
 
     route = router.match path
 
     $nextPage = route.fn()
 
     renderPage = ($page) ->
-      z $page, {query, params: route.params, headers: req.headers}
+      z $page, {
+        query
+        params: route.params
+        headers: req.headers
+        reqState: state
+      }
 
     if $nextPage isnt $currentPage
       $previousTree = if $currentPage then renderPage $currentPage else null

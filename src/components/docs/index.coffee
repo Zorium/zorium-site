@@ -50,8 +50,13 @@ fonts = [
   'button'
 ]
 
+isNodeVisible = ($el) ->
+  bounds = $el.getBoundingClientRect()
+  # 10 px buffer, prevents off-by-one scrolling to next anchor
+  bounds.top >= -10 and bounds.bottom <= window.innerHeight
+
 module.exports = class Docs
-  constructor: ->
+  constructor: ({@scrollToSubject}) ->
     @state = z.state
       $md: new Md()
       $tutorial: new Tutorial()
@@ -101,7 +106,26 @@ module.exports = class Docs
 
   onMount: ($el) =>
     {$buttons, checkboxes, $dialog, $actions,
-     $dialogTrigger, $fab, $errorInput, $inputs, radios} = @state.getValue()
+    $dialogTrigger, $fab, $errorInput, $inputs, radios} = @state.getValue()
+
+    sectionAnchors = $el.querySelectorAll('a[name]')
+    @scrollListener = =>
+      for $anchor in sectionAnchors
+        if isNodeVisible $anchor
+          # FIXME: shared logic between menu
+          [section, key] = $anchor.name.split '_'
+          path = '/'
+          unless section is 'intro' and not key
+            if section
+              path += section
+            if key
+              path += '/' + key
+          @scrollToSubject.onNext {section, key}
+          z.router.go path, {
+            shouldSkipScroll: true
+          }
+          break
+    window.addEventListener 'scroll', @scrollListener
 
     _.map $el.querySelectorAll('a'), ($$el) ->
       isLocal = $$el.hostname is window.location.hostname
@@ -279,6 +303,10 @@ module.exports = class Docs
     _.map radios.$unchecked.concat(radios.$checked), (radios) ->
       radios.state.subscribe ->
         renderRadios()
+
+  onBeforeUnmount: =>
+    if @scrollListener
+      window.removeEventListener 'scroll', @scrollListener
 
   render: ({title, page}) =>
     {$md, $tutorial, $downloadBtn, $downloadSeedBtn, $getStartedBtn} =

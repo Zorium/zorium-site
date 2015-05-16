@@ -5,9 +5,9 @@ if window?
   require './index.styl'
 
 module.exports = class Menu
-  constructor: ->
+  constructor: ({@scrollToSubject}) ->
     @state = z.state
-      selected: 'api'
+      scrollTo: @scrollToSubject
       isHidden: not @isPermanent()
       links: [
         {
@@ -142,9 +142,11 @@ module.exports = class Menu
     {links} = @state.getValue()
     return _.find(links, {key})?.text or 'Zorium'
 
-  render: ({headers}) =>
-    {links, selected, isHidden} = @state.getValue()
+  render: ({headers, section, key}) =>
+    {links, scrollTo, selected, isHidden} = @state.getValue()
     isPermanent = @isPermanent(headers)
+
+    selected = scrollTo.section or 'intro'
 
     z '.z-menu',
       className: z.classKebab {
@@ -171,7 +173,7 @@ module.exports = class Menu
           z '.break'
           z '.list',
             _.map links, (link) =>
-              isSelected = selected is link.select
+              isSelected = link.select is selected
               z '.group',
                 className: z.classKebab {isSelected}
                 z 'a.section',
@@ -184,7 +186,7 @@ module.exports = class Menu
                           @toggle()
                         z.router.go $$el.href
                       else
-                        @state.set selected: link.select
+                        @scrollToSubject.onNext {section: link.select}
 
                   link.text
                 _.map link.children, (child) =>
