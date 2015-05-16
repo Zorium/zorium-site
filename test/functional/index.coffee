@@ -53,7 +53,7 @@ describe 'functional tests', ->
     client
       .getTitle()
       .then (title) ->
-        title.should.be 'Zorium Seed'
+        title.should.be 'Zorium Site'
 
   it 'checks root node', ->
     client

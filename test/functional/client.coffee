@@ -8,8 +8,8 @@ client = if config.REMOTE_SELENIUM
   webdriverio.remote
     desiredCapabilities:
       browserName: config.SELENIUM_BROWSER
-      name: 'Zorium Seed'
-      tags: ['zorium_seed']
+      name: 'Zorium Site'
+      tags: ['zorium_site']
     host: 'ondemand.saucelabs.com'
     port: 80
     user: config.SAUCE_USERNAME

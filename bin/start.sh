@@ -1,6 +1,6 @@
 #!/bin/sh
-[ -z "$LOG_DIR" ] && export LOG_DIR=/tmp/zorium_seed
-[ -z "$LOG_NAME" ] && export LOG_NAME=zorium_seed
+[ -z "$LOG_DIR" ] && export LOG_DIR=/tmp/zorium_site
+[ -z "$LOG_NAME" ] && export LOG_NAME=zorium_site
 export NODE_ENV=production
 
 mkdir -p $LOG_DIR && ./node_modules/gulp/bin/gulp.js build 2>&1 | tee $LOG_DIR/$LOG_NAME.build.log

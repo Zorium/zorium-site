@@ -1,4 +1,4 @@
-# Zorium Seed
+# Zorium Site
 
 ![zorium](./src/static/images/zorium_icon_256.png)
 

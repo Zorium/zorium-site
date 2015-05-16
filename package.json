@@ -1,5 +1,5 @@
 {
-  "name": "zorium-seed",
+  "name": "zorium-site",
   "private": true,
   "scripts": {
     "postinstall": "node_modules/bower/bin/bower install --allow-root",

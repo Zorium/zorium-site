@@ -1,5 +1,5 @@
 {
-  "name": "zorium-seed",
+  "name": "zorium-site",
   "dependencies": {
     "autoprefixer-loader": {
       "version": "1.2.0",
