@@ -1,9 +1,11 @@
+fs = require 'fs'
 _ = require 'lodash'
 del = require 'del'
 path = require 'path'
 gulp = require 'gulp'
 karma = require('karma').server
 webpack = require 'webpack'
+Promise = require 'bluebird'
 mocha = require 'gulp-mocha'
 rename = require 'gulp-rename'
 nodemon = require 'gulp-nodemon'
@@ -44,8 +46,8 @@ paths =
   functionalTests: './test/functional/**/*.coffee'
   root: './src/root.coffee'
   rootTests: './test/index.coffee'
-  dist: './dist/'
-  build: './build/'
+  dist: './dist'
+  build: './build'
 
 mochaKiller = do ->
   pendingCnt = 0
@@ -226,6 +228,12 @@ gulp.task 'scripts:prod', ['clean:dist'], ->
       root: [path.join(__dirname, 'bower_components')]
       extensions: ['.coffee', '.js', '.json', '']
     output:
-      filename: 'bundle.js'
+      filename: '[hash].bundle.js'
       publicPath: '/'
+  , null, (err, stats) ->
+    if err
+      return
+
+    fs.writeFileSync "#{__dirname}/#{paths.dist}/stats.json",
+                     JSON.stringify stats.toJson()
   .pipe gulp.dest paths.dist

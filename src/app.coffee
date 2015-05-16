@@ -10,11 +10,28 @@ FourOhFourPage = require './pages/404'
 
 ANIMATION_TIME_MS = 500
 
+# FIXME: depends on gulpfile
 styles = if not window?
   # Avoid webpack include
   _fs = 'fs'
   fs = require _fs
-  fs.readFileSync './dist/bundle.css', 'utf-8'
+  try
+    fs.readFileSync './dist/bundle.css', 'utf-8'
+  catch
+    null
+else
+  null
+
+# FIXME: depends on gulpfile
+bundlePath = if not window?
+  # Avoid webpack include
+  _fs = 'fs'
+  fs = require _fs
+  try
+    stats = JSON.parse fs.readFileSync './dist/stats.json', 'utf-8'
+    "/#{stats.hash}.bundle.js"
+  catch
+    null
 else
   null
 
@@ -78,7 +95,7 @@ module.exports = class RootComponent
     if $currentPage is $fourOhFourPage and not window?
       res.status 404
 
-    $head = $currentPage.renderHead {styles}
+    $head = $currentPage.renderHead {styles, bundlePath}
 
     z 'html',
       $head

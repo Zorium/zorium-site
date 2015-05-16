@@ -22,10 +22,10 @@ module.exports = class HomePage
       $header: new Header()
       $docs: new Docs({@scrollToSubject})
 
-  renderHead: ({styles}) =>
+  renderHead: (params) =>
     {$head} = @state.getValue()
 
-    z $head, {styles}
+    z $head, params
 
   paramsToAnchorName: ({section, key}) ->
     if key
