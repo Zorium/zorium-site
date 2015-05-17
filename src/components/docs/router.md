@@ -22,7 +22,7 @@ z.router.init {
 }
 ```
 
-## z.router.use <a class="anchor" name="router_use"></a>
+## z.router.use() <a class="anchor" name="router_use"></a>
 
   - defines an express-like interface for resolving a routing event
 
@@ -56,13 +56,17 @@ z.router.use (req, res) ->
 
   - route to the given path
   - this changes the page URL
+  - passing a second `state` argument will pass data to `req.state`
 
 ```coffee
 ###
-@param {String} path
+@param {String} path - defaults to current url
+@param {Object} [state={}]
 ###
 
-z.router.go '/path'
+z.router.go '/path', {animation: 'spin'}
+
+z.router.use (req) -> req.state # {animation: 'spin'}
 ```
 
 ## z.router.link() <a class="anchor" name="router_link"></a>
