@@ -146,7 +146,7 @@ module.exports = class Menu
     {links, scrollTo, selected, isHidden} = @state.getValue()
     isPermanent = @isPermanent(headers)
 
-    selected = scrollTo.section or 'intro'
+    selected = scrollTo?.section or 'intro'
 
     z '.z-menu',
       className: z.classKebab {
