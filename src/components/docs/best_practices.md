@@ -123,6 +123,17 @@ class Async
         Rx.Observable.fromPromise window.fetch('/model.json')
 ```
 
+## Server-side considerations <a class="anchor" name="best-practices_server-side-considerations"></a>
+
+It is important to keep the following in mind when taking advantage of server-side rendering:
+
+  - Do not store any local state
+    - client-side state can be used if explicitly checking for `window?` before creating
+  - Bots/crawlers will generate the page
+    - This may be important for side-effects or metric gathering
+  - Be highly security-conscious
+    - Understand the potential for CPU-based DOS attacks, e.g. [ReDoS](https://www.owasp.org/index.php/Regular_expression_Denial_of_Service_-_ReDoS)
+
 ## Animation <a class="anchor" name="best-practices_animation"></a>
 
 Animation state should be encoded in the component state

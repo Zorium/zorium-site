@@ -65,6 +65,10 @@ module.exports = class Menu
             { key: 'naming', text: 'Naming' }
             { key: 'stylus', text: 'Stylus' }
             { key: 'state-management', text: 'State Management' }
+            {
+              key: 'server-side-considerations'
+              text: 'Server-Side Considerations'
+            }
             { key: 'animation', text: 'Animation' }
           ]
         }
