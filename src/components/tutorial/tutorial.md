@@ -30,6 +30,10 @@ module.exports = class Counter
     @state = z.state
       count: 0
 
+  handleClick: =>
+    {count} = @state.getValue()
+    @state.set count: count + 1
+
   render: =>
     {count} = @state.getValue()
 
@@ -37,7 +41,7 @@ module.exports = class Counter
       z 'h1', "#{count}"
       z 'button',
         style: fontSize: '16px'
-        onclick: => @state.set count: count + 1
+        onclick: @handleClick
         'increment'
 
 ```
@@ -133,8 +137,7 @@ class App
             when '/'
               z 'div', 'Welcome'
             else
-              unless window?
-                res.status 404
+              res.status? 404 # server-side
               z 'div', 'Oh No! 404'
 
 express = require 'express'

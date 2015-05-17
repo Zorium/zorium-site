@@ -51,6 +51,51 @@ module.exports = class MyPage
     - Alternatively, install the Clay [Atom plugin](https://github.com/claydotio/linter-clay-coffeelint)
   - Always deconstruct `@state` and `params` before using (e.g. `{val} = @state.getValue()`)
 
+## Webpack Configuration <a class="anchor" name="best-practices_webpack"></a>
+
+The following is the recommended base webpack configuration
+
+```coffee
+  module:
+    exprContextRegExp: /$^/ # allow for mixing node-require without bloat
+    exprContextCritical: false
+    loaders: [
+      { test: /\.coffee$/, loader: 'coffee' }
+      { test: /\.json$/, loader: 'json' }
+      { test: /\.css$/, loader: 'style!css' }
+      {
+        test: /\.styl$/
+        loader:'style!css!autoprefixer!' +
+          'stylus?paths[]=bower_components&paths[]=node_modules'
+      }
+    ]
+  plugins: [
+    new webpack.ResolverPlugin(
+      new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin(
+        'bower.json', ['main']
+      )
+    )
+  ]
+  resolve:
+    root: [path.join(__dirname, 'bower_components')]
+    extensions: ['.coffee', '.js', '.json', '']
+```
+
+```bash
+npm install --save-dev coffee-loader json-loader style-loader autoprefixer-loader css-loader stylus-loader
+```
+
+In your application you can mix node-require's without bloating the output
+
+```coffee
+Promise = if window?
+  window.Promise
+else
+  # Avoid webpack include
+  _Promise = 'bluebird'
+  require _Promise
+```
+
 ## Naming <a class="anchor" name="best-practices_naming"></a>
 
   - prefix component instances with `$`, e.g. `$head = new Head()`

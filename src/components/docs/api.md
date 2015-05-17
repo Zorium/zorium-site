@@ -190,7 +190,10 @@ z.render $$domNode, $component
 Render a virtual-dom tree to a string  
 Completes after all states have settled to a value, or the request times out.  
 The default timeout is 250ms.  
-Errors may contain the last successful rendering (in case of timeout or error) on `error.html`
+Errors may contain the last successful rendering (in case of timeout or error) on `error.html`  
+
+**Note: Server-Side rendering is meant to stay separate from the API layer and only pre-render the DOM.  
+i.e. keep the client-server model you would use for a single-page application**
 
 ```coffee
 ###

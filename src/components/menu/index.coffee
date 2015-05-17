@@ -62,6 +62,7 @@ module.exports = class Menu
           children: [
             { key: 'zorium-seed', text: 'Zorium Seed' }
             { key: 'coffee-script', text: 'CoffeeScript' }
+            { key: 'webpack', text: 'Webpack' }
             { key: 'naming', text: 'Naming' }
             { key: 'stylus', text: 'Stylus' }
             { key: 'state-management', text: 'State Management' }
