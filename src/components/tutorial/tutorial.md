@@ -68,19 +68,16 @@ class Brick
 
 module.exports = class House
   constructor: ->
-    @state = z.state
-      $button: new Button()
-      $bricks: _.map _.range(10), -> new Brick()
+    @$button = new Button()
+    @$bricks = _.map _.range(10), -> new Brick()
 
   render: =>
-    {$button, $bricks} = @state.getValue()
-
     z '.z-house',
-      z $button, # A Material Design Button
+      z @$button, # A Material Design Button
         $content: 'Hello World'
         isRaised: true
 
-      _.map $bricks, ($brick, i) -> # Bricks!
+      _.map @$bricks, ($brick, i) -> # Bricks!
         z $brick, {size: i + 1}
 
 ```
