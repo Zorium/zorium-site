@@ -80,16 +80,16 @@ z 'div',
 
 ### Lifecycle Hooks
 
-  - `onMount()` called with element when inserted into the DOM
-  - `onBeforeUnmount()` called before the element is removed from the DOM
+  - `afterMount()` called with element when inserted into the DOM
+  - `beforeUnmount()` called before the element is removed from the DOM
 
 ```coffee
 class BindComponent
-  onMount: ($el) ->
+  afterMount: ($el) ->
     # called after $el has been inserted into the DOM
     # $el is the rendered DOM node
 
-  onBeforeUnmount: ->
+  beforeUnmount: ->
     # called before the element is removed from the DOM
 
   render: ->

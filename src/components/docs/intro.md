@@ -1,7 +1,7 @@
 # The CoffeeScript Web Framework <a class="anchor" name="intro"></a>
 
 (╯°□°)╯︵ ┻━┻  
-v1.0.0-rc19
+v1.0.0
 
 ## Example <a class="anchor" name="intro_example"></a>
 

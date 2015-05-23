@@ -55,18 +55,14 @@ z.router.use (req, res) ->
 ## z.router.go() <a class="anchor" name="router_go"></a>
 
   - route to the given path
-  - this changes the page URL
-  - passing a second `state` argument will pass data to `req.state`
+  - this changes the page URL, causing a history pushState
 
 ```coffee
 ###
 @param {String} path - defaults to current url
-@param {Object} [state={}]
 ###
 
-z.router.go '/path', {animation: 'spin'}
-
-z.router.use (req) -> req.state # {animation: 'spin'}
+z.router.go '/path'
 ```
 
 ## z.router.link() <a class="anchor" name="router_link"></a>
