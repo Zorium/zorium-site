@@ -18,10 +18,10 @@ class AppComponent
 
     z 'div.zorium',
       z 'p.text',
-        "The Future -#{name}"
+        "The Future is #{name}"
 
 z.render document.body, new AppComponent()
-# <div class="zorium"><p class="text">The Future -Zorium</p></div>
+# <div class="zorium"><p class="text">The Future is Zorium</p></div>
 ```
 
 ## Features <a class="anchor" name="intro_features"></a>
