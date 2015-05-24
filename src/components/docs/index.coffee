@@ -52,8 +52,8 @@ fonts = [
 
 isNodeVisible = ($el) ->
   bounds = $el.getBoundingClientRect()
-  # 10 px buffer, prevents off-by-one scrolling to next anchor
-  bounds.top >= -10 and bounds.bottom <= window.innerHeight
+  # 20 px buffer, prevents off-by-one scrolling to next anchor
+  bounds.top >= -20 and bounds.bottom <= window.innerHeight
 
 module.exports = class Docs
   constructor: ({@scrollToSubject}) ->
@@ -121,9 +121,8 @@ module.exports = class Docs
             if key
               path += '/' + key
           @scrollToSubject.onNext {section, key}
-          z.router.go path, {
-            shouldSkipScroll: true
-          }
+          # FIXME: should be handled by zorium router?
+          window.history?.replaceState? null, null, path
           break
     window.addEventListener 'scroll', @scrollListener
 
