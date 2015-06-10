@@ -87,8 +87,8 @@ app.use '/demo', (req, res) ->
   }
 
 if config.ENV is config.ENVS.PROD
-then app.use express['static'](__dirname + '/dist')
-else app.use express['static'](__dirname + '/build')
+then app.use express.static(__dirname + '/dist', {maxAge: '4h'})
+else app.use express.static(__dirname + '/build', {maxAge: '4h'})
 
 app.use router
 app.use (req, res, next) ->
