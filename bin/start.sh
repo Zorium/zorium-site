@@ -14,11 +14,4 @@ while read -d $'\0' -r file; do
   done < <(grep -o "REPLACE_ENV_[A-Z0-9_]\+" $file | uniq)
 done < <(find ./dist -iname '*.bundle.js' -print0)
 
-./node_modules/pm2/bin/pm2 \
-  start ./bin/server.coffee \
-  -i 0 \
-  --merge-logs \
-  --no-daemon \
-  --no-color \
-  -o /dev/stdout \
-  -e /dev/stderr
+./node_modules/coffee-script/bin/coffee ./bin/server.coffee
