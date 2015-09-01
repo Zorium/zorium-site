@@ -11,7 +11,7 @@ config = require './src/config'
 App = require './src/app'
 
 MIN_TIME_REQUIRED_FOR_HSTS_GOOGLE_PRELOAD_MS = 10886400000 # 18 weeks
-HEALTHCHECK_TIMEOUT = 200
+HEALTHCHECK_TIMEOUT = 1000
 
 app = express()
 router = express.Router()
