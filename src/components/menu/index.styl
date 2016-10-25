@@ -62,7 +62,7 @@ max-width(n)
               background: $grey200
 
             &.is-selected
-              font-weight: bold
+              background: rgba(0, 0, 0, 0.1)
 
           > .link
             zp-font-body2()
@@ -76,7 +76,12 @@ max-width(n)
             &:active
               background: $grey200
 
+            &.is-selected
+              background: rgba(0, 0, 0, 0.1)
+
           &.is-selected
+            > .section
+              font-weight: bold
             > .link
               display: block
 

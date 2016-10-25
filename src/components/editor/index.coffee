@@ -18,7 +18,7 @@ module.exports = class Editor
         else
           Rx.Observable.return null
 
-  onMount: ($$el) =>
+  afterMount: ($$el) =>
     coffeeResolve = -> null
     coffeePromise = new Promise (resolve) ->
       coffeeResolve = resolve
@@ -28,7 +28,7 @@ module.exports = class Editor
       CodeMirrorPromiseResolve = resolve
 
     require.ensure [
-      'coffee-script/extras/coffee-script.js'
+      '../../vendor/coffee-script.js'
       'codemirror'
       'codemirror/mode/coffeescript/coffeescript.js'
       'codemirror/keymap/sublime.js'
@@ -36,7 +36,7 @@ module.exports = class Editor
       'codemirror/theme/monokai.css'
     ], (require) ->
       coffeeResolve \
-        require 'coffee-script/extras/coffee-script.js'
+        require '../../vendor/coffee-script.js'
       CodeMirrorPromiseResolve require 'codemirror'
       require 'codemirror/mode/coffeescript/coffeescript.js'
       require 'codemirror/keymap/sublime.js'
@@ -98,7 +98,7 @@ module.exports = class Editor
           console.error err
 
 
-  onBeforeUnmount: =>
+  beforeUnmount: =>
     if @editor
       $$rm = @editor.getWrapperElement()
       $$rm.parentElement.removeChild $$rm

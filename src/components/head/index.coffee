@@ -1,137 +1,125 @@
+_ = require 'lodash'
 z = require 'zorium'
-paperColors = require 'zorium-paper/colors.json'
+colors = require 'zorium-paper/colors.json'
 
 config = require '../../config'
 
 module.exports = class Head
-  render: ({styles, bundlePath, title}) ->
-    isInliningSource = config.ENV is config.ENVS.PROD
-    webpackDevHostname = config.WEBPACK_DEV_HOSTNAME
-    webpackDevPort = config.WEBPACK_DEV_PORT
-    title ?= 'Zorium Site - (╯°□°）╯︵ ┻━┻)'
-    description = 'Documentation for the Zorium CoffeeScript Web Framework'
-    keywords = 'Zorium'
-    name = 'Zorium Site'
-    twitterHandle = '@ZoriumJS'
-    themeColor = paperColors.$teal700
-    favicon = '/images/zorium_icon_32.png'
-    icon1024 = '/images/zorium_icon_1024.png'
-    icon256 = '/images/zorium_icon_256.png'
-    url = 'https://zorium.org'
+  constructor: ({model, meta, serverData}) ->
+    meta = _.merge {
+      title: 'Zorium Seed'
+      description: 'Zorium Seed - (╯°□°）╯︵ ┻━┻)'
+      icon256: '/images/zorium_icon_256.png'
+      twitter:
+        siteHandle: '@ZoriumJS'
+        creatorHandle: '@ZoriumJS'
+        title: undefined
+        description: undefined
+        # min 280 x 150 < 1MB
+        image: '/images/zorium_icon_1024.png'
+
+      openGraph:
+        title: undefined
+        url: undefined
+        description: undefined
+        siteName: 'Zorium Seed'
+        # min 200 x 200, min reccomended 600 x 315, reccomended 1200 x 630
+        image: '/images/zorium_icon_1024.png'
+
+      ios:
+        # min 152 x 152
+        icon: undefined
+
+      canonical: undefined
+      themeColor: colors.$teal700
+      # reccomended 32 x 32 png
+      favicon: '/images/zorium_icon_32.png'
+      manifestUrl: '/manifest.json'
+    }, meta
+
+    meta = _.merge {
+      twitter:
+        title: meta.title
+        description: meta.description
+      openGraph:
+        title: meta.title
+        url: meta.canonical
+        description: meta.description
+      ios:
+        icon: meta.icon256
+    }, meta
+
+    @state = z.state
+      meta: meta
+      serverData: serverData
+      modelSerialization: model.getSerializationStream()
+
+  render: =>
+    {meta, serverData, modelSerialization} = @state.getValue()
+    {twitter, openGraph, ios, kik} = meta
+    isInline = config.ENV is config.ENVS.PROD
 
     z 'head',
-      z 'title', "#{title}"
-      z 'meta', {name: 'description', content: "#{description}"}
-      z 'meta', {name: 'keywords', content: "#{keywords}"}
+      z 'title', "#{meta.title}"
+      z 'meta', {name: 'description', content: "#{meta.description}"}
 
       # mobile
       z 'meta',
         name: 'viewport'
         content: 'initial-scale=1.0, width=device-width, minimum-scale=1.0,
                   maximum-scale=1.0, user-scalable=0, minimal-ui'
-      z 'meta', {name: 'msapplication-tap-highlight', content: 'no'}
-      z 'meta', {name: 'apple-mobile-web-app-capable', content: 'yes'}
-
-      # Schema.org markup for Google+
-      z 'meta', {itemprop: 'name', content: "#{name}"}
-      z 'meta', {itemprop: 'description', content: "#{description}"}
-      z 'meta', {itemprop: 'image', content: "#{icon256}"}
 
       # Twitter card
       z 'meta', {name: 'twitter:card', content: 'summary_large_image'}
-      z 'meta', {name: 'twitter:site', content: "#{twitterHandle}"}
-      z 'meta', {name: 'twitter:creator', content: "#{twitterHandle}"}
-      z 'meta', {name: 'twitter:title', content: "#{title}"}
-      z 'meta', {name: 'twitter:description', content: "#{description}"}
-      z 'meta', {name: 'twitter:image:src', content: "#{icon1024}"}
+      z 'meta', {name: 'twitter:site', content: "#{twitter.siteHandle}"}
+      z 'meta', {name: 'twitter:creator', content: "#{twitter.creatorHandle}"}
+      z 'meta', {name: 'twitter:title', content: "#{twitter.title}"}
+      z 'meta', {name: 'twitter:description', content: "#{twitter.description}"}
+      z 'meta', {name: 'twitter:image:src', content: "#{twitter.image}"}
 
       # Open Graph
-      z 'meta', {property: 'og:title', content: "#{name}"}
+      z 'meta', {property: 'og:title', content: "#{openGraph.title}"}
       z 'meta', {property: 'og:type', content: 'website'}
-      z 'meta', {property: 'og:url', content: "#{url}"}
-      z 'meta', {property: 'og:image', content: "#{icon1024}"}
-      z 'meta', {property: 'og:description', content: "#{description}"}
-      z 'meta', {property: 'og:site_name', content: "#{name}"}
+      z 'meta', {property: 'og:url', content: "#{openGraph.url}"}
+      z 'meta', {property: 'og:image', content: "#{openGraph.image}"}
+      z 'meta', {
+        property: 'og:description', content: "#{openGraph.description}"
+      }
+      z 'meta', {property: 'og:site_name', content: "#{openGraph.siteName}"}
 
       # iOS
-      z 'link', {rel: 'apple-touch-icon', href: "#{icon256}"}
+      z 'meta', {name: 'apple-mobile-web-app-capable', content: 'yes'}
+      z 'link', {rel: 'apple-touch-icon', href: "#{ios.icon}"}
 
       # misc
-      z 'meta', {name: 'theme-color', content: "#{themeColor}"}
-      z 'link', {rel: 'shortcut icon', href: "#{favicon}"}
-      z 'link', {rel: 'canonical', href: 'https://zorium.org'}
+      z 'link', {rel: 'canonical', href: "#{meta.canonical}"}
+      z 'meta', {name: 'theme-color', content: "#{meta.themeColor}"}
+      z 'link', {rel: 'icon', href: "#{meta.favicon}"}
+      z 'meta', {name: 'msapplication-tap-highlight', content: 'no'}
+
+      # Android
+      z 'link', {rel: 'manifest', href: "#{meta.manifestUrl}"}
+
+      # serialization
+      z 'script.model',
+        innerHTML: modelSerialization or ''
 
       # fonts
-      z 'style',
-        innerHTML: '
-          @font-face {
-            font-family: "Roboto";
-            font-style: normal;
-            font-weight: 300;
-            src:
-              local("Roboto Light"),
-              local("Roboto-Light"),
-              url(https://fonts.gstatic.com/s/roboto/v15/Hgo13k-tfSpn0qi1S' +
-              'FdUfZBw1xU1rKptJj_0jans920.woff2) format("woff2"),
-              url(https://fonts.gstatic.com/s/roboto/v15/Hgo13k-tfSpn0qi1S' +
-              'FdUfbO3LdcAZYWl9Si6vvxL-qU.woff) format("woff"),
-              url(https://fonts.gstatic.com/s/roboto/v15/Hgo13k-tfSpn0qi1S' +
-              'FdUfSZ2oysoEQEeKwjgmXLRnTc.ttf) format("truetype");
-          }
-          @font-face {
-            font-family: "Roboto";
-            font-style: normal;
-            font-weight: 400;
-            src:
-              local("Roboto"),
-              local("Roboto-Regular"),
-              url(https://fonts.gstatic.com/s/roboto/v15/oMMgfZMQthOryQo9n' +
-              '22dcuvvDin1pK8aKteLpeZ5c0A.woff2) format("woff2"),
-              url(https://fonts.gstatic.com/s/roboto/v15/CrYjSnGjrRCn0pd9V' +
-              'QsnFOvvDin1pK8aKteLpeZ5c0A.woff) format("woff"),
-              url(https://fonts.gstatic.com/s/roboto/v15/QHD8zigcbDB8aPfIo' +
-              'aupKOvvDin1pK8aKteLpeZ5c0A.ttf) format("truetype");
-          }
-          @font-face {
-            font-family: "Roboto";
-            font-style: normal;
-            font-weight: 500;
-            src:
-              local("Roboto Medium"),
-              local("Roboto-Medium"),
-              url(https://fonts.gstatic.com/s/roboto/v15/RxZJdnzeo3R5zSexg' +
-              'e8UUZBw1xU1rKptJj_0jans920.woff2) format("woff2"),
-              url(https://fonts.gstatic.com/s/roboto/v15/RxZJdnzeo3R5zSexg' +
-              'e8UUbO3LdcAZYWl9Si6vvxL-qU.woff) format("woff"),
-              url(https://fonts.gstatic.com/s/roboto/v15/RxZJdnzeo3R5zSexg' +
-              'e8UUSZ2oysoEQEeKwjgmXLRnTc.ttf) format("truetype");
-          }
-        '
+      z 'link',
+        rel: 'stylesheet'
+        type: 'text/css'
+        href: 'https://fonts.googleapis.com/css?family=Roboto:400,300,500'
+      z 'link',
+        rel: 'stylesheet'
+        type: 'text/css'
+        href: 'https://fonts.googleapis.com/icon?family=Material+Icons'
 
       # styles
-      if isInliningSource
-        z 'style',
-          innerHTML: styles
-      else
-        null
-
-      # Google Analytics
-      z 'script',
-        innerHTML: "
-          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;
-          i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},
-          i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;
-          a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script',
-          '//www.google-analytics.com/analytics.js','ga');
-
-          ga('create', 'UA-27992080-10', 'auto');
-          ga('send', 'pageview');
-        "
+      z 'style.styles',
+        innerHTML: if isInline then serverData?.styles else null
 
       # scripts
-      z 'script',
+      z 'script.bundle',
         async: true
-        src: if isInliningSource then bundlePath \
-             else "//#{webpackDevHostname}:#{webpackDevPort}/bundle.js"
+        src: if isInline then serverData?.bundlePath \
+             else "#{config.WEBPACK_DEV_URL}/bundle.js"

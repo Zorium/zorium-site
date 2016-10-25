@@ -5,7 +5,7 @@ if window?
   require './index.styl'
 
 module.exports = class Menu
-  constructor: ({@scrollToSubject}) ->
+  constructor: ({@router, @scrollToSubject}) ->
     @state = z.state
       scrollTo: @scrollToSubject
       isHidden: not @isPermanent()
@@ -14,86 +14,86 @@ module.exports = class Menu
           select: 'intro'
           text: 'Intro'
           children: [
-            { key: 'example', text: 'Example' }
-            { key: 'features', text: 'Features' }
-            { key: 'installation', text: 'Installation' }
-            { key: 'contribute', text: 'Contribute' }
+            {key: 'example', text: 'Example'}
+            {key: 'features', text: 'Features'}
+            {key: 'installation', text: 'Installation'}
+            {key: 'contribute', text: 'Contribute'}
           ]
         }
         {
           select: 'tutorial'
           text: 'Tutorial'
           children: [
-            { key: 'first-component', text: 'First Component' }
-            { key: 'stateful-components', text: 'Stateful Components' }
-            { key: 'composing-components', text: 'Composing Components' }
-            { key: 'streams', text: 'Streams' }
-            { key: 'server-side-rendering', text: 'Server Side Rendering' }
+            {key: 'first-component', text: 'First Component'}
+            {key: 'stateful-components', text: 'Stateful Components'}
+            {key: 'composing-components', text: 'Composing Components'}
+            {key: 'streams', text: 'Streams'}
+            {key: 'server-side-rendering', text: 'Server Side Rendering'}
           ]
         }
         {
           select: 'api'
           text: 'Core API'
           children: [
-            { key: 'z', text: 'z()' }
-            { key: 'components', text: 'Components'}
-            { key: 'state', text: 'z.state()'}
-            { key: 'render', text: 'z.render()'}
-            { key: 'render-to-string', text: 'z.renderToString()'}
-            { key: 'ev', text: 'z.ev()'}
-            { key: 'class-kebab', text: 'z.classKebab()'}
-            { key: 'is-simple-click', text: 'z.isSimpleClick()'}
+            {key: 'z', text: 'z()'}
+            {key: 'components', text: 'Components'}
+            {key: 'state', text: 'z.state()'}
+            {key: 'render', text: 'z.render()'}
+            {key: 'render-to-string', text: 'z.renderToString()'}
+            {key: 'ev', text: 'z.ev()'}
+            {key: 'class-kebab', text: 'z.classKebab()'}
+            {key: 'is-simple-click', text: 'z.isSimpleClick()'}
           ]
         }
         {
           select: 'router'
           text: 'Router API'
           children: [
-            { key: 'init', text: 'z.router.init()' }
-            { key: 'use', text: 'z.router.use()' }
-            { key: 'go', text: 'z.router.go()' }
-            { key: 'link', text: 'z.router.link()' }
-            { key: 'full-page-rendering', text: 'Full Page Rendering' }
+            {key: 'init', text: 'z.router.init()'}
+            {key: 'use', text: 'z.router.use()'}
+            {key: 'go', text: 'z.router.go()'}
+            {key: 'link', text: 'z.router.link()'}
+            {key: 'full-page-rendering', text: 'Full Page Rendering'}
           ]
         }
         {
           select: 'best-practices'
           text: 'Best Practices'
           children: [
-            { key: 'zorium-seed', text: 'Zorium Seed' }
-            { key: 'coffee-script', text: 'CoffeeScript' }
-            { key: 'webpack', text: 'Webpack' }
-            { key: 'naming', text: 'Naming' }
-            { key: 'stylus', text: 'Stylus' }
-            { key: 'state-management', text: 'State Management' }
+            {key: 'zorium-seed', text: 'Zorium Seed'}
+            {key: 'coffee-script', text: 'CoffeeScript'}
+            {key: 'webpack', text: 'Webpack'}
+            {key: 'naming', text: 'Naming'}
+            {key: 'stylus', text: 'Stylus'}
+            {key: 'state-management', text: 'State Management'}
             {
               key: 'server-side-considerations'
               text: 'Server-Side Considerations'
             }
-            { key: 'animation', text: 'Animation' }
+            {key: 'animation', text: 'Animation'}
           ]
         }
         {
           select: 'paper'
           text: 'Zorium Paper'
           children: [
-            { key: 'shadows', text: 'Shadows' }
-            { key: 'fonts', text: 'Fonts' }
-            { key: 'colors', text: 'Colors' }
-            { key: 'button', text: 'Button' }
-            { key: 'checkbox', text: 'Checkbox' }
-            { key: 'dialog', text: 'Dialog' }
-            { key: 'floating-action-button', text: 'Floating Action Button' }
-            { key: 'input', text: 'Input' }
-            { key: 'radio-button', text: 'Radio Button' }
+            {key: 'shadows', text: 'Shadows'}
+            {key: 'fonts', text: 'Fonts'}
+            {key: 'colors', text: 'Colors'}
+            {key: 'button', text: 'Button'}
+            {key: 'checkbox', text: 'Checkbox'}
+            {key: 'dialog', text: 'Dialog'}
+            {key: 'floating-action-button', text: 'Floating Action Button'}
+            {key: 'input', text: 'Input'}
+            {key: 'radio-button', text: 'Radio Button'}
           ]
         }
       ]
 
-  onMount: =>
+  afterMount: =>
     window.addEventListener 'resize', @onResize
 
-  onBeforeUnmount: =>
+  beforeUnmount: =>
     window.removeEventListener 'resize', @onResize
 
   onResize: =>
@@ -120,7 +120,7 @@ module.exports = class Menu
     | Zune
     ///.test userAgent
 
-  isPermanent: (headers) ->
+  isPermanent: (headers) =>
     if window?
       window.matchMedia('(min-width: 1000px)').matches
     else if headers
@@ -147,11 +147,12 @@ module.exports = class Menu
     {links} = @state.getValue()
     return _.find(links, {key})?.text or 'Zorium'
 
-  render: ({headers, section, key}) =>
-    {links, scrollTo, selected, isHidden} = @state.getValue()
+  render: ({headers}) =>
+    {links, scrollTo, isHidden} = @state.getValue()
     isPermanent = @isPermanent(headers)
 
     selected = scrollTo?.section or 'intro'
+    selectedKey = scrollTo?.key
 
     z '.z-menu',
       className: z.classKebab {
@@ -173,7 +174,7 @@ module.exports = class Menu
                 window.scrollTo(0, 0)
                 unless isPermanent
                   @toggle()
-                z.router.go $$el.href
+                @router.go $$el.href
             'Zorium'
           z '.break'
           z '.list',
@@ -182,6 +183,8 @@ module.exports = class Menu
               z '.group',
                 className: z.classKebab {isSelected}
                 z 'a.section',
+                  className: z.classKebab
+                    isSelected: isSelected and not selectedKey?
                   href: "/#{link.select}"
                   onclick: z.ev (e, $$el) =>
                     if z.isSimpleClick e
@@ -189,19 +192,21 @@ module.exports = class Menu
                       if isSelected
                         unless isPermanent
                           @toggle()
-                        z.router.go $$el.href
+                        @router.go $$el.href
                       else
                         @scrollToSubject.onNext {section: link.select}
 
                   link.text
                 _.map link.children, (child) =>
                   z 'a.link',
+                    className: z.classKebab
+                      isSelected: child.key is selectedKey
                     href: "/#{link.select}/#{child.key}"
                     onclick: z.ev (e, $$el) =>
                       if z.isSimpleClick e
                         e.preventDefault()
                         unless isPermanent
                           @toggle()
-                        z.router.go $$el.href
+                        @router.go $$el.href
                   , child.text
         z '.padder'

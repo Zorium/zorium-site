@@ -4,16 +4,12 @@ Rx = require 'rx-lite'
 paperColors = require 'zorium-paper/colors.json'
 Button = require 'zorium-paper/button'
 Checkbox = require 'zorium-paper/checkbox'
-Dialog = require 'zorium-paper/dialog'
-FloatingActionButton = require 'zorium-paper/floating_action_button'
 Input = require 'zorium-paper/input'
 Radio = require 'zorium-paper/radio_button'
 
-util = require '../../lib/util'
 Md = require '../md'
 Tutorial = require '../tutorial'
-PrimaryButton = require '../primary_button'
-SecondaryButton = require '../secondary_button'
+MarkdownService = require '../../services/markdown'
 
 if window?
   intro = require './intro.md'
@@ -26,12 +22,16 @@ else
   _fs = 'fs'
   fs = require _fs
 
-  intro = util.marked fs.readFileSync __dirname + '/intro.md', 'utf-8'
-  api = util.marked fs.readFileSync __dirname + '/api.md', 'utf-8'
-  router = util.marked fs.readFileSync __dirname + '/router.md', 'utf-8'
-  bestPractices = util.marked \
+  intro = MarkdownService.marked \
+    fs.readFileSync __dirname + '/intro.md', 'utf-8'
+  api = MarkdownService.marked \
+    fs.readFileSync __dirname + '/api.md', 'utf-8'
+  router = MarkdownService.marked \
+    fs.readFileSync __dirname + '/router.md', 'utf-8'
+  bestPractices = MarkdownService.marked \
     fs.readFileSync __dirname + '/best_practices.md', 'utf-8'
-  paper = util.marked fs.readFileSync __dirname + '/paper.md', 'utf-8'
+  paper = MarkdownService.marked \
+    fs.readFileSync __dirname + '/paper.md', 'utf-8'
 
 if window?
   require './index.styl'
@@ -56,13 +56,16 @@ isNodeVisible = ($el) ->
   bounds.top >= -20 and bounds.bottom <= window.innerHeight
 
 module.exports = class Docs
-  constructor: ({@scrollToSubject}) ->
+  constructor: ({@router, @scrollToSubject}) ->
     @state = z.state
-      $md: new Md()
+      $md1: new Md()
+      $md2: new Md()
       $tutorial: new Tutorial()
-      $getStartedBtn: new PrimaryButton()
-      $downloadBtn: new SecondaryButton()
-      $downloadSeedBtn: new SecondaryButton()
+      $getStartedBtn: new Button
+        isRaised: true
+        color: 'teal'
+      $downloadBtn: new Button()
+      $downloadSeedBtn: new Button()
       $buttons: [
         new Button()
         new Button()
@@ -80,13 +83,6 @@ module.exports = class Docs
           new Checkbox()
           new Checkbox()
         ]
-      $dialog: new Dialog()
-      $dialogTrigger: new PrimaryButton()
-      $actions: [
-        new Button()
-        new Button()
-      ]
-      $fab: new FloatingActionButton()
       $errorInput:
         new Input(error: new Rx.BehaviorSubject 'Input is required')
       $inputs: [
@@ -104,7 +100,7 @@ module.exports = class Docs
           new Radio()
         ]
 
-  onMount: ($el) =>
+  afterMount: ($el) =>
     {$buttons, checkboxes, $dialog, $actions,
     $dialogTrigger, $fab, $errorInput, $inputs, radios} = @state.getValue()
 
@@ -152,19 +148,19 @@ module.exports = class Docs
       z '#z-docs_paper-hack-buttons.z-docs_paper-hack',
         z '.buttons',
           z $buttons[0],
-            $content: 'button'
+            $children: 'button'
           z $buttons[1],
-            $content: 'colored'
+            $children: 'colored'
             colors:
               ink: paperColors.$red500
           z $buttons[2],
-            $content: 'disabled'
+            $children: 'disabled'
             isDisabled: true
           z $buttons[3],
-            $content: 'button'
+            $children: 'button'
             isRaised: true
           z $buttons[4],
-            $content: 'colored'
+            $children: 'colored'
             isRaised: true
             colors:
               cText: paperColors.$blue500Text
@@ -173,7 +169,7 @@ module.exports = class Docs
               c600: paperColors.$blue600
               c700: paperColors.$blue700
           z $buttons[5],
-            $content: 'disabled'
+            $children: 'disabled'
             isRaised: true
             isDisabled: true
 
@@ -202,7 +198,7 @@ module.exports = class Docs
       z.render $el.querySelector('#z-docs_paper-hack-dialogs'),
         z '#z-docs_paper-hack-dialogs.z-docs_paper-hack',
           z $dialogTrigger,
-            $content: 'open dialog'
+            $children: 'open dialog'
             onclick: ->
               isDialogVisible = true
               renderDialogs()
@@ -214,14 +210,14 @@ module.exports = class Docs
                 actions: [
                   {
                     $el: z $actions[0],
-                      $content: 'disagree'
+                      $children: 'disagree'
                       isShort: true
                       colors:
                         ink: paperColors.$blue500
                   }
                   {
                     $el: z $actions[1],
-                      $content: 'agree'
+                      $children: 'agree'
                       isShort: true
                       colors:
                         ink: paperColors.$blue500
@@ -303,31 +299,34 @@ module.exports = class Docs
       radios.state.subscribe ->
         renderRadios()
 
-  onBeforeUnmount: =>
+  beforeUnmount: =>
     if @scrollListener
       window.removeEventListener 'scroll', @scrollListener
 
   render: ({title, page}) =>
-    {$md, $tutorial, $downloadBtn, $downloadSeedBtn, $getStartedBtn} =
+    {$md1, $md2, $tutorial, $downloadBtn, $downloadSeedBtn, $getStartedBtn} =
       @state.getValue()
 
     z '.z-docs',
       z '.buttons',
-        z.router.link \
-          z 'a',
-            href: '/tutorial',
-            z $getStartedBtn, $content: 'get started'
+        z 'a',
+          href: '/tutorial',
+          onclick: z.ev (e, $$el) =>
+            if z.isSimpleClick e
+              e.preventDefault()
+              @router.go $$el.href
+          z $getStartedBtn, $children: 'get started'
         z 'a',
           href: 'https://github.com/Zorium/zorium',
           target: '_blank',
-          z $downloadBtn, $content: 'github'
+          z $downloadBtn, $children: 'github'
         z 'a',
           href: 'https://github.com/Zorium/zorium-seed',
           target: '_blank',
-          z $downloadSeedBtn, $content: 'seed'
-      z $md, html: intro
+          z $downloadSeedBtn, $children: 'seed'
+      z $md1, html: intro
       $tutorial
-      z $md, html: [
+      z $md2, html: [
         api
         router
         bestPractices

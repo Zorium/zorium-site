@@ -1,5 +1,4 @@
 z = require 'zorium'
-Icon = require 'zorium-paper/icon'
 
 if window?
   require './index.styl'
@@ -9,7 +8,6 @@ module.exports = class Header
     @state = z.state
       isMini: false
       isFixed: false
-      $hamburger: new Icon()
 
   onScroll: =>
     offset = window.pageYOffset
@@ -51,24 +49,22 @@ module.exports = class Header
       else if isFixed
         @state.set isFixed: false
 
-  onMount: (@$$el) =>
+  afterMount: (@$$el) =>
     document.addEventListener 'scroll', @onScroll
     @onScroll()
 
-  onBeforeUnmount: =>
+  beforeUnmount: =>
     document.removeEventListener 'scroll', @onScroll
 
   render: ({title, onHamburger, isHamburgerHidden}) =>
-    {isMini, isFixed, $hamburger} = @state.getValue()
+    {isMini, isFixed} = @state.getValue()
 
     z '.z-header',
       className: z.classKebab {isMini, isHamburgerHidden, isFixed}
       z '.stub'
       z '.bg'
       z '.header',
-        z '.hamburger',
+        z 'i.hamburger.material-icons',
+          innerHTML: 'menu'
           onclick: onHamburger
-          z $hamburger,
-            icon: 'menu'
-            isDark: true
         z '.title', title

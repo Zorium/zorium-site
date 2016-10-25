@@ -7,7 +7,6 @@ They should be modular, composable, and simple.
 The `render` method of each component may be called many times, and must be [idempotent](http://en.wikipedia.org/wiki/Idempotence).
 
 ```coffee
-# Live Editor
 z = require 'zorium'
 
 module.exports = class HelloWorld
@@ -22,7 +21,6 @@ module.exports = class HelloWorld
 Just rendering DOM doesn't help us much. Let's add some state to make a counter.  
 
 ```coffee
-# Live Editor
 z = require 'zorium'
 
 module.exports = class Counter
@@ -53,7 +51,6 @@ Alright, let's make things interesting. Components compose just like regular DOM
 There is no magic, just passing parameters to the `render()` method
 
 ```coffee
-# Live Editor
 z = require 'zorium'
 Button = require 'zorium-paper/button'
 
@@ -68,14 +65,15 @@ class Brick
 
 module.exports = class House
   constructor: ->
-    @$button = new Button()
+    @$button = new Button
+      isRaised: true
+      color: 'blue'
     @$bricks = _.map _.range(10), -> new Brick()
 
   render: =>
     z '.z-house',
       z @$button, # A Material Design Button
-        $content: 'Hello World'
-        isRaised: true
+        $children: 'Hello World'
 
       _.map @$bricks, ($brick, i) -> # Bricks!
         z $brick, {size: i + 1}
@@ -97,7 +95,7 @@ module.exports = class Elegant
   constructor: ->
     @state = z.state
       pureAwesome: Rx.Observable.defer ->
-        Rx.Observable.interval(200)
+        Rx.Observable.interval(500)
       model: Rx.Observable.defer ->
         window.fetch '/demo'
         .then (res) -> res.json()

@@ -4,7 +4,7 @@ if window?
   require './index.styl'
 
 module.exports = class Md
-  onMount: ($el) ->
+  afterMount: ($el) ->
     _.map $el.querySelectorAll('a'), (anchor) ->
       isLocal = anchor.host is window.location.host
       if isLocal

@@ -1,30 +1,47 @@
-# REPLACE_ENV_* is replaced at run-time with * environment variable
-# when production server. This is necessary to avoid re-building at run-time
+# process.env.* is replaced at run-time with * environment variable
+# Note that simply env.* is not replaced, and thus suitible for private config
 
-env = process.env
-module.exports =
-  API_URL: process.env.API_URL or
-           REPLACE_ENV_API_URL? and REPLACE_ENV_API_URL or
-           "http://localhost:#{process.env.PORT or 3000}"
-  PORT: process.env.PORT or
-        REPLACE_ENV_PORT? and REPLACE_ENV_PORT or
-        3000
-  ENV: process.env.NODE_ENV or
-       REPLACE_ENV_NODE_ENV? and REPLACE_ENV_NODE_ENV or
-       'production'
+_ = require 'lodash'
+
+# Don't let server environment variables leak into client code
+serverEnv = process.env
+
+# All keys must have values at run-time (value may be null)
+isomorphic =
+  HOST: process.env.HOST or '127.0.0.1'
+  API_URL:
+    serverEnv.PRIVATE_API_URL or # server
+    process.env.API_URL or # client
+    'http://127.0.0.1:3005' # default
+  AUTH_COOKIE: 'accessToken'
+  COOKIE_DURATION_MS: 365 * 24 * 3600 * 1000 # 1 year
+  ENV:
+    serverEnv.NODE_ENV or
+    process.env.NODE_ENV
   ENVS:
     DEV: 'development'
     PROD: 'production'
     TEST: 'test'
 
-  # Dev only
-  MOCK: process.env.MOCK is '1'
+# Server only
+# All keys must have values at run-time (value may be null)
+PORT = serverEnv.PORT or 3000
+WEBPACK_DEV_PORT = serverEnv.WEBPACK_DEV_PORT or parseInt(PORT) + 1
 
-  # Server only - Avoid webpack include
-  WEBPACK_DEV_HOSTNAME: env.WEBPACK_DEV_HOSTNAME or 'localhost'
-  WEBPACK_DEV_PORT: env.WEBPACK_DEV_PORT or 3001
-  HOSTNAME: env.HOSTNAME or 'localhost'
-  REMOTE_SELENIUM: env.REMOTE_SELENIUM is '1'
-  SELENIUM_BROWSER: env.SELENIUM_BROWSER or 'chrome'
-  SAUCE_USERNAME: env.SAUCE_USERNAME
-  SAUCE_ACCESS_KEY: env.SAUCE_ACCESS_KEY
+server =
+  PORT: PORT
+
+  # Development
+  WEBPACK_DEV_PORT: WEBPACK_DEV_PORT
+  WEBPACK_DEV_URL: serverEnv.WEBPACK_DEV_URL or
+    "http://127.0.0.1:#{WEBPACK_DEV_PORT}"
+  SELENIUM_TARGET_URL: serverEnv.SELENIUM_TARGET_URL or null
+  REMOTE_SELENIUM: serverEnv.REMOTE_SELENIUM is '1'
+  SELENIUM_BROWSER: serverEnv.SELENIUM_BROWSER or 'chrome'
+  SAUCE_USERNAME: serverEnv.SAUCE_USERNAME or null
+  SAUCE_ACCESS_KEY: serverEnv.SAUCE_ACCESS_KEY or null
+
+if window?
+  module.exports = isomorphic
+else
+  module.exports = _.merge isomorphic, server

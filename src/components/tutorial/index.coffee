@@ -3,7 +3,7 @@ Rx = require 'rx-lite'
 
 Editor = require '../editor'
 Md = require '../md'
-util = require '../../lib/util'
+MarkdownService = require '../../services/markdown'
 
 if window?
   tutorial = require './tutorial.md'
@@ -12,7 +12,8 @@ else
   _fs = 'fs'
   fs = require _fs
 
-  tutorial = util.marked fs.readFileSync __dirname + '/tutorial.md', 'utf-8'
+  tutorial = MarkdownService.marked \
+    fs.readFileSync __dirname + '/tutorial.md', 'utf-8'
 
 if window?
   require './index.styl'
@@ -27,7 +28,7 @@ module.exports = class Tutorial
   shouldShowEditor: ->
     window.matchMedia('(min-width: 800px)').matches
 
-  onMount: ($$el) =>
+  afterMount: ($$el) =>
     unless @shouldShowEditor()
       return
 
@@ -39,7 +40,7 @@ module.exports = class Tutorial
     @editors = _.map [
       '#z-tutorial_hack-first-component'
       '#z-tutorial_hack-stateful-components'
-      '#z-tutorial_hack-composing-components'
+      '#z-tutorial_hack-composing-components' # FIXME: use z.bind() for sub-comp
       '#z-tutorial_hack-streams'
     ], (selector) ->
 
@@ -57,7 +58,7 @@ module.exports = class Tutorial
 
       {$$editor, editorDisposable}
 
-  onBeforeUnmount: =>
+  beforeUnmount: =>
     if _.isEmpty @editors
       return
 
