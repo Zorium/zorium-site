@@ -14,7 +14,6 @@ MarkdownService = require '../../services/markdown'
 if window?
   intro = require './intro.md'
   api = require './api.md'
-  router = require './router.md'
   bestPractices = require './best_practices.md'
   paper = require './paper.md'
 else
@@ -26,8 +25,6 @@ else
     fs.readFileSync __dirname + '/intro.md', 'utf-8'
   api = MarkdownService.marked \
     fs.readFileSync __dirname + '/api.md', 'utf-8'
-  router = MarkdownService.marked \
-    fs.readFileSync __dirname + '/router.md', 'utf-8'
   bestPractices = MarkdownService.marked \
     fs.readFileSync __dirname + '/best_practices.md', 'utf-8'
   paper = MarkdownService.marked \
@@ -68,41 +65,64 @@ module.exports = class Docs
       $downloadSeedBtn: new Button()
       $buttons: [
         new Button()
-        new Button()
-        new Button()
-        new Button()
-        new Button()
-        new Button()
+        new Button({color: 'red'})
+        new Button({isDisabled: true})
+        new Button({isRaised: true})
+        new Button({isRaised: true, color: 'blue'})
+        new Button({isRaised: true, isDisabled: true, color: 'green'})
       ]
       checkboxes:
         $checked: [
-          new Checkbox(isChecked: new Rx.BehaviorSubject(true))
-          new Checkbox(isChecked: new Rx.BehaviorSubject(true))
+          new Checkbox({isChecked: new Rx.BehaviorSubject(true), color: 'blue'})
+          new Checkbox({
+            isChecked: new Rx.BehaviorSubject(true)
+            isDisabled: true
+          })
         ]
         $unchecked: [
-          new Checkbox()
-          new Checkbox()
+          new Checkbox({color: 'blue'})
+          new Checkbox({isDisabled: true})
         ]
       $errorInput:
-        new Input(error: new Rx.BehaviorSubject 'Input is required')
+        new Input({
+          error: new Rx.BehaviorSubject 'Input is required'
+          label: 'error'
+          color: 'blue'
+          isFloating: true
+        })
       $inputs: [
-        new Input()
-        new Input()
-        new Input()
+        new Input({
+          label: 'Regular'
+          color: 'blue'
+        })
+        new Input({
+          label: 'Floating'
+          color: 'blue'
+          isFloating: true
+        })
+        new Input({
+          label: 'Disabled'
+          color: 'blue'
+          isFloating: true
+          isDisabled: true
+        })
       ]
       radios:
         $checked: [
-          new Radio(isChecked: new Rx.BehaviorSubject(true))
-          new Radio(isChecked: new Rx.BehaviorSubject(true))
+          new Radio({color: 'blue', isChecked: new Rx.BehaviorSubject(true)})
+          new Radio({
+            isDisabled: true
+            isChecked: new Rx.BehaviorSubject(true)
+          })
         ]
         $unchecked: [
-          new Radio()
-          new Radio()
+          new Radio({color: 'blue'})
+          new Radio({isDisabled: true})
         ]
 
   afterMount: ($el) =>
-    {$buttons, checkboxes, $dialog, $actions,
-    $dialogTrigger, $fab, $errorInput, $inputs, radios} = @state.getValue()
+    {$buttons, checkboxes, $actions, $fab,
+    $errorInput, $inputs, radios} = @state.getValue()
 
     sectionAnchors = $el.querySelectorAll('a[name]')
     @scrollListener = =>
@@ -151,127 +171,38 @@ module.exports = class Docs
             $children: 'button'
           z $buttons[1],
             $children: 'colored'
-            colors:
-              ink: paperColors.$red500
           z $buttons[2],
             $children: 'disabled'
-            isDisabled: true
           z $buttons[3],
-            $children: 'button'
-            isRaised: true
+            $children: 'raised'
           z $buttons[4],
             $children: 'colored'
-            isRaised: true
-            colors:
-              cText: paperColors.$blue500Text
-              c200: paperColors.$blue200
-              c500: paperColors.$blue500
-              c600: paperColors.$blue600
-              c700: paperColors.$blue700
           z $buttons[5],
             $children: 'disabled'
-            isRaised: true
-            isDisabled: true
 
     renderCheckboxes = ->
       z.render $el.querySelector('#z-docs_paper-hack-checkboxes'),
         z '#z-docs_paper-hack-checkboxes.z-docs_paper-hack',
           z '.checkboxes',
-            z checkboxes.$unchecked[0],
-              colors:
-                c500: paperColors.$blue500
-            z checkboxes.$checked[0],
-              colors:
-                c500: paperColors.$blue500
-            z checkboxes.$unchecked[1],
-              isDisabled: true
-            z checkboxes.$checked[1],
-              isDisabled: true
+            z checkboxes.$unchecked[0]
+            z checkboxes.$checked[0]
+            z checkboxes.$unchecked[1]
+            z checkboxes.$checked[1]
 
     renderCheckboxes()
     _.map checkboxes.$unchecked.concat(checkboxes.$checked), (checkbox) ->
       checkbox.state.subscribe ->
         renderCheckboxes()
 
-    isDialogVisible = false
-    renderDialogs = ->
-      z.render $el.querySelector('#z-docs_paper-hack-dialogs'),
-        z '#z-docs_paper-hack-dialogs.z-docs_paper-hack',
-          z $dialogTrigger,
-            $children: 'open dialog'
-            onclick: ->
-              isDialogVisible = true
-              renderDialogs()
-          z '.dialogs',
-            if isDialogVisible
-              z $dialog,
-                title: 'This is a title'
-                content: z '.text', 'this is text contents'
-                actions: [
-                  {
-                    $el: z $actions[0],
-                      $children: 'disagree'
-                      isShort: true
-                      colors:
-                        ink: paperColors.$blue500
-                  }
-                  {
-                    $el: z $actions[1],
-                      $children: 'agree'
-                      isShort: true
-                      colors:
-                        ink: paperColors.$blue500
-                  }
-                ]
-                onleave: ->
-                  isDialogVisible = false
-                  renderDialogs()
-
-    renderDialogs()
-
-
-    z.render $el.querySelector('#z-docs_paper-hack-fabs'),
-      z '#z-docs_paper-hack-fabs.z-docs_paper-hack',
-        z '.fabs',
-          z $fab,
-            colors:
-              c500: paperColors.$blueGrey500
-            $icon: z '.div',
-              style:
-                display: 'inline-block'
-                width: '20px'
-                height: '20px'
-                margin: '2px'
-                color: 'white'
-                textAlign: 'center'
-                lineHeight: '20px'
-              , 'Z'
-
     renderInputs = ->
       z.render $el.querySelector('#z-docs_paper-hack-inputs'),
         z '#z-docs_paper-hack-inputs.z-docs_paper-hack',
-          z '.inputs',
-            z $inputs[0],
-              hintText: 'Regular'
-              colors:
-                c500: paperColors.$blue500
-            z $inputs[1],
-              hintText: 'Floating'
-              colors:
-                c500: paperColors.$blue500
-              isFloating: true
-            z $errorInput,
-              hintText: 'Error'
-              colors:
-                c500: paperColors.$blue500
-              isFloating: true
-            z $inputs[2],
-              hintText: 'Disabled'
-              colors:
-                c500: paperColors.$blue500
-              isFloating: true
-              isDisabled: true
-
+          z '.inputs', [
+            $inputs[0]
+            $inputs[1]
+            $errorInput
+            $inputs[2]
+          ]
 
     renderInputs()
     _.map $inputs.concat([$errorInput]), (input) ->
@@ -282,17 +213,12 @@ module.exports = class Docs
     renderRadios = ->
       z.render $el.querySelector('#z-docs_paper-hack-radios'),
         z '#z-docs_paper-hack-radios.z-docs_paper-hack',
-          z '.radios',
-            z radios.$unchecked[0],
-              colors:
-                c500: paperColors.$blue500
-            z radios.$checked[0],
-              colors:
-                c500: paperColors.$blue500
-            z radios.$unchecked[1],
-              isDisabled: true
-            z radios.$checked[1],
-              isDisabled: true
+          z '.radios', [
+            radios.$unchecked[0]
+            radios.$checked[0]
+            radios.$unchecked[1]
+            radios.$checked[1]
+          ]
 
     renderRadios()
     _.map radios.$unchecked.concat(radios.$checked), (radios) ->
@@ -328,7 +254,6 @@ module.exports = class Docs
       $tutorial
       z $md2, html: [
         api
-        router
         bestPractices
         paper
       ].join ''

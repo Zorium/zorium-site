@@ -112,40 +112,28 @@ $lightBlue100Text // rgba(0, 0, 0, 0.87)
 
 ```coffee
 ###
+@constructor
 @param {ZoriumComponent} $content
 @param {Function} onclick
+@param {String} type - e.g. `submit` for forms
 @param {Boolean} [isDisabled=false]
 @param {Boolean} [isRaised=false]
-@param {Boolean} [isFullWidth=false]
-@param {Boolean} [isShort=false]
-@param {Boolean} [isDark=false]  
-@param {String} type - e.g. `submit` for forms
-@param {Object} colors
-@param {String} [colors.cText=colors.ink]
-@param {String} [colors.c200=$grey500/$grey800]
-@param {String} colors.c500
-@param {String} colors.c600
-@param {String} colors.c700
-@param {String} colors.ink
+@param {String} color - a material design color name
+
+render()
+@param {ZoriumComponent} $children
 ###
 
 Button = require 'zorium-paper/button'
-paperColors = require 'zorium-paper/colors.json'
 
-$button = new Button()
+$button = new Button({
+  color: 'red'
+  isRaised: true
+  isDisabled: true
+})
 
 z $button,
-  $content: 'click me'
-  isRaised: true
-  colors:
-    cText: paperColors.$red500
-    c200: paperColors.$blue200
-    c500: paperColors.$blue500
-    c600: paperColors.$blue600
-    c700: paperColors.$blue700
-    ink: paperColors.$red500
-  isDisabled: true
-  isDark: true
+  $children: 'click me'
 ```
 
 <div id="z-docs_paper-hack-buttons"></div>
@@ -156,11 +144,8 @@ z $button,
 ###
 @constructor
 @param {Rx.Subject} [isChecked=Rx.BehaviorSubject(false)]
-
-@param {Object} colors
-@param {String} [colors.c500=$black]
+@param {String} color - a material design color name
 @param {Boolean} [isDisabled=false]
-@param {Boolean} [isDark=false]
 ###
 
 Rx = require 'rx-lite'
@@ -168,110 +153,26 @@ Checkbox = require 'zorium-paper/checkbox'
 paperColors = require 'zorium-paper/colors.json'
 
 isChecked = new Rx.BehaviorSubject(false)
-$checkbox = new Checkbox({isChecked})
-
-z $checkbox,
-  colors:
-    c500: paperColors.$blue500
-  isDisabled: true
-  isDark: true
+$checkbox = new Checkbox({isChecked, color: 'blue', isDisabled: false})
 ```
 
 <div id="z-docs_paper-hack-checkboxes"></div>
-
-## Dialog <a class="anchor" name="paper_dialog"></a>
-
-```coffee
-###
-@param {String} title
-@param {ZoriumComponent} [$content='']
-@param {Array<Action>} [actions=[]]
-@param {Function} [onleave=_.noop]
-
-@define {Object} Action
-@property {ZoriumComponent} $el
-###
-
-Dialog = require 'zorium-paper/dialog'
-Button = require 'zorium-paper/button'
-paperColors = require 'zorium-paper/colors.json'
-
-$dialog = new Dialog()
-$action1 = new Button()
-$action2 = new Button()
-
-z $dialog,
-  content: z '.text', 'this is text contents'
-  actions: [
-    {
-      $el: z $action1,
-        text: 'disagree'
-        isShort: true
-        colors:
-          ink: paperColors.$blue500
-    }
-    {
-      $el: z $action2,
-        text: 'agree'
-        isShort: true
-        colors:
-          ink: paperColors.$blue500
-    }
-  ]
-  onleave: =>
-    @toggle()
-```
-
-<div id="z-docs_paper-hack-dialogs"></div>
-
-## Floating Action Button <a class="anchor" name="paper_floating-action-button"></a>
-
-```coffee
-###
-@param {ZoriumComponent} $icon
-@param {Function} onclick
-@param {Object} colors
-@param {String} [colors.c500=$black]
-@param {Boolean} isMini
-###
-FloatingActionButton = require 'zorium-paper/floating_action_button'
-paperColors = require 'zorium-paper/colors.json'
-
-$fab = new FloatingActionButton()
-
-z $fab,
-  colors:
-    c500: paperColors.$red500
-  $icon: z '.div',
-    style:
-      display: 'inline-block'
-      width: '20px'
-      height: '20px'
-      margin: '2px'
-      background: 'black'
-      color: 'white'
-      textAlign: 'center'
-      lineHeight: '20px'
-    , 'Z'
-```
-
-<div id="z-docs_paper-hack-fabs"></div>
 
 ## Input <a class="anchor" name="paper_input"></a>
 
 ```coffee
 ###
 @constructor
-@param {Rx.Subject} [value=Rx.BehaviorSubject('')]
+@param {Rx.Observable} [value=Rx.Observable.just('')] - value stream
+@param {Rx.Observable} [error=Rx.Observable.just(null)]
+@param {Rx.Subject} [value=Rx.BehaviorSubject('')] - change stream
 @param {Rx.Subject} [error=Rx.BehaviorSubject(null)]
-
-@param {Object} colors
-@param {String} [colors.c500=$black]
-@param {String} hintText
+@param {String} color - a material design color name
+@param {String} label
 @param {String} type
 @param {Boolean} isFloating
 @param {Boolean} isDisabled
-@param {Boolean} isDark
+@param {Boolean} autocapitalize
 ###
 
 Rx = require 'rx-lite'
@@ -280,14 +181,13 @@ paperColors = require 'zorium-paper/colors.json'
 
 value = new Rx.BehaviorSubject('')
 error = new Rx.BehaviorSubject(null)
-$input = new Input({value, error})
-
-z $input,
-  hintText: 'hint text'
-  colors:
-    c500: paperColors.$blue500
+$input = new Input({
+  value
+  error
+  label: 'label text'
+  color: 'blue'
   isDisabled: true
-  isDark: true
+})
 ```
 
 <div id="z-docs_paper-hack-inputs"></div>

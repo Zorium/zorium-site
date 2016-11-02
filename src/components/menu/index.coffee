@@ -40,20 +40,11 @@ module.exports = class Menu
             {key: 'state', text: 'z.state()'}
             {key: 'render', text: 'z.render()'}
             {key: 'render-to-string', text: 'z.renderToString()'}
+            {key: 'bind', text: 'z.bind()'}
+            {key: 'until-stable', text: 'z.untilStable()'}
             {key: 'ev', text: 'z.ev()'}
             {key: 'class-kebab', text: 'z.classKebab()'}
             {key: 'is-simple-click', text: 'z.isSimpleClick()'}
-          ]
-        }
-        {
-          select: 'router'
-          text: 'Router API'
-          children: [
-            {key: 'init', text: 'z.router.init()'}
-            {key: 'use', text: 'z.router.use()'}
-            {key: 'go', text: 'z.router.go()'}
-            {key: 'link', text: 'z.router.link()'}
-            {key: 'full-page-rendering', text: 'Full Page Rendering'}
           ]
         }
         {
@@ -82,8 +73,6 @@ module.exports = class Menu
             {key: 'colors', text: 'Colors'}
             {key: 'button', text: 'Button'}
             {key: 'checkbox', text: 'Checkbox'}
-            {key: 'dialog', text: 'Dialog'}
-            {key: 'floating-action-button', text: 'Floating Action Button'}
             {key: 'input', text: 'Input'}
             {key: 'radio-button', text: 'Radio Button'}
           ]

@@ -44,6 +44,24 @@ module.exports = class MyPage
     z '.p-my-page', 'hi'
 ```
 
+### Routing
+
+Use a [LocationRouter](https://github.com/Zorium/location-router) instance, passed down through components for routing.
+
+```coffee
+class HelloWorld
+  constructor: ({@router}) -> null
+  goToRed: =>
+    @router.go '/red'
+
+  render: =>
+    z '.z-hello-world',
+      z 'button',
+        onclick: @goToRed
+
+new HelloWorld({router: new LocationRouter()})
+```
+
 ## CoffeeScript <a class="anchor" name="best-practices_coffee-script"></a>
 
   - Follow the Clay [CoffeeScript Style Guide](https://github.com/claydotio/coffeescript-style-guide)  
@@ -59,25 +77,18 @@ The following is the recommended base webpack configuration
   module:
     exprContextRegExp: /$^/ # allow for mixing node-require without bloat
     exprContextCritical: false
-    loaders: [
-      { test: /\.coffee$/, loader: 'coffee' }
-      { test: /\.json$/, loader: 'json' }
-      { test: /\.css$/, loader: 'style!css' }
-      {
-        test: /\.styl$/
-        loader:'style!css!autoprefixer!' +
-          'stylus?paths[]=bower_components&paths[]=node_modules'
-      }
-    ]
-  plugins: [
-    new webpack.ResolverPlugin(
-      new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin(
-        'bower.json', ['main']
-      )
-    )
+  loaders: [
+    {test: /\.coffee$/, loader: 'coffee'}
+    {test: /\.json$/, loader: 'json'}
+    {test: /\.styl$/, loaders: [
+      'style-loader'
+      'css-loader',
+      'postcss-loader',
+      'stylus-loader?paths[]=node_modules'
+    ]}
   ]
+  postcss: -> [autoprefixer({})]
   resolve:
-    root: [path.join(__dirname, 'bower_components')]
     extensions: ['.coffee', '.js', '.json', '']
 ```
 

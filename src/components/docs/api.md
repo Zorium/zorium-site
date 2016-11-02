@@ -221,6 +221,48 @@ z.renderToString $instance, {timeout: 100}
   err.html # <div>never abc</div>
 ```
 
+## z.bind() <a class="anchor" name="api_bind"></a>
+
+Bind a virtual-dom tree to a DOM node. This watches state changes and re-draws on update.
+
+```coffee
+###
+@param {HtmlElement} $$root
+@param {ZoriumComponent} $app
+###
+
+$$domNode = document.createElement 'div'
+$component = z 'div', 'test'
+
+z.bind $$domNode, $component
+```
+
+## z.untilStable() <a class="anchor" name="api_until-stable"></a>
+
+Wait for all components in tree to have values for asyncronous data.
+
+```coffee
+###
+@param {ZoriumComponent} $component
+@returns {Promise}
+###
+
+class Component
+  constructor: ->
+    @state = z.state
+      model: Rx.Observable.defer ->
+        window.fetch '/demo'
+        .then (res) -> res.json()
+  render: =>
+    {model} = @state.getValue()
+    z '.z-component',
+      if model?
+        "model: #{JSON.stringify(model, null, 2)}"
+
+z.untilStable new Component()
+.then -> 'stable'
+.catch -> 'error'
+```
 
 ## z.ev() <a class="anchor" name="api_ev"></a>
 
